@@ -1,10 +1,8 @@
-package logic;
+package entity.base;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import sharedObject.Renderable;
 
-public class Entity implements Renderable {
+public abstract class Entity implements Renderable {
 
 	private int x;
 	private int y;
@@ -28,13 +26,6 @@ public class Entity implements Renderable {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	@Override
-	public void draw(GraphicsContext gc) {
-		// draw red rectangle
-		gc.setFill(Color.RED);
-		gc.fillRect(x, y, 40, 40);
 	}
 
 	@Override

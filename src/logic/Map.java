@@ -2,6 +2,9 @@ package logic;
 
 import java.util.ArrayList;
 
+import entity.Block;
+import entity.base.Entity;
+
 public class Map {
 
 	private ArrayList<Entity> map;
@@ -15,7 +18,7 @@ public class Map {
 				case '0':
 					break;
 				case '1':
-					map.add(new Entity(j*40, i*40));
+					map.add(new Block(j * 40, i * 40));
 					break;
 				default:
 					System.out.println("Error parsing at position x = " + j + " y = " + i

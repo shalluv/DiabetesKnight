@@ -7,13 +7,12 @@ import javafx.stage.Stage;
 import logic.GameLogic;
 import sharedObject.RenderableHolder;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 
 public class Main extends Application {
 
-	private int board_width;
-	private int board_height;
+	public static final int CANVAS_WIDTH = 800;
+	public static final int CANVAS_HEIGHT = 600;
 
 	@Override
 	public void start(Stage stage) {
@@ -23,16 +22,14 @@ public class Main extends Application {
 			stage.setTitle("OurGame");
 			stage.setScene(scene);
 
-			board_width = MapData.mapData[0].length() * 40;
-			board_height = MapData.mapData.length * 40;
-			
 			GameLogic logic = new GameLogic(MapData.mapData);
-			GameScreen gameScreen = new GameScreen(board_width, board_height);
+			GameScreen gameScreen = new GameScreen(CANVAS_WIDTH, CANVAS_HEIGHT);
+
 			root.getChildren().add(gameScreen);
 			gameScreen.requestFocus();
 
 			stage.show();
-			
+
 			AnimationTimer animation = new AnimationTimer() {
 				@Override
 				public void handle(long arg0) {
