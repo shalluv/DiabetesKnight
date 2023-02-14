@@ -16,8 +16,8 @@ public class Player extends Entity {
 
 	private int WIDTH = 40;
 	private int HEIGHT = 40;
-	private int MAX_Y_SPEED = 18;
-	private int baseXSpeed = 3;
+	private int MAX_Y_SPEED = 16;
+	private int baseXSpeed = 5; 
 	private int xspeed = 0;
 	private int yspeed = 32;
 	private int weight = 1;

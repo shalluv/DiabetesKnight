@@ -13,6 +13,7 @@ public class Main extends Application {
 
 	public static final int CANVAS_WIDTH = 800;
 	public static final int CANVAS_HEIGHT = 600;
+	public static final int FPS = 120;
 
 	@Override
 	public void start(Stage stage) {
@@ -31,11 +32,16 @@ public class Main extends Application {
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {
+	            private long lastUpdate = 0 ;
+	            
 				@Override
-				public void handle(long arg0) {
-					gameScreen.drawComponent();
-					logic.update();
-					RenderableHolder.getInstance().update();
+				public void handle(long now) {
+					if(now - lastUpdate >= 1_000_000_000 / FPS) {
+						gameScreen.drawComponent();
+						logic.update();
+						RenderableHolder.getInstance().update();
+						lastUpdate = now;
+					}
 				}
 			};
 			animation.start();
