@@ -4,24 +4,30 @@ import java.awt.Rectangle;
 
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Block extends Entity {
 
-	private int WIDTH = 40;
-	private int HEIGHT = 40;
+	private boolean isSolid;
+	public static int WIDTH = 40;
+	public static int HEIGHT = 40;
+	private Image image;
 	private Rectangle hitbox;
 
-	public Block(int x, int y) {
+	public Block(int x, int y, String image_url, boolean isSolid) {
 		super(x, y);
-		hitbox = new Rectangle(x, y, WIDTH, HEIGHT);
+		hitbox = new Rectangle(x, y, Block.WIDTH, Block.HEIGHT);
+		image = new Image(image_url);
+		this.isSolid = isSolid;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		// draw red rectangle
-		gc.setFill(Color.RED);
-		gc.fillRect(this.getX(), this.getY(), 40, 40);
+		gc.drawImage(this.image, this.getX(), this.getY(), Block.WIDTH, Block.HEIGHT);
+	}
+	
+	public boolean isSolid() {
+		return isSolid;
 	}
 
 	public Rectangle getHitbox() {

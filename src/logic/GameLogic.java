@@ -12,7 +12,7 @@ public class GameLogic {
 
 	private Player player;
 
-	public GameLogic(String[] mapData) {
+	public GameLogic(int[][] mapData) {
 		this.gameObjectContainer = new ArrayList<>();
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
