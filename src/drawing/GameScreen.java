@@ -1,42 +1,41 @@
 package drawing;
 
-import input.InputUtility;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import sharedObject.Renderable;
-import sharedObject.RenderableHolder;
+import application.MapData;
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
 
-public class GameScreen extends Canvas {
+public class GameScreen extends StackPane {
 	
-	private Image background;
-
-	public GameScreen(double width, double height) {
-		super(width, height);
-		this.setVisible(true);
-		addListener();
-		background = new Image("file:res/2_Background/Day/Background.png");
+	private GameCanvas gameCanvas;
+	private double x = 0;
+	private double y = 960-MapData.height;
+	
+	public GameScreen() {
+		this.setAlignment(Pos.TOP_LEFT);
+		this.setLayoutY(y);
+		this.setCanvas(new GameCanvas(MapData.width, MapData.height));
+		this.getChildren().add(gameCanvas);
 	}
-
-	public void addListener() {
-		this.setOnKeyPressed((KeyEvent event) -> {
-			InputUtility.setKeyPressed(event.getCode(), true);
-		});
-
-		this.setOnKeyReleased((KeyEvent event) -> {
-			InputUtility.setKeyPressed(event.getCode(), false);
-		});
+	
+	public void setCanvas(GameCanvas gameCanvas) {
+		this.gameCanvas=gameCanvas;
 	}
-
+	
+	public GameCanvas getCanvas() {
+		return gameCanvas;
+	}
+	
 	public void drawComponent() {
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.drawImage(background, 0, 0, getWidth(), getHeight());
-		// draw entities
-		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
-			if (!entity.isDestroyed()) {
-				entity.draw(gc);
-			}
-		}
+		this.getCanvas().drawComponent(x, y);
+		this.setLayoutX(x);
+		this.setLayoutY(y);
+	}
+	
+	public void updateX(double x) {
+		this.x = x;
+	}
+	
+	public void updateY(double y) {
+		this.y = y;
 	}
 }

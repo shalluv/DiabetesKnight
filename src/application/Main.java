@@ -7,36 +7,31 @@ import javafx.stage.Stage;
 import logic.GameLogic;
 import sharedObject.RenderableHolder;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 
 public class Main extends Application {
 
-	public static final int CANVAS_WIDTH = 800;
-	public static final int CANVAS_HEIGHT = 600;
 	public static final int FPS = 120;
+	public static GameScreen gameScreen = new GameScreen();
 
 	@Override
 	public void start(Stage stage) {
 		try {
-			StackPane root = new StackPane();
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(gameScreen, 1280, 960);
 			stage.setTitle("OurGame");
 			stage.setScene(scene);
+			stage.setResizable(false);
 
-			GameLogic logic = new GameLogic(MapData.mapData);
-			GameScreen gameScreen = new GameScreen(CANVAS_WIDTH, CANVAS_HEIGHT);
-
-			root.getChildren().add(gameScreen);
-			gameScreen.requestFocus();
-
+			GameLogic logic = new GameLogic(MapData.data);
+			gameScreen.getCanvas().requestFocus();
+			
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {
-	            private long lastUpdate = 0 ;
-	            
+				private long lastUpdate = 0;
+
 				@Override
 				public void handle(long now) {
-					if(now - lastUpdate >= 1_000_000_000 / FPS) {
+					if (now - lastUpdate >= 1_000_000_000 / FPS) {
 						gameScreen.drawComponent();
 						logic.update();
 						RenderableHolder.getInstance().update();
