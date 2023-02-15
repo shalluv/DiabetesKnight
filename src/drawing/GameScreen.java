@@ -7,8 +7,8 @@ import javafx.scene.layout.StackPane;
 public class GameScreen extends StackPane {
 	
 	private GameCanvas gameCanvas;
-	private double x = 0;
-	private double y = 960-MapData.height;
+	private int x = 0;
+	private int y = 960-MapData.height;
 	
 	public GameScreen() {
 		this.setAlignment(Pos.TOP_LEFT);
@@ -31,11 +31,11 @@ public class GameScreen extends StackPane {
 		this.setLayoutY(y);
 	}
 	
-	public void updateX(double x) {
+	public void updateX(int x) {
 		this.x = x;
 	}
 	
-	public void updateY(double y) {
+	public void updateY(int y) {
 		this.y = y;
 	}
 }

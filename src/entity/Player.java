@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Rectangle;
 
+import application.Main;
 import application.MapData;
 import entity.base.Entity;
 import input.InputUtility;
@@ -66,6 +67,8 @@ public class Player extends Entity {
 		this.move();
 
 		this.clampInCanvas();
+		
+		this.updateScreen();
 
 		this.hitbox.x = this.getX() + this.offsetHitboxX;
 		this.hitbox.y = this.getY() + this.offsetHitboxY;
@@ -121,6 +124,15 @@ public class Player extends Entity {
 			this.setY(0);
 		} else if (this.getY() > MapData.height - this.height) {
 			Platform.exit();
+		}
+	}
+	
+	private void updateScreen() {
+		if (this.getX()>640 && this.getX()+640<MapData.width) {
+			Main.gameScreen.updateX(-(this.getX()-640));
+		}
+		if (this.getY()>480 && this.getY()+480<MapData.height) {
+			Main.gameScreen.updateY(-(this.getY()-480));
 		}
 	}
 
