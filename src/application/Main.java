@@ -11,7 +11,7 @@ import sharedObject.RenderableHolder;
 public class Main extends Application {
 
 	public static final int FPS = 120;
-	public static GameScreen gameScreen = new GameScreen();
+	public static GameScreen gameScreen;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -20,14 +20,17 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
+			GameLogic logic = new GameLogic();
+			
+			gameScreen = new GameScreen();
+			
 			Scene scene = new Scene(gameScreen, 1280, 960);
 			stage.setTitle("OurGame");
 			stage.setScene(scene);
 			stage.setResizable(false);
 
-			GameLogic logic = new GameLogic(MapData.data);
 			gameScreen.getCanvas().requestFocus();
-
+			
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {
