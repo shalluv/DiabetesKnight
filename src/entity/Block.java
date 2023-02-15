@@ -1,10 +1,9 @@
 package entity;
 
-import java.awt.Rectangle;
-
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 public class Block extends Entity {
 
@@ -14,9 +13,11 @@ public class Block extends Entity {
 	private Image image;
 	private Rectangle hitbox;
 
-	public Block(int x, int y, String image_url, boolean isSolid) {
+	public Block(double x, double y, String image_url, boolean isSolid) {
 		super(x, y);
-		hitbox = new Rectangle(x, y, Block.WIDTH, Block.HEIGHT);
+		hitbox = new Rectangle(Block.WIDTH, Block.HEIGHT);
+		hitbox.setTranslateX(x);
+		hitbox.setTranslateY(y);
 		image = new Image(image_url);
 		this.isSolid = isSolid;
 	}

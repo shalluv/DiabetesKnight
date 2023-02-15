@@ -1,14 +1,14 @@
 package entity;
 
-import java.awt.Rectangle;
-
 import application.Main;
+import application.MapData;
 import entity.base.Entity;
 import input.InputUtility;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.shape.Rectangle;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 
@@ -16,28 +16,29 @@ public class Player extends Entity {
 
 	private int width = 45;
 	private int height = 45;
-	private int MAX_Y_SPEED = 16;
-	private int baseXSpeed = 5;
-	private int xspeed = 0;
-	private int yspeed = 32;
-	private int weight = 1;
+	private double MAX_Y_SPEED = 16;
+	private double baseXSpeed = 5;
+	private double xspeed = 0;
+	private double yspeed = 32;
+	private double weight = 1;
 	private Rectangle hitbox;
 	private Image image;
 	private int offsetHitboxX = 8;
 	private int offsetHitboxY = 8;
 	private int hitboxWidthReducer = 20;
 
-	public Player(int x, int y) {
+	public Player(double x, double y) {
 		super(x, y);
 		hitbox = new Rectangle(x - this.offsetHitboxX, y + this.offsetHitboxY, width - this.hitboxWidthReducer,
 				height - +this.offsetHitboxY);
+		setListener();
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 	}
 
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 
-			this.hitbox.y += 1;
+			hitbox.setTranslateY(hitbox.getTranslateY()+1);
 			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 				if (block instanceof Block && ((Block) block).isSolid()) {
 					if (((Block) block).getHitbox().intersects(hitbox)) {
@@ -45,7 +46,7 @@ public class Player extends Entity {
 					}
 				}
 			}
-			this.hitbox.y -= 1;
+			hitbox.setTranslateY(hitbox.getTranslateY()-1);
 
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
@@ -75,15 +76,15 @@ public class Player extends Entity {
 	}
 
 	private void move() {
-		this.hitbox.x += this.xspeed;
+		hitbox.setTranslateX(hitbox.getTranslateX()+this.xspeed);
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					this.hitbox.x -= this.xspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						this.hitbox.x += Math.signum(this.xspeed);
+				if (((Block) block).getHitbox().getBoundsInParent().intersects(hitbox.getBoundsInParent())) {
+					hitbox.setTranslateX(hitbox.getTranslateX()-this.xspeed);
+					while (!((Block) block).getHitbox().getBoundsInParent().intersects(hitbox.getBoundsInParent())) {
+						hitbox.setTranslateX(hitbox.getTranslateX()+Math.signum(this.xspeed));
 					}
-					this.hitbox.x -= Math.signum(this.xspeed);
+					hitbox.setTranslateX(hitbox.getTranslateX()-Math.signum(this.xspeed));
 					this.xspeed = 0;
 					this.setX(this.hitbox.x - this.offsetHitboxX);
 				}
@@ -92,15 +93,15 @@ public class Player extends Entity {
 
 		// gravity
 		this.yspeed += this.weight;
-		this.hitbox.y += this.yspeed;
+		hitbox.setTranslateY(hitbox.getTranslateY()+this.yspeed);;
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					this.hitbox.y -= this.yspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						this.hitbox.y += Math.signum(this.yspeed);
+				if (((Block) block).getHitbox().getBoundsInParent().intersects(hitbox.getBoundsInParent())) {
+					hitbox.setTranslateY(hitbox.getTranslateY()-this.yspeed);;
+					while (!((Block) block).getHitbox().getBoundsInParent().intersects(hitbox.getBoundsInParent())) {
+						hitbox.setTranslateY(hitbox.getTranslateY()+Math.signum(this.yspeed));
 					}
-					this.hitbox.y -= Math.signum(this.yspeed);
+					hitbox.setTranslateY(hitbox.getTranslateY()-Math.signum(this.yspeed));
 					this.yspeed = 0;
 					this.setY(this.hitbox.y - this.offsetHitboxY);
 				}
@@ -112,10 +113,10 @@ public class Player extends Entity {
 	}
 
 	private void clampInCanvas() {
-		if (this.hitbox.x < 0) {
+		if (hitbox.getTranslateX() < 0) {
 			this.setX(0);
-		} else if (this.hitbox.x > Main.CANVAS_WIDTH - this.hitbox.width) {
-			this.setX(Main.CANVAS_WIDTH - this.hitbox.width);
+		} else if (hitbox.getTranslateX() > MapData.width - WIDTH) {
+			this.setX(MapData.width - WIDTH);
 		}
 		if (this.getY() < 0) {
 			this.setY(0);
@@ -138,6 +139,21 @@ public class Player extends Entity {
 
 //		Image
 		gc.drawImage(this.image, this.getX(), this.getY(), this.width, this.height);
+	}
+	
+	public void setListener() {
+		hitbox.translateXProperty().addListener((obs, old, newValue) -> {
+			int offset = newValue.intValue();
+			if(offset > 640 && offset < MapData.width-640) {
+				Main.gameScreen.updateX(-(offset - 640));
+			}
+		});
+		hitbox.translateYProperty().addListener((obs, old, newValue) -> {
+			int offset = newValue.intValue();
+			if(offset > 480 && offset + 480 < MapData.height) {
+				Main.gameScreen.updateY(-(offset - 480));
+			}
+		});
 	}
 
 	public Rectangle getHitbox() {

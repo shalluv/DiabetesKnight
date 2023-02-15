@@ -4,27 +4,27 @@ import sharedObject.Renderable;
 
 public abstract class Entity implements Renderable {
 
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 
-	public Entity(int x, int y) {
+	public Entity(double x, double y) {
 		this.setX(x);
 		this.setY(y);
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
