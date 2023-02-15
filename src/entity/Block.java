@@ -25,7 +25,7 @@ public class Block extends Entity {
 	public void draw(GraphicsContext gc) {
 		gc.drawImage(this.image, this.getX(), this.getY(), Block.width, Block.height);
 	}
-	
+
 	public boolean isSolid() {
 		return isSolid;
 	}

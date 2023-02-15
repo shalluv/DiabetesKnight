@@ -8,7 +8,7 @@ public class RenderableHolder {
 	private ArrayList<Renderable> entities;
 
 	private RenderableHolder() {
-		this.entities = new ArrayList<Renderable>();
+		entities = new ArrayList<Renderable>();
 	}
 
 	public void add(Renderable entity) {

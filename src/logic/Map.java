@@ -17,11 +17,11 @@ public class Map {
 					continue;
 				}
 				if (mapData[i][j] > 0) {
-					map.add(new Block(j * 40, i * 40,
-							String.format("file:res/1_Tiles/Tile_%02d.png", mapData[i][j]), true));
+					map.add(new Block(j * 40, i * 40, String.format("file:res/1_Tiles/Tile_%02d.png", mapData[i][j]),
+							true));
 				} else {
-					map.add(new Block(j * 40, i * 40,
-							String.format("file:res/1_Tiles/Tile_%02d.png", -mapData[i][j]), false));
+					map.add(new Block(j * 40, i * 40, String.format("file:res/1_Tiles/Tile_%02d.png", -mapData[i][j]),
+							false));
 				}
 
 			}

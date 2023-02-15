@@ -3,10 +3,10 @@ package application;
 import drawing.GameScreen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import sharedObject.RenderableHolder;
-import javafx.scene.Scene;
 
 public class Main extends Application {
 
@@ -23,7 +23,7 @@ public class Main extends Application {
 
 			GameLogic logic = new GameLogic(MapData.data);
 			gameScreen.getCanvas().requestFocus();
-			
+
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {

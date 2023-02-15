@@ -8,8 +8,13 @@ public abstract class Entity implements Renderable {
 	private int y;
 
 	public Entity(int x, int y) {
-		this.setX(x);
-		this.setY(y);
+		setX(x);
+		setY(y);
+	}
+
+	@Override
+	public boolean isDestroyed() {
+		return false;
 	}
 
 	public int getX() {
@@ -26,10 +31,5 @@ public abstract class Entity implements Renderable {
 
 	public void setY(int y) {
 		this.y = y;
-	}
-
-	@Override
-	public boolean isDestroyed() {
-		return false;
 	}
 }

@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 
@@ -18,7 +17,7 @@ public class Player extends Entity {
 
 	private int width = 45;
 	private int height = 45;
-	private int MAX_Y_SPEED = 16;
+	private int maxYSpeed = 16;
 	private int baseXSpeed = 5;
 	private int xspeed = 0;
 	private int yspeed = 32;
@@ -31,8 +30,8 @@ public class Player extends Entity {
 
 	public Player(int x, int y) {
 		super(x, y);
-		hitbox = new Rectangle(x - this.offsetHitboxX, y + this.offsetHitboxY, width - this.hitboxWidthReducer,
-				height - +this.offsetHitboxY);
+		hitbox = new Rectangle(x - offsetHitboxX, y + offsetHitboxY, width - hitboxWidthReducer,
+				height - offsetHitboxY);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 	}
 
@@ -43,7 +42,7 @@ public class Player extends Entity {
 			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 				if (block instanceof Block && ((Block) block).isSolid()) {
 					if (((Block) block).getHitbox().intersects(hitbox)) {
-						this.jump();
+						jump();
 					}
 				}
 			}
@@ -51,88 +50,88 @@ public class Player extends Entity {
 
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
-			this.xspeed = -this.baseXSpeed;
+			xspeed = -baseXSpeed;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
-			this.xspeed = this.baseXSpeed;
+			xspeed = baseXSpeed;
 		} else {
-			this.xspeed = 0;
+			xspeed = 0;
 		}
 
-		if (this.yspeed < -this.MAX_Y_SPEED) {
-			this.yspeed = -this.MAX_Y_SPEED;
-		} else if (this.yspeed > this.MAX_Y_SPEED) {
-			this.yspeed = this.MAX_Y_SPEED;
+		if (yspeed < -maxYSpeed) {
+			yspeed = -maxYSpeed;
+		} else if (yspeed > maxYSpeed) {
+			yspeed = maxYSpeed;
 		}
 
-		this.move();
+		move();
 
-		this.clampInCanvas();
-		
-		this.updateScreen();
+		clampInCanvas();
 
-		this.hitbox.x = this.getX() + this.offsetHitboxX;
-		this.hitbox.y = this.getY() + this.offsetHitboxY;
+		updateScreen();
+
+		hitbox.x = getX() + offsetHitboxX;
+		hitbox.y = getY() + offsetHitboxY;
 	}
 
 	private void jump() {
-		this.yspeed = -this.MAX_Y_SPEED;
+		yspeed = -maxYSpeed;
 	}
 
 	private void move() {
-		hitbox.x += this.xspeed;
+		hitbox.x += xspeed;
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
 				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.x -= this.xspeed;
+					hitbox.x -= xspeed;
 					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.x += Math.signum(this.xspeed);
+						hitbox.x += Math.signum(xspeed);
 					}
-					this.hitbox.x -= Math.signum(this.xspeed);
-					this.xspeed = 0;
-					this.setX(this.hitbox.x - this.offsetHitboxX);
+					hitbox.x -= Math.signum(xspeed);
+					xspeed = 0;
+					setX(hitbox.x - offsetHitboxX);
 				}
 			}
 		}
 
 		// gravity
-		this.yspeed += this.weight;
-		this.hitbox.y += this.yspeed;
+		yspeed += weight;
+		hitbox.y += yspeed;
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
 				if (((Block) block).getHitbox().intersects(hitbox)) {
-					this.hitbox.y -= this.yspeed;
+					hitbox.y -= yspeed;
 					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						this.hitbox.y += Math.signum(this.yspeed);
+						hitbox.y += Math.signum(yspeed);
 					}
-					this.hitbox.y -= Math.signum(this.yspeed);
-					this.yspeed = 0;
-					this.setY(this.hitbox.y - this.offsetHitboxY);
+					hitbox.y -= Math.signum(yspeed);
+					yspeed = 0;
+					setY(hitbox.y - offsetHitboxY);
 				}
 			}
 		}
-		this.setX(this.getX() + this.xspeed);
-		this.setY(this.getY() + this.yspeed);
+		setX(getX() + xspeed);
+		setY(getY() + yspeed);
 	}
 
 	private void clampInCanvas() {
-		if (this.hitbox.x < 0) {
-			this.setX(-this.offsetHitboxX);
-		} else if (this.hitbox.x + this.width + this.offsetHitboxX - this.hitboxWidthReducer > MapData.width) {
-			this.setX(MapData.width - this.width + this.offsetHitboxX);
+		if (hitbox.x < 0) {
+			setX(-offsetHitboxX);
+		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > MapData.width) {
+			setX(MapData.width - width + offsetHitboxX);
 		}
-		if (this.getY() < 0) {
-			this.setY(0);
-		} else if (this.getY() > MapData.height - this.height) {
+		if (getY() < 0) {
+			setY(0);
+		} else if (getY() > MapData.height - height) {
 			Platform.exit();
 		}
 	}
-	
+
 	private void updateScreen() {
-		if (this.getX()>640 && this.getX()+640<MapData.width) {
-			Main.gameScreen.updateX(-(this.getX()-640));
+		if (getX() > 640 && getX() + 640 < MapData.width) {
+			Main.gameScreen.setX(-(getX() - 640));
 		}
-		if (this.getY()>480 && this.getY()+480<MapData.height) {
-			Main.gameScreen.updateY(-(this.getY()-480));
+		if (getY() > 480 && getY() + 480 < MapData.height) {
+			Main.gameScreen.setY(-(getY() - 480));
 		}
 	}
 
@@ -140,24 +139,15 @@ public class Player extends Entity {
 	public void draw(GraphicsContext gc) {
 //		Player Rect
 //		gc.setFill(Color.RED);
-//		gc.fillRect(this.getX(), this.getY(), this.width, this.height);
+//		gc.fillRect(getX(), getY(), width, height);
 
 //		Hitbox Rect
 //		gc.setFill(Color.GREEN);
-//		gc.fillRect(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height);
+//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 //		Image
-		gc.drawImage(this.image, this.getX(), this.getY(), this.width, this.height);
+		gc.drawImage(image, getX(), getY(), width, height);
 	}
-
-	/*
-	 * public void setListener() { hitbox.translateXProperty().addListener((obs,
-	 * old, newValue) -> { int offset = newValue.intValue(); if (offset > 640 &&
-	 * offset < MapData.width - 640) { Main.gameScreen.updateX(-(offset - 640)); }
-	 * }); hitbox.translateYProperty().addListener((obs, old, newValue) -> { int
-	 * offset = newValue.intValue(); if (offset > 480 && offset + 480 <
-	 * MapData.height) { Main.gameScreen.updateY(-(offset - 480)); } }); }
-	 */
 
 	public Rectangle getHitbox() {
 		return hitbox;

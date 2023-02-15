@@ -17,7 +17,7 @@ public class GameLogic {
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
 
-		player = new Player(50, 200);
+		player = new Player(50, 600);
 		addNewObject(player);
 	}
 
