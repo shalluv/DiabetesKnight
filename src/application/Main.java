@@ -25,7 +25,7 @@ public class Main extends Application {
 			stage.setScene(scene);
 			stage.setResizable(false);
 
-			GameLogic logic = new GameLogic(MapData.data);
+			GameLogic logic = new GameLogic();
 			gameScreen.getCanvas().requestFocus();
 
 			stage.show();

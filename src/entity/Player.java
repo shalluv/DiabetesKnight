@@ -2,14 +2,13 @@ package entity;
 
 import java.awt.Rectangle;
 
-import application.Main;
-import application.MapData;
 import entity.base.Entity;
 import input.InputUtility;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import logic.Map;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 
@@ -38,12 +37,12 @@ public class Player extends Entity {
 	private void clampInCanvas() {
 		if (hitbox.x < 0) {
 			setX(-offsetHitboxX);
-		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > MapData.width) {
-			setX(MapData.width - width + offsetHitboxX);
+		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > Map.getWidth()) {
+			setX(Map.getWidth() - width + offsetHitboxX);
 		}
 		if (getY() < 0) {
 			setY(0);
-		} else if (getY() > MapData.height - height) {
+		} else if (getY() > Map.getHeight() - height) {
 			Platform.exit();
 		}
 	}
@@ -138,18 +137,7 @@ public class Player extends Entity {
 
 		clampInCanvas();
 
-		updateScreen();
-
 		hitbox.x = getX() + offsetHitboxX;
 		hitbox.y = getY() + offsetHitboxY;
-	}
-
-	private void updateScreen() {
-		if (getX() > 640 && getX() + 640 < MapData.width) {
-			Main.gameScreen.setX(-(getX() - 640));
-		}
-		if (getY() > 480 && getY() + 480 < MapData.height) {
-			Main.gameScreen.setY(-(getY() - 480));
-		}
 	}
 }
