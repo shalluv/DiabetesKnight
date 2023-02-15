@@ -27,6 +27,7 @@ public class Player extends Entity {
 	private int offsetHitboxX = 8;
 	private int offsetHitboxY = 8;
 	private int hitboxWidthReducer = 20;
+	private boolean isFaceLeft = false;
 
 	public Player(int x, int y) {
 		super(x, y);
@@ -55,11 +56,15 @@ public class Player extends Entity {
 //		gc.fillRect(getX(), getY(), width, height);
 
 //		Hitbox Rect
-//		gc.setFill(Color.GREEN);
-//		gc.fillRect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
+		gc.setFill(Color.GREEN);
+		gc.fillRect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
 
 //		Image
-		gc.drawImage(getImage(), getX(), getY(), getWidth(), getHeight());
+		if (isFaceLeft()) {
+			gc.drawImage(getImage(), getX() + getWidth(), getY(), -getWidth(), getHeight());
+		} else {
+			gc.drawImage(getImage(), getX(), getY(), getWidth(), getHeight());
+		}
 	}
 
 	private void jump() {
@@ -124,6 +129,16 @@ public class Player extends Entity {
 			setXspeed(0);
 		}
 
+		if (getXspeed() > 0) {
+			setFaceLeft(false);
+			// TODO: Get rid of magic number
+			setOffsetHitboxX(8);
+		} else if (getXspeed() < 0) {
+			setFaceLeft(true);
+			// TODO: Get rid of magic number
+			setOffsetHitboxX(12);
+		}
+
 		if (getYspeed() < -getMaxYSpeed()) {
 			setYspeed(-getMaxYSpeed());
 		} else if (getYspeed() > getMaxYSpeed()) {
@@ -138,99 +153,107 @@ public class Player extends Entity {
 		getHitbox().y = getY() + getOffsetHitboxY();
 	}
 
-	public int getBaseXSpeed() {
-		return baseXSpeed;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public Rectangle getHitbox() {
-		return hitbox;
-	}
-
-	public int getHitboxWidthReducer() {
-		return hitboxWidthReducer;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public int getMaxYSpeed() {
-		return maxYSpeed;
-	}
-
-	public int getOffsetHitboxX() {
-		return offsetHitboxX;
-	}
-
-	public int getOffsetHitboxY() {
-		return offsetHitboxY;
-	}
-
-	public int getWeight() {
-		return weight;
-	}
-
 	public int getWidth() {
 		return width;
-	}
-
-	public int getXspeed() {
-		return xspeed;
-	}
-
-	public int getYspeed() {
-		return yspeed;
-	}
-
-	public void setBaseXSpeed(int baseXSpeed) {
-		this.baseXSpeed = baseXSpeed;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public void setHitbox(Rectangle hitbox) {
-		this.hitbox = hitbox;
-	}
-
-	public void setHitboxWidthReducer(int hitboxWidthReducer) {
-		this.hitboxWidthReducer = hitboxWidthReducer;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	public void setMaxYSpeed(int maxYSpeed) {
-		this.maxYSpeed = maxYSpeed;
-	}
-
-	public void setOffsetHitboxX(int offsetHitboxX) {
-		this.offsetHitboxX = offsetHitboxX;
-	}
-
-	public void setOffsetHitboxY(int offsetHitboxY) {
-		this.offsetHitboxY = offsetHitboxY;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
 	}
 
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getMaxYSpeed() {
+		return maxYSpeed;
+	}
+
+	public void setMaxYSpeed(int maxYSpeed) {
+		this.maxYSpeed = maxYSpeed;
+	}
+
+	public int getBaseXSpeed() {
+		return baseXSpeed;
+	}
+
+	public void setBaseXSpeed(int baseXSpeed) {
+		this.baseXSpeed = baseXSpeed;
+	}
+
+	public int getXspeed() {
+		return xspeed;
+	}
+
 	public void setXspeed(int xspeed) {
 		this.xspeed = xspeed;
 	}
 
+	public int getYspeed() {
+		return yspeed;
+	}
+
 	public void setYspeed(int yspeed) {
 		this.yspeed = yspeed;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
+
+	public void setHitbox(Rectangle hitbox) {
+		this.hitbox = hitbox;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public int getOffsetHitboxX() {
+		return offsetHitboxX;
+	}
+
+	public void setOffsetHitboxX(int offsetHitboxX) {
+		this.offsetHitboxX = offsetHitboxX;
+	}
+
+	public int getOffsetHitboxY() {
+		return offsetHitboxY;
+	}
+
+	public void setOffsetHitboxY(int offsetHitboxY) {
+		this.offsetHitboxY = offsetHitboxY;
+	}
+
+	public int getHitboxWidthReducer() {
+		return hitboxWidthReducer;
+	}
+
+	public void setHitboxWidthReducer(int hitboxWidthReducer) {
+		this.hitboxWidthReducer = hitboxWidthReducer;
+	}
+
+	public boolean isFaceLeft() {
+		return isFaceLeft;
+	}
+
+	public void setFaceLeft(boolean isFaceLeft) {
+		this.isFaceLeft = isFaceLeft;
 	}
 }
