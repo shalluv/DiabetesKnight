@@ -8,9 +8,9 @@ import javafx.scene.image.Image;
 
 public class Block extends Entity {
 
-	private boolean isSolid;
 	public static int width = 40;
 	public static int height = 40;
+	private boolean isSolid;
 	private Image image;
 	private Rectangle hitbox;
 
@@ -26,11 +26,11 @@ public class Block extends Entity {
 		gc.drawImage(this.image, this.getX(), this.getY(), Block.width, Block.height);
 	}
 
-	public boolean isSolid() {
-		return isSolid;
-	}
-
 	public Rectangle getHitbox() {
 		return hitbox;
+	}
+
+	public boolean isSolid() {
+		return isSolid;
 	}
 }

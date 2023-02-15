@@ -13,6 +13,10 @@ public class Main extends Application {
 	public static final int FPS = 120;
 	public static GameScreen gameScreen = new GameScreen();
 
+	public static void main(String[] args) {
+		launch(args);
+	}
+
 	@Override
 	public void start(Stage stage) {
 		try {
@@ -43,9 +47,5 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

@@ -17,14 +17,14 @@ public class GameScreen extends StackPane {
 		getChildren().add(gameCanvas);
 	}
 
-	public GameCanvas getCanvas() {
-		return gameCanvas;
-	}
-
 	public void drawComponent() {
 		getCanvas().drawComponent(x, y);
 		setLayoutX(x);
 		setLayoutY(y);
+	}
+
+	public GameCanvas getCanvas() {
+		return gameCanvas;
 	}
 
 	public void setCanvas(GameCanvas gameCanvas) {

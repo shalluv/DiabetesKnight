@@ -21,15 +21,15 @@ public class GameLogic {
 		addNewObject(player);
 	}
 
-	protected void addNewObject(Entity entity) {
-		gameObjectContainer.add(entity);
-		RenderableHolder.getInstance().add(entity);
-	}
-
 	protected void addAllObject(ArrayList<Entity> entities) {
 		for (Entity entity : entities) {
 			addNewObject(entity);
 		}
+	}
+
+	protected void addNewObject(Entity entity) {
+		gameObjectContainer.add(entity);
+		RenderableHolder.getInstance().add(entity);
 	}
 
 	public void update() {

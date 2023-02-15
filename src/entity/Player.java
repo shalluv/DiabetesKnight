@@ -35,42 +35,35 @@ public class Player extends Entity {
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 	}
 
-	public void update() {
-		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
-
-			hitbox.y += 1;
-			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-				if (block instanceof Block && ((Block) block).isSolid()) {
-					if (((Block) block).getHitbox().intersects(hitbox)) {
-						jump();
-					}
-				}
-			}
-			hitbox.y -= 1;
-
+	private void clampInCanvas() {
+		if (hitbox.x < 0) {
+			setX(-offsetHitboxX);
+		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > MapData.width) {
+			setX(MapData.width - width + offsetHitboxX);
 		}
-		if (InputUtility.getKeyPressed(KeyCode.A)) {
-			xspeed = -baseXSpeed;
-		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
-			xspeed = baseXSpeed;
-		} else {
-			xspeed = 0;
+		if (getY() < 0) {
+			setY(0);
+		} else if (getY() > MapData.height - height) {
+			Platform.exit();
 		}
+	}
 
-		if (yspeed < -maxYSpeed) {
-			yspeed = -maxYSpeed;
-		} else if (yspeed > maxYSpeed) {
-			yspeed = maxYSpeed;
-		}
+	@Override
+	public void draw(GraphicsContext gc) {
+//		Player Rect
+//		gc.setFill(Color.RED);
+//		gc.fillRect(getX(), getY(), width, height);
 
-		move();
+//		Hitbox Rect
+//		gc.setFill(Color.GREEN);
+//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
-		clampInCanvas();
+//		Image
+		gc.drawImage(image, getX(), getY(), width, height);
+	}
 
-		updateScreen();
-
-		hitbox.x = getX() + offsetHitboxX;
-		hitbox.y = getY() + offsetHitboxY;
+	public Rectangle getHitbox() {
+		return hitbox;
 	}
 
 	private void jump() {
@@ -113,17 +106,42 @@ public class Player extends Entity {
 		setY(getY() + yspeed);
 	}
 
-	private void clampInCanvas() {
-		if (hitbox.x < 0) {
-			setX(-offsetHitboxX);
-		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > MapData.width) {
-			setX(MapData.width - width + offsetHitboxX);
+	public void update() {
+		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
+
+			hitbox.y += 1;
+			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
+				if (block instanceof Block && ((Block) block).isSolid()) {
+					if (((Block) block).getHitbox().intersects(hitbox)) {
+						jump();
+					}
+				}
+			}
+			hitbox.y -= 1;
+
 		}
-		if (getY() < 0) {
-			setY(0);
-		} else if (getY() > MapData.height - height) {
-			Platform.exit();
+		if (InputUtility.getKeyPressed(KeyCode.A)) {
+			xspeed = -baseXSpeed;
+		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
+			xspeed = baseXSpeed;
+		} else {
+			xspeed = 0;
 		}
+
+		if (yspeed < -maxYSpeed) {
+			yspeed = -maxYSpeed;
+		} else if (yspeed > maxYSpeed) {
+			yspeed = maxYSpeed;
+		}
+
+		move();
+
+		clampInCanvas();
+
+		updateScreen();
+
+		hitbox.x = getX() + offsetHitboxX;
+		hitbox.y = getY() + offsetHitboxY;
 	}
 
 	private void updateScreen() {
@@ -133,23 +151,5 @@ public class Player extends Entity {
 		if (getY() > 480 && getY() + 480 < MapData.height) {
 			Main.gameScreen.setY(-(getY() - 480));
 		}
-	}
-
-	@Override
-	public void draw(GraphicsContext gc) {
-//		Player Rect
-//		gc.setFill(Color.RED);
-//		gc.fillRect(getX(), getY(), width, height);
-
-//		Hitbox Rect
-//		gc.setFill(Color.GREEN);
-//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
-//		Image
-		gc.drawImage(image, getX(), getY(), width, height);
-	}
-
-	public Rectangle getHitbox() {
-		return hitbox;
 	}
 }
