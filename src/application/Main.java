@@ -3,15 +3,19 @@ package application;
 import drawing.GameScreen;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import sharedObject.RenderableHolder;
-import javafx.scene.Scene;
 
 public class Main extends Application {
 
 	public static final int FPS = 120;
 	public static GameScreen gameScreen = new GameScreen();
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 
 	@Override
 	public void start(Stage stage) {
@@ -23,7 +27,7 @@ public class Main extends Application {
 
 			GameLogic logic = new GameLogic(MapData.data);
 			gameScreen.getCanvas().requestFocus();
-			
+
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {
@@ -43,9 +47,5 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

@@ -5,14 +5,22 @@ import java.util.ArrayList;
 public class RenderableHolder {
 
 	private static final RenderableHolder instance = new RenderableHolder();
+	public static RenderableHolder getInstance() {
+		return instance;
+	}
+
 	private ArrayList<Renderable> entities;
 
 	private RenderableHolder() {
-		this.entities = new ArrayList<Renderable>();
+		entities = new ArrayList<Renderable>();
 	}
 
 	public void add(Renderable entity) {
 		entities.add(entity);
+	}
+
+	public ArrayList<Renderable> getEntities() {
+		return entities;
 	}
 
 	public void update() {
@@ -21,13 +29,5 @@ public class RenderableHolder {
 				entities.remove(i);
 			}
 		}
-	}
-
-	public static RenderableHolder getInstance() {
-		return instance;
-	}
-
-	public ArrayList<Renderable> getEntities() {
-		return entities;
 	}
 }
