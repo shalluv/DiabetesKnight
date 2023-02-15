@@ -15,7 +15,7 @@ public class GameLogic {
 	private Player player;
 
 	public GameLogic() {
-		this.gameObjectContainer = new ArrayList<>();
+		setGameObjectContainer(new ArrayList<>());
 		
 		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
 		Map map = new Map(mapData);
@@ -32,7 +32,7 @@ public class GameLogic {
 	}
 
 	protected void addNewObject(Entity entity) {
-		gameObjectContainer.add(entity);
+		getGameObjectContainer().add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
 
@@ -49,9 +49,17 @@ public class GameLogic {
 			Main.gameScreen.setY(-(getPlayer().getY() - 480));
 		}
 	}
+	
+	public ArrayList<Entity> getGameObjectContainer() {
+		return gameObjectContainer;
+	}
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public void setGameObjectContainer(ArrayList<Entity> gameObjectContainer) {
+		this.gameObjectContainer = gameObjectContainer;
 	}
 
 	public void setPlayer(Player player) {

@@ -12,17 +12,18 @@ public abstract class Entity implements Renderable {
 		setY(y);
 	}
 
+	@Override
+	public boolean isDestroyed() {
+		return false;
+	}
+	
+
 	public int getX() {
 		return x;
 	}
 
 	public int getY() {
 		return y;
-	}
-
-	@Override
-	public boolean isDestroyed() {
-		return false;
 	}
 
 	public void setX(int x) {

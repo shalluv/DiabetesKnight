@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import logic.Map;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
@@ -29,20 +30,20 @@ public class Player extends Entity {
 
 	public Player(int x, int y) {
 		super(x, y);
-		hitbox = new Rectangle(x - offsetHitboxX, y + offsetHitboxY, width - hitboxWidthReducer,
-				height - offsetHitboxY);
-		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		setHitbox(new Rectangle(x - getOffsetHitboxX(), y + getOffsetHitboxY(), getWidth() - getHitboxWidthReducer(),
+				getHeight() - getOffsetHitboxY()));
+		setImage(new Image("file:res/Owlet_Monster/Owlet_Monster.png"));
 	}
 
 	private void clampInCanvas() {
-		if (hitbox.x < 0) {
-			setX(-offsetHitboxX);
-		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > Map.getWidth()) {
-			setX(Map.getWidth() - width + offsetHitboxX);
+		if (getHitbox().x < 0) {
+			setX(-getOffsetHitboxX());
+		} else if (getHitbox().x + getWidth() + getOffsetHitboxX() - getHitboxWidthReducer() > Map.getWidth()) {
+			setX(Map.getWidth() - getWidth() + getOffsetHitboxX());
 		}
 		if (getY() < 0) {
 			setY(0);
-		} else if (getY() > Map.getHeight() - height) {
+		} else if (getY() > Map.getHeight() - getHeight()) {
 			Platform.exit();
 		}
 	}
@@ -55,89 +56,181 @@ public class Player extends Entity {
 
 //		Hitbox Rect
 //		gc.setFill(Color.GREEN);
-//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+//		gc.fillRect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
 
 //		Image
-		gc.drawImage(image, getX(), getY(), width, height);
-	}
-
-	public Rectangle getHitbox() {
-		return hitbox;
+		gc.drawImage(getImage(), getX(), getY(), getWidth(), getHeight());
 	}
 
 	private void jump() {
-		yspeed = -maxYSpeed;
+		setYspeed(-getMaxYSpeed());
 	}
 
 	private void move() {
-		hitbox.x += xspeed;
+		getHitbox().x += getXspeed();
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.x -= xspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.x += Math.signum(xspeed);
+				if (((Block) block).getHitbox().intersects(getHitbox())) {
+					getHitbox().x -= getXspeed();
+					while (!((Block) block).getHitbox().intersects(getHitbox())) {
+						getHitbox().x += Math.signum(getXspeed());
 					}
-					hitbox.x -= Math.signum(xspeed);
-					xspeed = 0;
-					setX(hitbox.x - offsetHitboxX);
+					getHitbox().x -= Math.signum(getXspeed());
+					setXspeed(0);
+					setX(getHitbox().x - getOffsetHitboxX());
 				}
 			}
 		}
 
 		// gravity
-		yspeed += weight;
-		hitbox.y += yspeed;
+		setYspeed(getYspeed() + getWeight());
+		getHitbox().y += getYspeed();
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.y -= yspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.y += Math.signum(yspeed);
+				if (((Block) block).getHitbox().intersects(getHitbox())) {
+					getHitbox().y -= getYspeed();
+					while (!((Block) block).getHitbox().intersects(getHitbox())) {
+						getHitbox().y += Math.signum(getYspeed());
 					}
-					hitbox.y -= Math.signum(yspeed);
-					yspeed = 0;
-					setY(hitbox.y - offsetHitboxY);
+					getHitbox().y -= Math.signum(getYspeed());
+					setYspeed(0);
+					setY(getHitbox().y - getOffsetHitboxY());
 				}
 			}
 		}
-		setX(getX() + xspeed);
-		setY(getY() + yspeed);
+		setX(getX() + getXspeed());
+		setY(getY() + getYspeed());
 	}
 
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 
-			hitbox.y += 1;
+			getHitbox().y += 1;
 			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 				if (block instanceof Block && ((Block) block).isSolid()) {
-					if (((Block) block).getHitbox().intersects(hitbox)) {
+					if (((Block) block).getHitbox().intersects(getHitbox())) {
 						jump();
 					}
 				}
 			}
-			hitbox.y -= 1;
+			getHitbox().y -= 1;
 
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
-			xspeed = -baseXSpeed;
+			setXspeed(-getBaseXSpeed());
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
-			xspeed = baseXSpeed;
+			setXspeed(getBaseXSpeed());
 		} else {
-			xspeed = 0;
+			setXspeed(0);
 		}
 
-		if (yspeed < -maxYSpeed) {
-			yspeed = -maxYSpeed;
-		} else if (yspeed > maxYSpeed) {
-			yspeed = maxYSpeed;
+		if (getYspeed() < -getMaxYSpeed()) {
+			setYspeed(-getMaxYSpeed());
+		} else if (getYspeed() > getMaxYSpeed()) {
+			setYspeed(getMaxYSpeed());
 		}
 
 		move();
 
 		clampInCanvas();
 
-		hitbox.x = getX() + offsetHitboxX;
-		hitbox.y = getY() + offsetHitboxY;
+		getHitbox().x = getX() + getOffsetHitboxX();
+		getHitbox().y = getY() + getOffsetHitboxY();
+	}
+
+	public int getBaseXSpeed() {
+		return baseXSpeed;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
+
+	public int getHitboxWidthReducer() {
+		return hitboxWidthReducer;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public int getMaxYSpeed() {
+		return maxYSpeed;
+	}
+
+	public int getOffsetHitboxX() {
+		return offsetHitboxX;
+	}
+
+	public int getOffsetHitboxY() {
+		return offsetHitboxY;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getXspeed() {
+		return xspeed;
+	}
+
+	public int getYspeed() {
+		return yspeed;
+	}
+
+	public void setBaseXSpeed(int baseXSpeed) {
+		this.baseXSpeed = baseXSpeed;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setHitbox(Rectangle hitbox) {
+		this.hitbox = hitbox;
+	}
+
+	public void setHitboxWidthReducer(int hitboxWidthReducer) {
+		this.hitboxWidthReducer = hitboxWidthReducer;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public void setMaxYSpeed(int maxYSpeed) {
+		this.maxYSpeed = maxYSpeed;
+	}
+
+	public void setOffsetHitboxX(int offsetHitboxX) {
+		this.offsetHitboxX = offsetHitboxX;
+	}
+
+	public void setOffsetHitboxY(int offsetHitboxY) {
+		this.offsetHitboxY = offsetHitboxY;
+	}
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setXspeed(int xspeed) {
+		this.xspeed = xspeed;
+	}
+
+	public void setYspeed(int yspeed) {
+		this.yspeed = yspeed;
 	}
 }

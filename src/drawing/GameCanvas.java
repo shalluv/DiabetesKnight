@@ -16,7 +16,7 @@ public class GameCanvas extends Canvas {
 		super(width, height);
 		setVisible(true);
 		addListener();
-		background = new Image("file:res/2_Background/Day/Background.png");
+		setBackground(new Image("file:res/2_Background/Day/Background.png"));
 	}
 
 	public void addListener() {
@@ -31,12 +31,20 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY) {
 		GraphicsContext gc = getGraphicsContext2D();
-		gc.drawImage(background, -layoutX, -layoutY, 1280, 960);
+		gc.drawImage(getBackground(), -layoutX, -layoutY, 1280, 960);
 		// draw entities
 		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 			if (!entity.isDestroyed()) {
 				entity.draw(gc);
 			}
 		}
+	}
+
+	public Image getBackground() {
+		return background;
+	}
+
+	public void setBackground(Image background) {
+		this.background = background;
 	}
 }
