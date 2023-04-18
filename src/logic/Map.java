@@ -12,8 +12,8 @@ public class Map {
 	private ArrayList<Entity> map;
 
 	public Map(int[][] mapData) {
-		setWidth(mapData[0].length * 40);
-		setHeight(mapData.length * 40);
+		width = mapData[0].length * 40;
+		height = mapData.length * 40;
 
 		this.map = new ArrayList<Entity>();
 		for (int i = 0; i < mapData.length; ++i) {
@@ -40,15 +40,7 @@ public class Map {
 		return width;
 	}
 
-	public static void setWidth(int width) {
-		Map.width = width;
-	}
-
 	public static int getHeight() {
 		return height;
-	}
-
-	public static void setHeight(int height) {
-		Map.height = height;
 	}
 }
