@@ -7,6 +7,8 @@ import application.Main;
 import entity.Player;
 import entity.base.Entity;
 import sharedObject.RenderableHolder;
+import static utils.Constants.Player.*;
+import static utils.Constants.Resolution;
 
 public class GameLogic {
 
@@ -21,7 +23,7 @@ public class GameLogic {
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
 
-		player = new Player(50, 600);
+		player = new Player(ORIGIN_X, ORIGIN_Y);
 		addNewObject(player);
 	}
 
@@ -42,11 +44,11 @@ public class GameLogic {
 	}
 
 	private void updateScreen() {
-		if (player.getX() > 640 && player.getX() + 640 < Map.getWidth()) {
-			Main.gameScreen.setX(-(player.getX() - 640));
+		if (player.getX() > Resolution.WIDTH / 2 && player.getX() + Resolution.WIDTH / 2 < Map.getWidth()) {
+			Main.gameScreen.setX(-(player.getX() - Resolution.WIDTH / 2));
 		}
-		if (player.getY() > 480 && player.getY() + 480 < Map.getHeight()) {
-			Main.gameScreen.setY(-(player.getY() - 480));
+		if (player.getY() > Resolution.HEIGHT / 2 && player.getY() + Resolution.HEIGHT / 2 < Map.getHeight()) {
+			Main.gameScreen.setY(-(player.getY() - Resolution.HEIGHT / 2));
 		}
 	}
 }

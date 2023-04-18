@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import entity.Block;
 import entity.base.Entity;
+import static utils.Constants.Block.*;
 
 public class Map {
 
@@ -12,8 +13,8 @@ public class Map {
 	private ArrayList<Entity> map;
 
 	public Map(int[][] mapData) {
-		width = mapData[0].length * 40;
-		height = mapData.length * 40;
+		width = mapData[0].length * WIDTH;
+		height = mapData.length * HEIGHT;
 
 		this.map = new ArrayList<Entity>();
 		for (int i = 0; i < mapData.length; ++i) {
@@ -22,11 +23,11 @@ public class Map {
 					continue;
 				}
 				if (mapData[i][j] > 0) {
-					map.add(new Block(j * 40, i * 40, String.format("file:res/1_Tiles/Tile_%02d.png", mapData[i][j]),
-							true));
+					map.add(new Block(j * WIDTH, i * HEIGHT,
+							String.format("file:res/1_Tiles/Tile_%02d.png", mapData[i][j]), true));
 				} else {
-					map.add(new Block(j * 40, i * 40, String.format("file:res/1_Tiles/Tile_%02d.png", -mapData[i][j]),
-							false));
+					map.add(new Block(j * WIDTH, i * HEIGHT,
+							String.format("file:res/1_Tiles/Tile_%02d.png", -mapData[i][j]), false));
 				}
 			}
 		}
