@@ -15,6 +15,8 @@ import static utils.Constants.Player.*;
 
 public class Player extends Entity {
 
+	private int maxHealth;
+	private int currentHealth;
 	private int xspeed;
 	private int yspeed;
 	private Rectangle hitbox;
@@ -27,6 +29,8 @@ public class Player extends Entity {
 		hitbox = new Rectangle(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER,
 				HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		maxHealth = 100;
+		currentHealth = 100;
 	}
 
 	private void clampInCanvas() {
@@ -44,16 +48,26 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-//		Player Rect
-//		gc.setFill(Color.RED);
-//		gc.fillRect(getX(), getY(), WIDTH, HEIGHT);
+		// Player Rect
+		// gc.setFill(Color.RED);
+		// gc.fillRect(getX(), getY(), WIDTH, HEIGHT);
 
-//		Hitbox Rect
-//		gc.setFill(Color.GREEN);
-//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		// Hitbox Rect
+		// gc.setFill(Color.GREEN);
+		// gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
-//		Image
+		// Image
 		gc.drawImage(image, x, y, WIDTH, HEIGHT);
+	}
+
+	public void setCurrentHealth(int value) {
+		if (value < 0) {
+			currentHealth = 0;
+		} else if (value > maxHealth) {
+			currentHealth = maxHealth;
+		} else {
+			currentHealth = value;
+		}
 	}
 
 	public Rectangle getHitbox() {
@@ -129,6 +143,11 @@ public class Player extends Entity {
 		}
 
 		move();
+
+		// if the player is dead
+		if (currentHealth == 0) {
+			Platform.exit();
+		}
 
 		clampInCanvas();
 
