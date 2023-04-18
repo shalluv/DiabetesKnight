@@ -21,8 +21,8 @@ public class GameLogic {
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
 
-		setPlayer(new Player(50, 600));
-		addNewObject(getPlayer());
+		player = new Player(50, 600);
+		addNewObject(player);
 	}
 
 	protected void addAllObject(ArrayList<Entity> entities) {
@@ -37,32 +37,16 @@ public class GameLogic {
 	}
 
 	public void update() {
-		getPlayer().update();
+		player.update();
 		updateScreen();
 	}
 
 	private void updateScreen() {
-		if (getPlayer().getX() > 640 && getPlayer().getX() + 640 < Map.getWidth()) {
-			Main.gameScreen.setX(-(getPlayer().getX() - 640));
+		if (player.getX() > 640 && player.getX() + 640 < Map.getWidth()) {
+			Main.gameScreen.setX(-(player.getX() - 640));
 		}
-		if (getPlayer().getY() > 480 && getPlayer().getY() + 480 < Map.getHeight()) {
-			Main.gameScreen.setY(-(getPlayer().getY() - 480));
+		if (player.getY() > 480 && player.getY() + 480 < Map.getHeight()) {
+			Main.gameScreen.setY(-(player.getY() - 480));
 		}
-	}
-	
-	public ArrayList<Entity> getGameObjectContainer() {
-		return gameObjectContainer;
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setGameObjectContainer(ArrayList<Entity> gameObjectContainer) {
-		this.gameObjectContainer = gameObjectContainer;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
 	}
 }

@@ -13,12 +13,12 @@ public class GameScreen extends StackPane {
 	public GameScreen() {
 		setAlignment(Pos.TOP_LEFT);
 		setLayoutY(y);
-		setCanvas(new GameCanvas(Map.getWidth(), Map.getHeight()));
-		getChildren().add(getGameCanvas());
+		gameCanvas = new GameCanvas(Map.getWidth(), Map.getHeight());
+		getChildren().add(gameCanvas);
 	}
 
 	public void drawComponent() {
-		getCanvas().drawComponent(x, y);
+		gameCanvas.drawComponent(x, y);
 		setLayoutX(x);
 		setLayoutY(y);
 	}
@@ -29,14 +29,6 @@ public class GameScreen extends StackPane {
 
 	public GameCanvas getGameCanvas() {
 		return gameCanvas;
-	}
-
-	public void setCanvas(GameCanvas gameCanvas) {
-		this.setGameCanvas(gameCanvas);
-	}
-
-	public void setGameCanvas(GameCanvas gameCanvas) {
-		this.gameCanvas = gameCanvas;
 	}
 
 	public void setX(int x) {

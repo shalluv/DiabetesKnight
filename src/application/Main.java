@@ -12,6 +12,7 @@ public class Main extends Application {
 
 	public static final int FPS = 120;
 	public static GameScreen gameScreen;
+	public static GameLogic gameLogic;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -20,8 +21,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			GameLogic logic = new GameLogic();
-
+			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 
 			Scene scene = new Scene(gameScreen, 1280, 960);
@@ -40,7 +40,7 @@ public class Main extends Application {
 				public void handle(long now) {
 					if (now - lastUpdate >= 1_000_000_000 / FPS) {
 						gameScreen.drawComponent();
-						logic.update();
+						gameLogic.update();
 						RenderableHolder.getInstance().update();
 						lastUpdate = now;
 					}

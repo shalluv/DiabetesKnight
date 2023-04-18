@@ -23,7 +23,7 @@ public class Block extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(getImage(), getX(), getY(), Block.default_width, Block.default_height);
+		gc.drawImage(image, x, y, Block.width, Block.height);
 	}
 
 	public Rectangle getHitbox() {

@@ -42,9 +42,9 @@ public class Player extends Entity {
 		} else if (getHitbox().x + getWidth() + getOffsetHitboxX() - getHitboxWidthReducer() > Map.getWidth()) {
 			setX(Map.getWidth() - getWidth() + getOffsetHitboxX());
 		}
-		if (getY() < 0) {
+		if (y < 0) {
 			setY(0);
-		} else if (getY() > Map.getHeight() - getHeight()) {
+		} else if (y > Map.getHeight() - height) {
 			Platform.exit();
 		}
 	}
@@ -60,11 +60,11 @@ public class Player extends Entity {
 		gc.fillRect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
 
 //		Image
-		if (isFaceLeft()) {
-			gc.drawImage(getImage(), getX() + getWidth(), getY(), -getWidth(), getHeight());
-		} else {
-			gc.drawImage(getImage(), getX(), getY(), getWidth(), getHeight());
-		}
+		gc.drawImage(image, x, y, width, height);
+	}
+
+	public Rectangle getHitbox() {
+		return hitbox;
 	}
 
 	private void jump() {
@@ -103,8 +103,8 @@ public class Player extends Entity {
 				}
 			}
 		}
-		setX(getX() + getXspeed());
-		setY(getY() + getYspeed());
+		setX(x + xspeed);
+		setY(y + yspeed);
 	}
 
 	public void update() {
@@ -149,111 +149,7 @@ public class Player extends Entity {
 
 		clampInCanvas();
 
-		getHitbox().x = getX() + getOffsetHitboxX();
-		getHitbox().y = getY() + getOffsetHitboxY();
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getMaxYSpeed() {
-		return maxYSpeed;
-	}
-
-	public void setMaxYSpeed(int maxYSpeed) {
-		this.maxYSpeed = maxYSpeed;
-	}
-
-	public int getBaseXSpeed() {
-		return baseXSpeed;
-	}
-
-	public void setBaseXSpeed(int baseXSpeed) {
-		this.baseXSpeed = baseXSpeed;
-	}
-
-	public int getXspeed() {
-		return xspeed;
-	}
-
-	public void setXspeed(int xspeed) {
-		this.xspeed = xspeed;
-	}
-
-	public int getYspeed() {
-		return yspeed;
-	}
-
-	public void setYspeed(int yspeed) {
-		this.yspeed = yspeed;
-	}
-
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-	public Rectangle getHitbox() {
-		return hitbox;
-	}
-
-	public void setHitbox(Rectangle hitbox) {
-		this.hitbox = hitbox;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	public int getOffsetHitboxX() {
-		return offsetHitboxX;
-	}
-
-	public void setOffsetHitboxX(int offsetHitboxX) {
-		this.offsetHitboxX = offsetHitboxX;
-	}
-
-	public int getOffsetHitboxY() {
-		return offsetHitboxY;
-	}
-
-	public void setOffsetHitboxY(int offsetHitboxY) {
-		this.offsetHitboxY = offsetHitboxY;
-	}
-
-	public int getHitboxWidthReducer() {
-		return hitboxWidthReducer;
-	}
-
-	public void setHitboxWidthReducer(int hitboxWidthReducer) {
-		this.hitboxWidthReducer = hitboxWidthReducer;
-	}
-
-	public boolean isFaceLeft() {
-		return isFaceLeft;
-	}
-
-	public void setFaceLeft(boolean isFaceLeft) {
-		this.isFaceLeft = isFaceLeft;
+		hitbox.x = x + offsetHitboxX;
+		hitbox.y = y + offsetHitboxY;
 	}
 }
