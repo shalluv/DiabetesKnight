@@ -1,16 +1,17 @@
 package application;
 
 import drawing.GameScreen;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import sharedObject.RenderableHolder;
+import static utils.Constants.*;
 
 public class Main extends Application {
 
-	public static final int FPS = 120;
 	public static GameScreen gameScreen;
 	public static GameLogic gameLogic;
 
@@ -24,7 +25,7 @@ public class Main extends Application {
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 
-			Scene scene = new Scene(gameScreen, 1280, 960);
+			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
 			stage.setScene(scene);
 			stage.setResizable(false);

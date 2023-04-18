@@ -5,25 +5,24 @@ import java.awt.Rectangle;
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import static utils.Constants.Block.*;
 
 public class Block extends Entity {
 
-	public static int width = 40;
-	public static int height = 40;
 	private boolean isSolid;
 	private Image image;
 	private Rectangle hitbox;
 
 	public Block(int x, int y, String image_url, boolean isSolid) {
 		super(x, y);
-		hitbox = new Rectangle(x, y, Block.width, Block.height);
+		hitbox = new Rectangle(x, y, WIDTH, HEIGHT);
 		image = new Image(image_url);
 		this.isSolid = isSolid;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(image, x, y, Block.width, Block.height);
+		gc.drawImage(image, x, y, WIDTH, HEIGHT);
 	}
 
 	public Rectangle getHitbox() {

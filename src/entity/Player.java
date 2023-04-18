@@ -11,38 +11,33 @@ import javafx.scene.input.KeyCode;
 import logic.Map;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
+import static utils.Constants.Player.*;
 
 public class Player extends Entity {
 
-	private int width = 45;
-	private int height = 45;
-	private int maxYSpeed = 16;
-	private int baseXSpeed = 5;
-	private int xspeed = 0;
-	private int yspeed = 32;
-	private int weight = 1;
+	private int xspeed;
+	private int yspeed;
 	private Rectangle hitbox;
 	private Image image;
-	private int offsetHitboxX = 8;
-	private int offsetHitboxY = 8;
-	private int hitboxWidthReducer = 20;
 
 	public Player(int x, int y) {
 		super(x, y);
-		hitbox = new Rectangle(x - offsetHitboxX, y + offsetHitboxY, width - hitboxWidthReducer,
-				height - offsetHitboxY);
+		xspeed = ORIGIN_X_SPEED;
+		yspeed = ORIGIN_Y_SPEED;
+		hitbox = new Rectangle(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER,
+				HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 	}
 
 	private void clampInCanvas() {
 		if (hitbox.x < 0) {
-			setX(-offsetHitboxX);
-		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > Map.getWidth()) {
-			setX(Map.getWidth() - width + offsetHitboxX);
+			setX(-OFFSET_HITBOX_X);
+		} else if (hitbox.x + WIDTH + OFFSET_HITBOX_X - HITBOX_WIDTH_REDUCER > Map.getWidth()) {
+			setX(Map.getWidth() - WIDTH + OFFSET_HITBOX_X);
 		}
 		if (y < 0) {
 			setY(0);
-		} else if (y > Map.getHeight() - height) {
+		} else if (y > Map.getHeight() - HEIGHT) {
 			Platform.exit();
 		}
 	}
@@ -51,14 +46,14 @@ public class Player extends Entity {
 	public void draw(GraphicsContext gc) {
 //		Player Rect
 //		gc.setFill(Color.RED);
-//		gc.fillRect(getX(), getY(), width, height);
+//		gc.fillRect(getX(), getY(), WIDTH, HEIGHT);
 
 //		Hitbox Rect
 //		gc.setFill(Color.GREEN);
 //		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 //		Image
-		gc.drawImage(image, x, y, width, height);
+		gc.drawImage(image, x, y, WIDTH, HEIGHT);
 	}
 
 	public Rectangle getHitbox() {
@@ -66,7 +61,7 @@ public class Player extends Entity {
 	}
 
 	private void jump() {
-		yspeed = -maxYSpeed;
+		yspeed = -MAX_Y_SPEED;
 	}
 
 	private void move() {
@@ -80,13 +75,13 @@ public class Player extends Entity {
 					}
 					hitbox.x -= Math.signum(xspeed);
 					xspeed = 0;
-					setX(hitbox.x - offsetHitboxX);
+					setX(hitbox.x - OFFSET_HITBOX_X);
 				}
 			}
 		}
 
 		// gravity
-		yspeed += weight;
+		yspeed += WEIGHT;
 		hitbox.y += yspeed;
 		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
 			if (block instanceof Block && ((Block) block).isSolid()) {
@@ -97,7 +92,7 @@ public class Player extends Entity {
 					}
 					hitbox.y -= Math.signum(yspeed);
 					yspeed = 0;
-					setY(hitbox.y - offsetHitboxY);
+					setY(hitbox.y - OFFSET_HITBOX_Y);
 				}
 			}
 		}
@@ -120,24 +115,24 @@ public class Player extends Entity {
 
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
-			xspeed = -baseXSpeed;
+			xspeed = -BASE_X_SPEED;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
-			xspeed = baseXSpeed;
+			xspeed = BASE_X_SPEED;
 		} else {
 			xspeed = 0;
 		}
 
-		if (yspeed < -maxYSpeed) {
-			yspeed = -maxYSpeed;
-		} else if (yspeed > maxYSpeed) {
-			yspeed = maxYSpeed;
+		if (yspeed < -MAX_Y_SPEED) {
+			yspeed = -MAX_Y_SPEED;
+		} else if (yspeed > MAX_Y_SPEED) {
+			yspeed = MAX_Y_SPEED;
 		}
 
 		move();
 
 		clampInCanvas();
 
-		hitbox.x = x + offsetHitboxX;
-		hitbox.y = y + offsetHitboxY;
+		hitbox.x = x + OFFSET_HITBOX_X;
+		hitbox.y = y + OFFSET_HITBOX_Y;
 	}
 }

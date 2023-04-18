@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
+import static utils.Constants.*;
 
 public class GameCanvas extends Canvas {
 
@@ -31,7 +32,7 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY) {
 		GraphicsContext gc = getGraphicsContext2D();
-		gc.drawImage(background, -layoutX, -layoutY, 1280, 960);
+		gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		// draw entities
 		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 			if (!entity.isDestroyed()) {

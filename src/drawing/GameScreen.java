@@ -3,12 +3,13 @@ package drawing;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import logic.Map;
+import static utils.Constants.*;
 
 public class GameScreen extends StackPane {
 
 	private GameCanvas gameCanvas;
 	private int x = 0;
-	private int y = 960 - Map.getHeight();
+	private int y = Resolution.HEIGHT - Map.getHeight();
 
 	public GameScreen() {
 		setAlignment(Pos.TOP_LEFT);
