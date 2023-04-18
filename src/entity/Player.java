@@ -40,9 +40,9 @@ public class Player extends Entity {
 		} else if (hitbox.x + width + offsetHitboxX - hitboxWidthReducer > Map.getWidth()) {
 			setX(Map.getWidth() - width + offsetHitboxX);
 		}
-		if (getY() < 0) {
+		if (y < 0) {
 			setY(0);
-		} else if (getY() > Map.getHeight() - height) {
+		} else if (y > Map.getHeight() - height) {
 			Platform.exit();
 		}
 	}
@@ -58,7 +58,7 @@ public class Player extends Entity {
 //		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 //		Image
-		gc.drawImage(image, getX(), getY(), width, height);
+		gc.drawImage(image, x, y, width, height);
 	}
 
 	public Rectangle getHitbox() {
@@ -101,8 +101,8 @@ public class Player extends Entity {
 				}
 			}
 		}
-		setX(getX() + xspeed);
-		setY(getY() + yspeed);
+		setX(x + xspeed);
+		setY(y + yspeed);
 	}
 
 	public void update() {
@@ -137,7 +137,7 @@ public class Player extends Entity {
 
 		clampInCanvas();
 
-		hitbox.x = getX() + offsetHitboxX;
-		hitbox.y = getY() + offsetHitboxY;
+		hitbox.x = x + offsetHitboxX;
+		hitbox.y = y + offsetHitboxY;
 	}
 }
