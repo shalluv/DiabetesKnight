@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class RenderableHolder {
 
 	private static final RenderableHolder instance = new RenderableHolder();
+
 	public static RenderableHolder getInstance() {
 		return instance;
 	}

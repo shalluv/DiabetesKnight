@@ -15,8 +15,8 @@ public class GameLogic {
 	private Player player;
 
 	public GameLogic() {
-		setGameObjectContainer(new ArrayList<>());
-		
+		this.gameObjectContainer = new ArrayList<>();
+
 		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
