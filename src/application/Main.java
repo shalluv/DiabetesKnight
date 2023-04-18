@@ -21,16 +21,16 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		try {
 			GameLogic logic = new GameLogic();
-			
+
 			gameScreen = new GameScreen();
-			
+
 			Scene scene = new Scene(gameScreen, 1280, 960);
 			stage.setTitle("OurGame");
 			stage.setScene(scene);
 			stage.setResizable(false);
 
 			gameScreen.getCanvas().requestFocus();
-			
+
 			stage.show();
 
 			AnimationTimer animation = new AnimationTimer() {

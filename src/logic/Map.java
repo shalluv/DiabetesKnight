@@ -6,7 +6,7 @@ import entity.Block;
 import entity.base.Entity;
 
 public class Map {
-	
+
 	private static int width;
 	private static int height;
 	private ArrayList<Entity> map;
