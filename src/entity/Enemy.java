@@ -38,38 +38,47 @@ public class Enemy extends Entity {
 
 	private void move() {
 		hitbox.x += xspeed;
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.x -= xspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.x += Math.signum(xspeed);
-					}
-					hitbox.x -= Math.signum(xspeed);
-					xspeed = 0;
-					setX(hitbox.x);
-				}
-			}
+		Block collidingBlock = findCollidingBlock();
+		if (collidingBlock != null) {
+			getRidOfCollisionX(collidingBlock);
 		}
-
 		// gravity
 		yspeed += WEIGHT;
 		hitbox.y += yspeed;
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.y -= yspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.y += Math.signum(yspeed);
-					}
-					hitbox.y -= Math.signum(yspeed);
-					yspeed = 0;
-					setY(hitbox.y - OFFSET_HITBOX_Y);
-				}
-			}
+		collidingBlock = findCollidingBlock();
+		if (collidingBlock != null) {
+			getRidOfCollisionY(collidingBlock);
 		}
 		setX(x + xspeed);
 		setY(y + yspeed);
+	}
+
+	private Block findCollidingBlock() {
+		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
+			if (block instanceof Block && ((Block) block).isSolid() && ((Block) block).getHitbox().intersects(hitbox)) {
+				return (Block) block;
+			}
+		}
+		return null;
+	}
+
+	private void getRidOfCollisionX(Block collidingBlock) {
+		hitbox.x -= xspeed;
+		while (!collidingBlock.getHitbox().intersects(hitbox)) {
+			hitbox.x += Math.signum(xspeed);
+		}
+		hitbox.x -= Math.signum(xspeed);
+		xspeed = 0;
+		setX(hitbox.x);
+	}
+
+	private void getRidOfCollisionY(Block collidingBlock) {
+		hitbox.y -= yspeed;
+		while (!collidingBlock.getHitbox().intersects(hitbox)) {
+			hitbox.y += Math.signum(yspeed);
+		}
+		hitbox.y -= Math.signum(yspeed);
+		yspeed = 0;
 	}
 
 	public void update() {
