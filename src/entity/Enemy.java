@@ -82,16 +82,13 @@ public class Enemy extends Entity {
 	}
 
 	private boolean canAttack(Player player) {
-		int playerTopLeftX = player.getHitbox().x;
-		int enemyTopLeftX = hitbox.x;
-		int playerTopRightX = playerTopLeftX + player.getHitbox().width;
-		int enemyTopRightX = enemyTopLeftX + hitbox.width;
-		if (Math.abs(playerTopLeftX - enemyTopRightX) <= ATTACK_RANGE
-				|| Math.abs(playerTopRightX - enemyTopLeftX) <= ATTACK_RANGE)
+		Rectangle attackBox = new Rectangle(hitbox.x - ATTACK_RANGE, hitbox.y, WIDTH + 2 * ATTACK_RANGE,
+				HEIGHT - OFFSET_HITBOX_Y);
+		if (attackBox.intersects(player.getHitbox()))
 			return true;
 		return false;
 	}
-	
+
 	private void attack(Player player) {
 		player.receiveDamage(DAMAGE);
 	}
