@@ -15,6 +15,7 @@ public class Enemy extends Entity {
 
 	private int xspeed;
 	private int yspeed;
+	private boolean isAttacking;
 	private Rectangle hitbox;
 	private Image image;
 
@@ -22,6 +23,7 @@ public class Enemy extends Entity {
 		super(x, y);
 		xspeed = ORIGIN_X_SPEED;
 		yspeed = ORIGIN_Y_SPEED;
+		isAttacking = false;
 		hitbox = new Rectangle(x, y + OFFSET_HITBOX_Y, WIDTH, HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
@@ -90,10 +92,23 @@ public class Enemy extends Entity {
 	}
 
 	private void attack(Player player) {
-		player.receiveDamage(DAMAGE);
+		isAttacking = true;
+		Thread attackDelay = new Thread(() -> {
+			try {
+				Thread.sleep(ATTACK_DELAY);
+				if (canAttack(player))
+					player.receiveDamage(DAMAGE);
+				isAttacking = false;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+		attackDelay.start();
 	}
 
 	public void update(Player player) {
+		if (isAttacking)
+			return;
 		move();
 		if (canAttack(player)) {
 			attack(player);
