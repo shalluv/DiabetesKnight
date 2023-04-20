@@ -45,7 +45,7 @@ public class GameLogic {
 
 	public void update() {
 		player.update();
-		enemy.update();
+		enemy.update(player);
 		updateScreen();
 	}
 

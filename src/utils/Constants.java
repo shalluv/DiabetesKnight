@@ -40,5 +40,7 @@ public class Constants {
 		public static final int ORIGIN_Y_SPEED = 32;
 		public static final int WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
+		public static final int ATTACK_RANGE = 8;
+		public static final int DAMAGE = 50;
 	}
 }

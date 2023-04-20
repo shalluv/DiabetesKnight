@@ -81,9 +81,26 @@ public class Enemy extends Entity {
 		yspeed = 0;
 	}
 
-	public void update() {
-		move();
+	private boolean canAttack(Player player) {
+		int playerTopLeftX = player.getHitbox().x;
+		int enemyTopLeftX = hitbox.x;
+		int playerTopRightX = playerTopLeftX + player.getHitbox().width;
+		int enemyTopRightX = enemyTopLeftX + hitbox.width;
+		if (Math.abs(playerTopLeftX - enemyTopRightX) <= ATTACK_RANGE
+				|| Math.abs(playerTopRightX - enemyTopLeftX) <= ATTACK_RANGE)
+			return true;
+		return false;
+	}
+	
+	private void attack(Player player) {
+		player.receiveDamage(DAMAGE);
+	}
 
+	public void update(Player player) {
+		move();
+		if (canAttack(player)) {
+			attack(player);
+		}
 		hitbox.x = x;
 		hitbox.y = y + OFFSET_HITBOX_Y;
 	}

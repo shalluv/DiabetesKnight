@@ -60,7 +60,7 @@ public class Player extends Entity {
 		gc.drawImage(image, x, y, WIDTH, HEIGHT);
 	}
 
-	public void setCurrentHealth(int value) {
+	private void setCurrentHealth(int value) {
 		if (value < 0) {
 			currentHealth = 0;
 		} else if (value > maxHealth) {
@@ -68,6 +68,10 @@ public class Player extends Entity {
 		} else {
 			currentHealth = value;
 		}
+	}
+
+	public void receiveDamage(int damage) {
+		setCurrentHealth(currentHealth - damage);
 	}
 
 	public Rectangle getHitbox() {
