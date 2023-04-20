@@ -32,7 +32,10 @@ public class Enemy extends Entity {
 	public void draw(GraphicsContext gc) {
 
 //		 Hitbox Rect
-		gc.setFill(Color.GREEN);
+		if(isAttacking)
+			gc.setFill(Color.RED);
+		else
+			gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 		gc.drawImage(image, x, y, WIDTH, HEIGHT);
@@ -98,6 +101,7 @@ public class Enemy extends Entity {
 				Thread.sleep(ATTACK_DELAY);
 				if (canAttack(player))
 					player.receiveDamage(DAMAGE);
+				Thread.sleep(AFTER_ATTACK_DELAY);
 				isAttacking = false;
 			} catch (InterruptedException e) {
 				e.printStackTrace();

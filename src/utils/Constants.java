@@ -42,6 +42,7 @@ public class Constants {
 		public static final int OFFSET_HITBOX_Y = 5;
 		public static final int ATTACK_RANGE = 8;
 		public static final int DAMAGE = 50;
-		public static final int ATTACK_DELAY = 500;
+		public static final int ATTACK_DELAY = 1500;
+		public static final int AFTER_ATTACK_DELAY = 800;
 	}
 }
