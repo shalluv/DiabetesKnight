@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import application.CSVParser;
 import application.Main;
+import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import sharedObject.RenderableHolder;
-import static utils.Constants.Player.*;
+import static utils.Constants.PlayerConstants;
+import static utils.Constants.EnemyConstants;
 import static utils.Constants.Resolution;
 
 public class GameLogic {
@@ -15,6 +17,7 @@ public class GameLogic {
 	private ArrayList<Entity> gameObjectContainer;
 
 	private Player player;
+	private Enemy enemy;
 
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
@@ -23,8 +26,10 @@ public class GameLogic {
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
 
-		player = new Player(ORIGIN_X, ORIGIN_Y);
+		player = new Player(PlayerConstants.ORIGIN_X, PlayerConstants.ORIGIN_Y);
+		enemy = new Enemy(EnemyConstants.ORIGIN_X, EnemyConstants.ORIGIN_Y);
 		addNewObject(player);
+		addNewObject(enemy);
 	}
 
 	protected void addAllObject(ArrayList<Entity> entities) {
@@ -40,6 +45,7 @@ public class GameLogic {
 
 	public void update() {
 		player.update();
+		enemy.update();
 		updateScreen();
 	}
 

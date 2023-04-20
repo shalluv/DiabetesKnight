@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCode;
 import logic.Map;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
-import static utils.Constants.Player.*;
+import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
 
@@ -153,5 +153,10 @@ public class Player extends Entity {
 
 		hitbox.x = x + OFFSET_HITBOX_X;
 		hitbox.y = y + OFFSET_HITBOX_Y;
+	}
+
+	@Override
+	public int getZ() {
+		return 69;
 	}
 }

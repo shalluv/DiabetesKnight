@@ -32,4 +32,9 @@ public class Block extends Entity {
 	public boolean isSolid() {
 		return isSolid;
 	}
+
+	@Override
+	public int getZ() {
+		return 0;
+	}
 }
