@@ -8,6 +8,7 @@ import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import sharedObject.RenderableHolder;
+
 import static utils.Constants.PlayerConstants;
 import static utils.Constants.EnemyConstants;
 import static utils.Constants.Resolution;
@@ -25,7 +26,6 @@ public class GameLogic {
 		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
-
 		player = new Player(PlayerConstants.ORIGIN_X, PlayerConstants.ORIGIN_Y);
 		enemy = new Enemy(EnemyConstants.ORIGIN_X, EnemyConstants.ORIGIN_Y);
 		addNewObject(player);

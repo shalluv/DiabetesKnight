@@ -9,7 +9,7 @@ public class Constants {
 		public static final int HEIGHT = 960;
 	}
 
-	public static class Block {
+	public static class BlockConstants {
 		public static final int WIDTH = 40;
 		public static final int HEIGHT = 40;
 	}
@@ -35,7 +35,7 @@ public class Constants {
 		public static final int WIDTH = 32;
 		public static final int HEIGHT = 20;
 		public static final int MAX_Y_SPEED = 16;
-		public static final int BASE_X_SPEED = 5;
+		public static final int BASE_X_SPEED = 1;
 		public static final int ORIGIN_X_SPEED = 0;
 		public static final int ORIGIN_Y_SPEED = 32;
 		public static final int WEIGHT = 1;
@@ -44,5 +44,6 @@ public class Constants {
 		public static final int DAMAGE = 50;
 		public static final int ATTACK_DELAY = 1500;
 		public static final int AFTER_ATTACK_DELAY = 800;
+		public static final int SIGHT_SIZE = 400;
 	}
 }

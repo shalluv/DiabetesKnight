@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import static utils.Constants.Block.*;
+import static utils.Constants.BlockConstants.*;
 
 public class Block extends Entity {
 
