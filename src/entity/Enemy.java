@@ -14,6 +14,8 @@ import static utils.Constants.*;
 
 public class Enemy extends Entity {
 
+	private int maxHealth;
+	private int currentHealth;
 	private int xspeed;
 	private int yspeed;
 	private boolean isAttacking;
@@ -24,6 +26,8 @@ public class Enemy extends Entity {
 		super(x, y);
 		xspeed = ORIGIN_X_SPEED;
 		yspeed = ORIGIN_Y_SPEED;
+		maxHealth = 100;
+		currentHealth = 100;
 		isAttacking = false;
 		hitbox = new Rectangle(x, y + OFFSET_HITBOX_Y, WIDTH, HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
@@ -174,6 +178,20 @@ public class Enemy extends Entity {
 		} else {
 			xspeed = ORIGIN_X_SPEED;
 		}
+	}
+
+	private void setCurrentHealth(int value) {
+		if (value < 0) {
+			currentHealth = 0;
+		} else if (value > maxHealth) {
+			currentHealth = maxHealth;
+		} else {
+			currentHealth = value;
+		}
+	}
+
+	public void receiveDamage(int damage) {
+		setCurrentHealth(currentHealth - damage);
 	}
 
 	public void update(Player player) {
