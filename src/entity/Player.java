@@ -1,5 +1,16 @@
 package entity;
 
+import static utils.Constants.PlayerConstants.BASE_X_SPEED;
+import static utils.Constants.PlayerConstants.HEIGHT;
+import static utils.Constants.PlayerConstants.HITBOX_WIDTH_REDUCER;
+import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
+import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
+import static utils.Constants.PlayerConstants.OFFSET_HITBOX_X;
+import static utils.Constants.PlayerConstants.OFFSET_HITBOX_Y;
+import static utils.Constants.PlayerConstants.WEIGHT;
+import static utils.Constants.PlayerConstants.WIDTH;
+
 import java.awt.Rectangle;
 
 import entity.base.Entity;
@@ -11,7 +22,6 @@ import javafx.scene.input.KeyCode;
 import logic.Map;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
-import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
 

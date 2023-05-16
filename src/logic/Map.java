@@ -1,10 +1,12 @@
 package logic;
 
+import static utils.Constants.BlockConstants.HEIGHT;
+import static utils.Constants.BlockConstants.WIDTH;
+
 import java.util.ArrayList;
 
 import entity.Block;
 import entity.base.Entity;
-import static utils.Constants.BlockConstants.*;
 
 public class Map {
 

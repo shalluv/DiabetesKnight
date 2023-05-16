@@ -3,7 +3,7 @@ package drawing;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import logic.Map;
-import static utils.Constants.*;
+import utils.Constants.Resolution;
 
 public class GameScreen extends StackPane {
 

@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
-import static utils.Constants.*;
+import utils.Constants.Resolution;
 
 public class GameCanvas extends Canvas {
 

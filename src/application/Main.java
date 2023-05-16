@@ -1,14 +1,14 @@
 package application;
 
-import drawing.GameScreen;
+import static utils.Constants.FPS;
+import static utils.Constants.UPS;
 
-import javafx.animation.AnimationTimer;
+import drawing.GameScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
-import sharedObject.RenderableHolder;
-import static utils.Constants.*;
+import utils.Constants.Resolution;
 
 public class Main extends Application {
 
@@ -76,9 +76,9 @@ public class Main extends Application {
 					}
 				}
 			});
- 
+
 			gameThread.start();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,19 @@
 package entity;
 
+import static utils.Constants.EnemyConstants.AFTER_ATTACK_DELAY;
+import static utils.Constants.EnemyConstants.ATTACK_DELAY;
+import static utils.Constants.EnemyConstants.ATTACK_RANGE;
+import static utils.Constants.EnemyConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.DAMAGE;
+import static utils.Constants.EnemyConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.OFFSET_HITBOX_Y;
+import static utils.Constants.EnemyConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.WIDTH;
+
 import java.awt.Rectangle;
 
 import entity.base.Entity;
@@ -8,9 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
-
-import static utils.Constants.EnemyConstants.*;
-import static utils.Constants.*;
+import utils.Constants.BlockConstants;
 
 public class Enemy extends Entity {
 

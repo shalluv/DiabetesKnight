@@ -8,10 +8,9 @@ import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import sharedObject.RenderableHolder;
-
-import static utils.Constants.PlayerConstants;
-import static utils.Constants.EnemyConstants;
-import static utils.Constants.Resolution;
+import utils.Constants.EnemyConstants;
+import utils.Constants.PlayerConstants;
+import utils.Constants.Resolution;
 
 public class GameLogic {
 
