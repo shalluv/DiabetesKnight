@@ -48,7 +48,7 @@ public class Player extends Entity implements Damageable {
 				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			} else {
-				gc.fillRect(hitbox.getMaxX(), (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress,
+				gc.fillRect(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress,
 						ATTACK_BOX_HEIGHT);
 			}
 		}
