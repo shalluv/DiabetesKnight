@@ -10,6 +10,7 @@ import sharedObject.RenderableHolder;
 import utils.Constants.EnemyConstants;
 import utils.Constants.PlayerConstants;
 import utils.Constants.Resolution;
+import utils.Constants.BlockConstants;
 
 public class GameLogic {
 
@@ -47,8 +48,8 @@ public class GameLogic {
 	}
 
 	private void updateScreen() {
-		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length;
-		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length;
+		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length * BlockConstants.SIZE;
+		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length * BlockConstants.SIZE;
 		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
 			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
 		}
