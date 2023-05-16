@@ -2,7 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 
-import application.CSVParser;
 import application.Main;
 import entity.Enemy;
 import entity.Player;
@@ -22,9 +21,6 @@ public class GameLogic {
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
 
-		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
-		Map map = new Map(mapData);
-		addAllObject(map.getMap());
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
 		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y);
 		addNewObject(player);
@@ -51,11 +47,13 @@ public class GameLogic {
 	}
 
 	private void updateScreen() {
-		if (player.getX() > Resolution.WIDTH / 2 && player.getX() + Resolution.WIDTH / 2 < Map.getWidth()) {
-			Main.gameScreen.setX(-((int) player.getX() - Resolution.WIDTH / 2));
+		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length;
+		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length;
+		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
+			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
 		}
-		if (player.getY() > Resolution.HEIGHT / 2 && player.getY() + Resolution.HEIGHT / 2 < Map.getHeight()) {
-			Main.gameScreen.setY(-((int) player.getY() - Resolution.HEIGHT / 2));
+		if (player.getHitbox().y > Resolution.HEIGHT / 2 && player.getHitbox().y + Resolution.HEIGHT / 2 < mapHeight) {
+			Main.gameScreen.setY(-((int) player.getHitbox().y - Resolution.HEIGHT / 2));
 		}
 	}
 }

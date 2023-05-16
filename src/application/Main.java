@@ -8,12 +8,14 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
+import maps.MapManager;
 import utils.Constants.Resolution;
 
 public class Main extends Application {
 
 	public static GameScreen gameScreen;
 	public static GameLogic gameLogic;
+	public static MapManager mapManager;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -22,6 +24,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
+			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 

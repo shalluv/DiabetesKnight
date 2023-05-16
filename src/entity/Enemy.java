@@ -14,15 +14,13 @@ import static utils.Constants.EnemyConstants.SIGHT_SIZE;
 import static utils.Constants.EnemyConstants.WEIGHT;
 import static utils.Constants.EnemyConstants.WIDTH;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import sharedObject.Renderable;
-import sharedObject.RenderableHolder;
-import utils.Constants.BlockConstants;
+import utils.Helper;
 
 public class Enemy extends Entity {
 
@@ -31,17 +29,16 @@ public class Enemy extends Entity {
 	private double xspeed;
 	private double yspeed;
 	private boolean isAttacking;
-	private Rectangle hitbox;
 	private Image image;
 
 	public Enemy(int x, int y) {
-		super(x, y);
+		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxHealth = 100;
 		currentHealth = 100;
 		isAttacking = false;
-		hitbox = new Rectangle(x, y + OFFSET_HITBOX_Y, WIDTH, HEIGHT - OFFSET_HITBOX_Y);
+		initHitbox(x, y + OFFSET_HITBOX_Y, width, height - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
@@ -63,95 +60,25 @@ public class Enemy extends Entity {
 
 	private void move() {
 		hitbox.x += xspeed;
-		Block collidingBlock = findCollidingBlock();
-		if (collidingBlock != null) {
-			getRidOfCollisionX(collidingBlock);
+		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
+			hitbox.x += xspeed;
+		} else {
+			hitbox.x = Helper.GetEntityXPosNextToWall(hitbox, xspeed);
 			jump();
 		}
 		// gravity
-		yspeed += WEIGHT;
-		hitbox.y += yspeed;
-		collidingBlock = findCollidingBlock();
-		if (collidingBlock != null) {
-			getRidOfCollisionY(collidingBlock);
+		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
+			hitbox.y += yspeed;
+			yspeed += WEIGHT;
+		} else {
+			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
 		}
-		setX(x + xspeed);
-		setY(y + yspeed);
-	}
-
-	private boolean isOnPlatform() {
-		int x = hitbox.x;
-		int y = hitbox.y + hitbox.height;
-		Rectangle checkerRect = new Rectangle(x, y, hitbox.width, 1);
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()
-					&& ((Block) block).getHitbox().intersects(checkerRect)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean canMoveLeft() {
-		int x = hitbox.x - BlockConstants.WIDTH;
-		int y = hitbox.y + hitbox.height;
-		Rectangle checkerRect = new Rectangle(x, y, BlockConstants.WIDTH, BlockConstants.HEIGHT * 10);
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()
-					&& ((Block) block).getHitbox().intersects(checkerRect)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean canMoveRight() {
-		int x = hitbox.x + hitbox.width;
-		int y = hitbox.y + hitbox.height;
-		Rectangle checkerRect = new Rectangle(x, y, BlockConstants.WIDTH, BlockConstants.HEIGHT * 10);
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()
-					&& ((Block) block).getHitbox().intersects(checkerRect)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private Block findCollidingBlock() {
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid() && ((Block) block).getHitbox().intersects(hitbox)) {
-				return (Block) block;
-			}
-		}
-		return null;
-	}
-
-	private void getRidOfCollisionX(Block collidingBlock) {
-		hitbox.x -= xspeed;
-		while (!collidingBlock.getHitbox().intersects(hitbox)) {
-			hitbox.x += Math.signum(xspeed);
-		}
-		hitbox.x -= Math.signum(xspeed);
-		xspeed = 0;
-		setX(hitbox.x);
-	}
-
-	private void getRidOfCollisionY(Block collidingBlock) {
-		hitbox.y -= yspeed;
-		while (!collidingBlock.getHitbox().intersects(hitbox)) {
-			hitbox.y += Math.signum(yspeed);
-		}
-		hitbox.y -= Math.signum(yspeed);
-		yspeed = 0;
 	}
 
 	private boolean canAttack(Player player) {
-		Rectangle attackBox = new Rectangle(hitbox.x - ATTACK_RANGE, hitbox.y, WIDTH + 2 * ATTACK_RANGE,
-				HEIGHT - OFFSET_HITBOX_Y);
-		if (attackBox.intersects(player.getHitbox()) && isOnPlatform())
-			return true;
-		return false;
+		Rectangle2D.Double attackBox = new Rectangle2D.Double(hitbox.x - ATTACK_RANGE, hitbox.y,
+				WIDTH + 2 * ATTACK_RANGE, HEIGHT - OFFSET_HITBOX_Y);
+		return attackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
 	private void attack(Player player) {
@@ -171,18 +98,18 @@ public class Enemy extends Entity {
 	}
 
 	private boolean isInSight(Player player) {
-		Rectangle enemySight = new Rectangle(hitbox.x - SIGHT_SIZE, hitbox.y - SIGHT_SIZE, WIDTH + 2 * SIGHT_SIZE,
-				HEIGHT - OFFSET_HITBOX_Y + 2 * SIGHT_SIZE);
-		if (enemySight.intersects(player.getHitbox()))
-			return true;
-		return false;
+		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.x - SIGHT_SIZE, hitbox.y - SIGHT_SIZE,
+				width + 2 * SIGHT_SIZE, height - OFFSET_HITBOX_Y + 2 * SIGHT_SIZE);
+		return enemySight.intersects(player.getHitbox());
 	}
 
 	private void updateXSpeed(Player player) {
 		if (isInSight(player)) {
-			if (player.getHitbox().x < hitbox.x && canMoveLeft()) {
+			if (player.getHitbox().x < hitbox.x
+					&& Helper.CanMoveHere(hitbox.x - 1, hitbox.y, hitbox.width, hitbox.height)) {
 				xspeed = -BASE_X_SPEED;
-			} else if (player.getHitbox().x > hitbox.x && canMoveRight()) {
+			} else if (player.getHitbox().x > hitbox.x
+					&& Helper.CanMoveHere(hitbox.x + 1, hitbox.y, hitbox.width, hitbox.height)) {
 				xspeed = BASE_X_SPEED;
 			} else {
 				xspeed = INITIAL_X_SPEED;

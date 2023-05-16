@@ -11,7 +11,7 @@ import static utils.Constants.PlayerConstants.OFFSET_HITBOX_Y;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import input.InputUtility;
@@ -19,9 +19,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import logic.Map;
-import sharedObject.Renderable;
-import sharedObject.RenderableHolder;
+import utils.Helper;
 
 public class Player extends Entity {
 
@@ -29,45 +27,21 @@ public class Player extends Entity {
 	private int currentHealth;
 	private double xspeed;
 	private double yspeed;
-	private Rectangle hitbox;
 	private Image image;
 
 	public Player(int x, int y) {
-		super(x, y);
+		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		hitbox = new Rectangle(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER,
-				HEIGHT - OFFSET_HITBOX_Y);
+		initHitbox(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER, HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
 		currentHealth = 100;
 	}
 
-	private void clampInCanvas() {
-		if (hitbox.x < 0) {
-			setX(-OFFSET_HITBOX_X);
-		} else if (hitbox.x + WIDTH + OFFSET_HITBOX_X - HITBOX_WIDTH_REDUCER > Map.getWidth()) {
-			setX(Map.getWidth() - WIDTH + OFFSET_HITBOX_X);
-		}
-		if (y < 0) {
-			setY(0);
-		} else if (y > Map.getHeight() - HEIGHT) {
-			Platform.exit();
-		}
-	}
-
 	@Override
 	public void draw(GraphicsContext gc) {
-		// Player Rect
-		// gc.setFill(Color.RED);
-		// gc.fillRect(getX(), getY(), WIDTH, HEIGHT);
-
-		// Hitbox Rect
-		// gc.setFill(Color.GREEN);
-		// gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
-		// Image
-		gc.drawImage(image, x, y, WIDTH, HEIGHT);
+		gc.drawImage(image, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
 	private void setCurrentHealth(int value) {
@@ -84,7 +58,7 @@ public class Player extends Entity {
 		setCurrentHealth(currentHealth - damage);
 	}
 
-	public Rectangle getHitbox() {
+	public Rectangle2D.Double getHitbox() {
 		return hitbox;
 	}
 
@@ -93,53 +67,26 @@ public class Player extends Entity {
 	}
 
 	private void move() {
-		hitbox.x += xspeed;
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.x -= xspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.x += Math.signum(xspeed);
-					}
-					hitbox.x -= Math.signum(xspeed);
-					xspeed = 0;
-					setX(hitbox.x - OFFSET_HITBOX_X);
-				}
-			}
+		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
+			hitbox.x += xspeed;
+		} else {
+			hitbox.x = Helper.GetEntityXPosNextToWall(hitbox, xspeed);
 		}
 
-		// gravity
-		yspeed += WEIGHT;
-		hitbox.y += yspeed;
-		for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-			if (block instanceof Block && ((Block) block).isSolid()) {
-				if (((Block) block).getHitbox().intersects(hitbox)) {
-					hitbox.y -= yspeed;
-					while (!((Block) block).getHitbox().intersects(hitbox)) {
-						hitbox.y += Math.signum(yspeed);
-					}
-					hitbox.y -= Math.signum(yspeed);
-					yspeed = 0;
-					setY(hitbox.y - OFFSET_HITBOX_Y);
-				}
-			}
+		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
+			hitbox.y += yspeed;
+			yspeed += WEIGHT;
+		} else {
+			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
 		}
-		setX(x + xspeed);
-		setY(y + yspeed);
 	}
 
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 
-			hitbox.y += 1;
-			for (Renderable block : RenderableHolder.getInstance().getEntities()) {
-				if (block instanceof Block && ((Block) block).isSolid()) {
-					if (((Block) block).getHitbox().intersects(hitbox)) {
-						jump();
-					}
-				}
+			if (!Helper.IsEntityOnFloor(hitbox)) {
+				jump();
 			}
-			hitbox.y -= 1;
 
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
@@ -162,11 +109,6 @@ public class Player extends Entity {
 		if (currentHealth == 0) {
 			Platform.exit();
 		}
-
-		clampInCanvas();
-
-		hitbox.x = (int) (x + OFFSET_HITBOX_X);
-		hitbox.y = (int) (y + OFFSET_HITBOX_Y);
 	}
 
 	@Override
