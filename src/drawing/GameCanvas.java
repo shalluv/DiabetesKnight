@@ -32,8 +32,9 @@ public class GameCanvas extends Canvas {
 		});
 	}
 
-	public void drawComponent(double layoutX, double layoutY) {
+	public void drawGame(double layoutX, double layoutY) {
 		GraphicsContext gc = getGraphicsContext2D();
+		
 		gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		Main.mapManager.draw(gc);
 		// draw entities
@@ -42,5 +43,11 @@ public class GameCanvas extends Canvas {
 				entity.draw(gc);
 			}
 		}
+	}
+	
+	public void drawMenu() {
+		GraphicsContext gc = getGraphicsContext2D();
+		
+		Main.menu.draw(gc);
 	}
 }

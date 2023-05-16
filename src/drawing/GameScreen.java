@@ -14,18 +14,31 @@ public class GameScreen extends StackPane {
 	public GameScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
 		int mapHeight = Main.mapManager.getMapHeight();
+
 		x = 0;
 		y = Resolution.HEIGHT - mapHeight;
 		setAlignment(Pos.TOP_LEFT);
 		setLayoutY(y);
+
 		gameCanvas = new GameCanvas(mapWidth, mapHeight);
 		getChildren().add(gameCanvas);
 	}
 
 	public void drawComponent() {
-		gameCanvas.drawComponent(x, y);
-		setLayoutX(x);
-		setLayoutY(y);
+		switch (Main.gameState) {
+		case 0:
+			setLayoutX(0);
+			setLayoutY(0);
+			gameCanvas.drawMenu();
+			break;
+		case 1:
+			gameCanvas.drawGame(x, y);
+			setLayoutX(x);
+			setLayoutY(y);
+			break;
+		default:
+			break;
+		}
 	}
 
 	public GameCanvas getCanvas() {
