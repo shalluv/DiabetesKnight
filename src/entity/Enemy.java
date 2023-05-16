@@ -7,7 +7,6 @@ import java.awt.geom.Rectangle2D;
 import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import utils.Helper;
 
@@ -22,7 +21,7 @@ public class Enemy extends Entity implements Damageable {
 	private boolean attackLeft;
 	private Rectangle2D.Double attackBox;
 	private Thread attacking;
-	private Image image;
+	// private Image image;
 	private Player player;
 
 	public Enemy(int x, int y, Player player) {
@@ -35,7 +34,7 @@ public class Enemy extends Entity implements Damageable {
 		isAttacking = false;
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
-		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
+		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
 	@Override
@@ -44,9 +43,11 @@ public class Enemy extends Entity implements Damageable {
 		gc.setFill(Color.RED);
 		if (isAttacking) {
 			if (attackLeft) {
-				gc.fillRect(hitbox.x - attackProgress, hitbox.y + height / 2 - 5, attackProgress + 20, 10);
+				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			} else {
-				gc.fillRect(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+				gc.fillRect(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress,
+						ATTACK_BOX_HEIGHT);
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -79,17 +80,19 @@ public class Enemy extends Entity implements Damageable {
 	}
 
 	private boolean canAttack(Player player) {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - ATTACK_RANGE, hitbox.y,
-				WIDTH + 2 * ATTACK_RANGE, HEIGHT);
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - MELEE_ATTACK_RANGE, hitbox.y,
+				WIDTH + 2 * MELEE_ATTACK_RANGE, HEIGHT);
 		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
 	private void updateAttackBox() {
 		if (attackLeft) {
-			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.y + height / 2 - 5,
-					attackProgress + 20, 10);
+			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress,
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
+					ATTACK_BOX_HEIGHT);
 		} else {
-			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+					attackProgress, ATTACK_BOX_HEIGHT);
 		}
 	}
 
@@ -105,22 +108,22 @@ public class Enemy extends Entity implements Damageable {
 
 	private boolean isAttackHit() {
 		if (attackBox.intersects(player.getHitbox())) {
-			player.receiveDamage(DAMAGE);
+			player.receiveDamage(MELEE_DAMAGE);
 			return true;
 		}
 		return false;
 	}
 
 	private void updateAttackProgress(int value) throws InterruptedException {
-		Thread.sleep(ATTACK_DELAY);
+		Thread.sleep(MELEE_ATTACK_DELAY);
 		attackProgress += value;
 	}
 
 	private void attackingLoop() {
 		boolean hit = false;
-		while (attackProgress <= ATTACK_RANGE) {
+		while (attackProgress <= MELEE_ATTACK_RANGE) {
 			try {
-				updateAttackProgress(ATTACK_SPEED);
+				updateAttackProgress(MELEE_ATTACK_SPEED);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -135,7 +138,7 @@ public class Enemy extends Entity implements Damageable {
 	private void afterAttackLoop() {
 		while (attackProgress > 0) {
 			try {
-				updateAttackProgress(-ATTACK_SPEED);
+				updateAttackProgress(-MELEE_ATTACK_SPEED);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -159,7 +162,7 @@ public class Enemy extends Entity implements Damageable {
 
 	private boolean isInSight(Player player) {
 		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.x - SIGHT_SIZE, hitbox.y - SIGHT_SIZE,
-				width + 2 * SIGHT_SIZE, height - OFFSET_HITBOX_Y + 2 * SIGHT_SIZE);
+				hitbox.width + 2 * SIGHT_SIZE, hitbox.height + 2 * SIGHT_SIZE);
 		return enemySight.intersects(player.getHitbox());
 	}
 

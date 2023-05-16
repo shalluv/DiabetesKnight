@@ -28,10 +28,12 @@ public class Constants {
 		public static final int OFFSET_HITBOX_X = 7;
 		public static final int OFFSET_HITBOX_Y = 8;
 		public static final int HITBOX_WIDTH_REDUCER = 20;
-		public static final int ATTACK_RANGE = 30;
-		public static final int DAMAGE = 10;
-		public static final int ATTACK_SPEED = 5;
-		public static final int ATTACK_DELAY = 50;
+		public static final int MELEE_ATTACK_RANGE = 12;
+		public static final int MELEE_DAMAGE = 10;
+		public static final int MELEE_ATTACK_SPEED = 3;
+		public static final int MELEE_ATTACK_DELAY = 50;
+		public static final int RANGE_ATTACK_DELAY = 500;
+		public static final int ATTACK_BOX_HEIGHT = 10;
 	}
 
 	public static class EnemyConstants {
@@ -45,13 +47,14 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 5;
 		public static final double WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
-		public static final int ATTACK_RANGE = 30;
-		public static final int DAMAGE = 10;
-		public static final int ATTACK_SPEED = 5;
-		public static final int ATTACK_DELAY = 50;
-		public static final int SIGHT_SIZE = 400;
+		public static final int MELEE_ATTACK_RANGE = 12;
+		public static final int MELEE_DAMAGE = 10;
+		public static final int MELEE_ATTACK_SPEED = 3;
+		public static final int MELEE_ATTACK_DELAY = 50;
+		public static final int SIGHT_SIZE = 800;
+		public static final int ATTACK_BOX_HEIGHT = 10;
 	}
-	
+
 	public static class BulletConstants {
 		public static final int WIDTH = 10;
 		public static final int HEIGHT = 5;

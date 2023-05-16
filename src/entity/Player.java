@@ -11,7 +11,6 @@ import input.InputUtility;
 import interfaces.Damageable;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import utils.Helper;
@@ -26,15 +25,15 @@ public class Player extends Entity implements Damageable {
 	private boolean isAttacking;
 	private int meleeAttackProgress;
 	private Thread attacking;
-	private Image image;
+	// private Image image;
 	private Rectangle2D.Double meleeAttackBox;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		initHitbox(x, y, WIDTH, HEIGHT);
-		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		initHitbox(x, y, width, height);
+		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
 		isAttacking = false;
 		meleeAttackProgress = 0;
@@ -46,9 +45,11 @@ public class Player extends Entity implements Damageable {
 		gc.setFill(Color.BLACK);
 		if (isAttacking) {
 			if (attackLeft) {
-				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + height / 2 - 5, meleeAttackProgress + 20, 10);
+				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			} else {
-				gc.fillRect(hitbox.getMaxX(), hitbox.y + height / 2 - 5, meleeAttackProgress, 10);
+				gc.fillRect(hitbox.getMaxX(), (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress,
+						ATTACK_BOX_HEIGHT);
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -70,10 +71,6 @@ public class Player extends Entity implements Damageable {
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
 		System.out.println("player is now " + currentHealth + " hp");
-	}
-
-	public Rectangle2D.Double getHitbox() {
-		return hitbox;
 	}
 
 	private void jump() {
@@ -100,17 +97,18 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void updateMeleeAttackProgress(int value) throws InterruptedException {
-		Thread.sleep(ATTACK_DELAY);
+		Thread.sleep(MELEE_ATTACK_DELAY);
 		meleeAttackProgress += value;
 	}
 
 	private void updateMeleeAttackBox() {
 		if (attackLeft) {
-			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress, hitbox.y + height / 2 - 5,
-					meleeAttackProgress + 20, 10);
+			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress,
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress + hitbox.width / 2,
+					ATTACK_BOX_HEIGHT);
 		} else {
-			meleeAttackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + height / 2 - 5, meleeAttackProgress,
-					10);
+			meleeAttackBox = new Rectangle2D.Double(hitbox.getMaxX(),
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress, ATTACK_BOX_HEIGHT);
 		}
 	}
 
@@ -129,7 +127,7 @@ public class Player extends Entity implements Damageable {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
 				if (meleeAttackBox.intersects(enemy.getHitbox())) {
-					enemy.receiveDamage(DAMAGE);
+					enemy.receiveDamage(MELEE_DAMAGE);
 					return true;
 				}
 			}
@@ -139,9 +137,9 @@ public class Player extends Entity implements Damageable {
 
 	private void meleeAttackingLoop() {
 		boolean hit = false;
-		while (meleeAttackProgress <= ATTACK_RANGE) {
+		while (meleeAttackProgress <= MELEE_ATTACK_RANGE) {
 			try {
-				updateMeleeAttackProgress(ATTACK_SPEED);
+				updateMeleeAttackProgress(MELEE_ATTACK_SPEED);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -156,7 +154,7 @@ public class Player extends Entity implements Damageable {
 	private void afterMeleeAttackLoop() {
 		while (meleeAttackProgress > 0) {
 			try {
-				updateMeleeAttackProgress(-ATTACK_SPEED);
+				updateMeleeAttackProgress(-MELEE_ATTACK_SPEED);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -189,7 +187,7 @@ public class Player extends Entity implements Damageable {
 			}
 			new Bullet(bulletX, bulletY, bulletSpeed);
 			try {
-				Thread.sleep(500);
+				Thread.sleep(RANGE_ATTACK_DELAY);
 			} catch (InterruptedException e) {
 				System.out.println("range attacking thread interrupted");
 			}
