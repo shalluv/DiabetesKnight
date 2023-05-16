@@ -1,7 +1,6 @@
 package entity;
 
 import static utils.Constants.EnemyConstants.*;
-import static utils.Constants.PlayerConstants.WEIGHT;
 
 import java.awt.geom.Rectangle2D;
 
@@ -20,6 +19,7 @@ public class Enemy extends Entity {
 	private boolean isAttacking;
 	private int attackProgress;
 	private boolean attackLeft;
+	private Thread attacking;
 	private Image image;
 
 	public Enemy(int x, int y) {
@@ -40,7 +40,7 @@ public class Enemy extends Entity {
 		gc.setFill(Color.RED);
 		if (isAttacking) {
 			if (attackLeft) {
-				gc.fillRect(hitbox.x - attackProgress, hitbox.y + height / 2 - 5, attackProgress, 10);
+				gc.fillRect(hitbox.x - attackProgress, hitbox.y + height / 2 - 5, attackProgress + 20, 10);
 			} else {
 				gc.fillRect(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
 			}
@@ -58,7 +58,8 @@ public class Enemy extends Entity {
 			hitbox.x += xspeed;
 		} else {
 			hitbox.x = Helper.GetEntityXPosNextToWall(hitbox, xspeed);
-			jump();
+			if (!isAttacking)
+				jump();
 		}
 
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
@@ -79,14 +80,6 @@ public class Enemy extends Entity {
 		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
-	private void updateAttackDirection(Player player) {
-		if (hitbox.x >= player.getHitbox().x) {
-			attackLeft = true;
-		} else {
-			attackLeft = false;
-		}
-	}
-
 	private boolean isAttackHit(Player player) {
 		Rectangle2D.Double attackBox;
 		if (attackLeft) {
@@ -102,31 +95,34 @@ public class Enemy extends Entity {
 		return false;
 	}
 
-	private void updateAttackProgress(int value) {
-		try {
-			Thread.sleep(ATTACK_DELAY);
-			attackProgress += value;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private void updateAttackProgress(int value) throws InterruptedException {
+		Thread.sleep(ATTACK_DELAY);
+		attackProgress += value;
 	}
 
 	private void attack(Player player) {
 		isAttacking = true;
-		Thread attacking = new Thread(() -> {
-			updateAttackDirection(player);
+		this.attacking = new Thread(() -> {
 			while (attackProgress <= ATTACK_RANGE) {
-				updateAttackProgress(ATTACK_SPEED);
+				try {
+					updateAttackProgress(ATTACK_SPEED);
+				} catch (InterruptedException e) {
+					break;
+				}
 				if (isAttackHit(player))
 					break;
 			}
 			while (attackProgress > 0) {
-				updateAttackProgress(-ATTACK_SPEED);
+				try {
+					updateAttackProgress(-ATTACK_SPEED);
+				} catch (InterruptedException e) {
+					break;
+				}
 			}
 			attackProgress = 0;
 			isAttacking = false;
 		});
-		attacking.start();
+		this.attacking.start();
 	}
 
 	private boolean isInSight(Player player) {
@@ -140,11 +136,14 @@ public class Enemy extends Entity {
 			if (player.getHitbox().x < hitbox.x && Helper.IsEntityOnFloor(
 					new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
+				attackLeft = true;
 			} else if (player.getHitbox().x > hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
+				attackLeft = false;
 			} else {
 				xspeed = INITIAL_X_SPEED;
+				attackLeft = false;
 			}
 		} else {
 			xspeed = INITIAL_X_SPEED;
@@ -163,18 +162,23 @@ public class Enemy extends Entity {
 
 	public void receiveDamage(int damage) {
 		setCurrentHealth(currentHealth - damage);
+		System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
 	public void update(Player player) {
-		if (isAttacking)
-			return;
 		updateXSpeed(player);
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
-		if (canAttack(player)) {
+		if (canAttack(player) && !isAttacking)
 			attack(player);
+
+		if (currentHealth == 0) {
+			isDestroy = true;
+			this.attacking.interrupt();
+			attackProgress = 0;
+			isAttacking = false;
 		}
 	}
 

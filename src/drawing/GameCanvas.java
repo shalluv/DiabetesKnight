@@ -6,6 +6,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 import utils.Constants.Resolution;
@@ -29,6 +31,14 @@ public class GameCanvas extends Canvas {
 
 		setOnKeyReleased((KeyEvent event) -> {
 			InputUtility.setKeyPressed(event.getCode(), false);
+		});
+		setOnMousePressed((MouseEvent event) -> {
+			if (event.getButton() == MouseButton.PRIMARY)
+				InputUtility.mouseLeftDown();
+		});
+		setOnMouseReleased((MouseEvent event) -> {
+			if (event.getButton() == MouseButton.PRIMARY)
+				InputUtility.mouseLeftUp();
 		});
 	}
 

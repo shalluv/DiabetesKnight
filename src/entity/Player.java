@@ -11,6 +11,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import sharedObject.Renderable;
+import sharedObject.RenderableHolder;
 import utils.Helper;
 
 public class Player extends Entity {
@@ -19,6 +21,9 @@ public class Player extends Entity {
 	private int currentHealth;
 	private double xspeed;
 	private double yspeed;
+	private boolean attackLeft;
+	private boolean isAttacking;
+	private int attackProgress;
 	private Image image;
 
 	public Player(int x, int y) {
@@ -28,12 +33,21 @@ public class Player extends Entity {
 		initHitbox(x, y, WIDTH, HEIGHT);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
+		isAttacking = false;
+		attackProgress = 0;
 		currentHealth = 100;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
+		if (isAttacking) {
+			if (attackLeft) {
+				gc.fillRect(hitbox.x - attackProgress, hitbox.y + height / 2 - 5, attackProgress + 20, 10);
+			} else {
+				gc.fillRect(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+			}
+		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
@@ -48,7 +62,10 @@ public class Player extends Entity {
 	}
 
 	public void receiveDamage(int damage) {
+		if (damage < 0)
+			damage = 0;
 		setCurrentHealth(currentHealth - damage);
+		System.out.println("player is now " + currentHealth + " hp");
 	}
 
 	public Rectangle2D.Double getHitbox() {
@@ -78,17 +95,68 @@ public class Player extends Entity {
 		}
 	}
 
+	private void updateAttackProgress(int value) {
+		try {
+			Thread.sleep(ATTACK_DELAY);
+			attackProgress += value;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isAttackHit() {
+		Rectangle2D.Double attackBox;
+		if (attackLeft) {
+			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.y + height / 2 - 5,
+					attackProgress + 20, 10);
+		} else {
+			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+		}
+		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
+			if (!entity.isDestroyed() && entity instanceof Enemy) {
+				Enemy enemy = (Enemy) entity;
+				if (attackBox.intersects(enemy.getHitbox())) {
+					enemy.receiveDamage(DAMAGE);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void attack() {
+		isAttacking = true;
+		Thread attacking = new Thread(() -> {
+			while (attackProgress <= ATTACK_RANGE) {
+				updateAttackProgress(ATTACK_SPEED);
+				if (isAttackHit())
+					break;
+			}
+			while (attackProgress > 0) {
+				updateAttackProgress(-ATTACK_SPEED);
+			}
+			attackProgress = 0;
+			isAttacking = false;
+		});
+		attacking.start();
+	}
+
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
 			jump();
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
+			attackLeft = true;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
 			xspeed = BASE_X_SPEED;
+			attackLeft = false;
 		} else {
 			xspeed = 0;
 		}
+
+		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && !isAttacking)
+			attack();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 

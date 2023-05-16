@@ -28,6 +28,10 @@ public class Constants {
 		public static final int OFFSET_HITBOX_X = 7;
 		public static final int OFFSET_HITBOX_Y = 8;
 		public static final int HITBOX_WIDTH_REDUCER = 20;
+		public static final int ATTACK_RANGE = 30;
+		public static final int DAMAGE = 10;
+		public static final int ATTACK_SPEED = 5;
+		public static final int ATTACK_DELAY = 50;
 	}
 
 	public static class EnemyConstants {
@@ -42,7 +46,7 @@ public class Constants {
 		public static final double WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
 		public static final int ATTACK_RANGE = 30;
-		public static final int DAMAGE = 50;
+		public static final int DAMAGE = 10;
 		public static final int ATTACK_SPEED = 5;
 		public static final int ATTACK_DELAY = 50;
 		public static final int SIGHT_SIZE = 400;
