@@ -18,6 +18,8 @@ public class Enemy extends Entity {
 	private double xspeed;
 	private double yspeed;
 	private boolean isAttacking;
+	private int attackProgress;
+	private boolean attackLeft;
 	private Image image;
 
 	public Enemy(int x, int y) {
@@ -27,6 +29,7 @@ public class Enemy extends Entity {
 		maxHealth = 100;
 		currentHealth = 100;
 		isAttacking = false;
+		attackProgress = 0;
 		initHitbox(x, y, width, height);
 		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
@@ -34,12 +37,15 @@ public class Enemy extends Entity {
 	@Override
 	public void draw(GraphicsContext gc) {
 //		 Hitbox Rect
-		if (isAttacking)
-			gc.setFill(Color.RED);
-		else
-			gc.setFill(Color.GREEN);
+		gc.setFill(Color.RED);
+		if (isAttacking) {
+			if (attackLeft) {
+				gc.fillRect(hitbox.x - attackProgress, hitbox.y + height / 2 - 5, attackProgress, 10);
+			} else {
+				gc.fillRect(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+			}
+		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
 		// gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
@@ -68,23 +74,57 @@ public class Enemy extends Entity {
 	}
 
 	private boolean canAttack(Player player) {
-		Rectangle2D.Double attackBox = new Rectangle2D.Double(hitbox.x - ATTACK_RANGE, hitbox.y,
-				WIDTH + 2 * ATTACK_RANGE, HEIGHT - OFFSET_HITBOX_Y);
-		return attackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - ATTACK_RANGE, hitbox.y,
+				WIDTH + 2 * ATTACK_RANGE, HEIGHT);
+		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
+	}
+
+	private void updateAttackDirection(Player player) {
+		if (hitbox.x >= player.getHitbox().x) {
+			attackLeft = true;
+		} else {
+			attackLeft = false;
+		}
+	}
+
+	private boolean isAttackHit(Player player) {
+		Rectangle2D.Double attackBox;
+		if (attackLeft) {
+			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.y + height / 2 - 5,
+					attackProgress + 20, 10);
+		} else {
+			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
+		}
+		if (attackBox.intersects(player.getHitbox())) {
+			player.receiveDamage(DAMAGE);
+			return true;
+		}
+		return false;
+	}
+
+	private void updateAttackProgress(int value) {
+		try {
+			Thread.sleep(ATTACK_DELAY);
+			attackProgress += value;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void attack(Player player) {
 		isAttacking = true;
 		Thread attacking = new Thread(() -> {
-			try {
-				Thread.sleep(ATTACK_DELAY);
-				if (canAttack(player))
-					player.receiveDamage(DAMAGE);
-				Thread.sleep(AFTER_ATTACK_DELAY);
-				isAttacking = false;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			updateAttackDirection(player);
+			while (attackProgress <= ATTACK_RANGE) {
+				updateAttackProgress(ATTACK_SPEED);
+				if (isAttackHit(player))
+					break;
 			}
+			while (attackProgress > 0) {
+				updateAttackProgress(-ATTACK_SPEED);
+			}
+			attackProgress = 0;
+			isAttacking = false;
 		});
 		attacking.start();
 	}
@@ -97,8 +137,8 @@ public class Enemy extends Entity {
 
 	private void updateXSpeed(Player player) {
 		if (isInSight(player)) {
-			if (player.getHitbox().x < hitbox.x && Helper
-					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
+			if (player.getHitbox().x < hitbox.x && Helper.IsEntityOnFloor(
+					new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
 			} else if (player.getHitbox().x > hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {

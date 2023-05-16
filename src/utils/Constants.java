@@ -41,10 +41,10 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 5;
 		public static final double WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
-		public static final int ATTACK_RANGE = 8;
+		public static final int ATTACK_RANGE = 30;
 		public static final int DAMAGE = 50;
-		public static final int ATTACK_DELAY = 1500;
-		public static final int AFTER_ATTACK_DELAY = 800;
+		public static final int ATTACK_SPEED = 5;
+		public static final int ATTACK_DELAY = 50;
 		public static final int SIGHT_SIZE = 400;
 	}
 }
