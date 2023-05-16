@@ -123,14 +123,15 @@ public class Player extends Entity {
 
 	private void initAttackingThread() {
 		attacking = new Thread(() -> {
+			boolean hit = false;
 			while (attackProgress <= ATTACK_RANGE) {
 				try {
 					updateAttackProgress(ATTACK_SPEED);
 				} catch (InterruptedException e) {
 					break;
 				}
-				if (isAttackHit())
-					break;
+				if (!hit && isAttackHit())
+					hit = true;
 			}
 			while (attackProgress > 0) {
 				try {
@@ -173,7 +174,8 @@ public class Player extends Entity {
 
 		// if the player is dead
 		if (currentHealth == 0) {
-			attacking.interrupt();
+			if (attacking != null)
+				attacking.interrupt();
 			Platform.exit();
 		}
 	}

@@ -104,14 +104,15 @@ public class Enemy extends Entity {
 
 	private void initAttackingThread() {
 		attacking = new Thread(() -> {
+			boolean hit = false;
 			while (attackProgress <= ATTACK_RANGE) {
 				try {
 					updateAttackProgress(ATTACK_SPEED);
 				} catch (InterruptedException e) {
 					break;
 				}
-				if (isAttackHit())
-					break;
+				if (!hit && isAttackHit())
+					hit = true;
 			}
 			while (attackProgress > 0) {
 				try {
@@ -149,7 +150,7 @@ public class Enemy extends Entity {
 				attackLeft = false;
 			} else {
 				xspeed = INITIAL_X_SPEED;
-				attackLeft = false;
+				attackLeft = true;
 			}
 		} else {
 			xspeed = INITIAL_X_SPEED;
@@ -182,7 +183,8 @@ public class Enemy extends Entity {
 
 		if (currentHealth == 0) {
 			isDestroy = true;
-			attacking.interrupt();
+			if (attacking != null)
+				attacking.interrupt();
 		}
 	}
 
