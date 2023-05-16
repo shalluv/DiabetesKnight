@@ -34,7 +34,7 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY) {
 		GraphicsContext gc = getGraphicsContext2D();
-		gc.drawImage(background, 0, 0, Resolution.WIDTH, Resolution.HEIGHT);
+		gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		Main.mapManager.draw(gc);
 		// draw entities
 		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {

@@ -4,6 +4,7 @@ import application.Main;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import utils.Constants.Resolution;
+import utils.Constants.BlockConstants;
 
 public class GameScreen extends StackPane {
 
@@ -12,11 +13,10 @@ public class GameScreen extends StackPane {
 	private int y;
 
 	public GameScreen() {
-		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length;
-		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length;
-		
+		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length * BlockConstants.SIZE;
+		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length * BlockConstants.SIZE;
 		x = 0;
-		y = Resolution.HEIGHT - mapWidth;
+		y = Resolution.HEIGHT - mapHeight;
 		setAlignment(Pos.TOP_LEFT);
 		setLayoutY(y);
 		gameCanvas = new GameCanvas(mapWidth, mapHeight);
