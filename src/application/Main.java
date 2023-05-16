@@ -53,7 +53,7 @@ public class Main extends Application {
 					double deltaF = 0;
 
 					while (true) {
-						if(Thread.interrupted())
+						if (Thread.interrupted())
 							break;
 						long currentTime = System.nanoTime();
 
@@ -89,7 +89,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void stop() throws Exception {
 		this.gameThread.interrupt();

@@ -4,7 +4,6 @@ import application.Main;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import utils.Constants.Resolution;
-import utils.Constants.BlockConstants;
 
 public class GameScreen extends StackPane {
 

@@ -3,8 +3,8 @@ package maps;
 import application.CSVParser;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utils.Loader;
 import utils.Constants.BlockConstants;
+import utils.Loader;
 
 public class MapManager {
 

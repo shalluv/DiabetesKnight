@@ -15,9 +15,9 @@ public class Loader {
 		Image img = null;
 		try {
 			FileInputStream is = new FileInputStream(filename);
-			
+
 			img = new Image(is);
-			
+
 			try {
 				is.close();
 			} catch (IOException e) {

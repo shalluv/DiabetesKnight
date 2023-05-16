@@ -10,7 +10,6 @@ import sharedObject.RenderableHolder;
 import utils.Constants.EnemyConstants;
 import utils.Constants.PlayerConstants;
 import utils.Constants.Resolution;
-import utils.Constants.BlockConstants;
 
 public class GameLogic {
 
