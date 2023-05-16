@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 public class InputUtility {
 	private static ArrayList<KeyCode> keyPressed = new ArrayList<>();
 	private static boolean isLeftDown = false;
+	private static boolean isRightDown = false;
 
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
@@ -30,7 +31,19 @@ public class InputUtility {
 		isLeftDown = false;
 	}
 
+	public static void mouseRightDown() {
+		isRightDown = true;
+	}
+
+	public static void mouseRightUp() {
+		isRightDown = false;
+	}
+
 	public static boolean isLeftDown() {
 		return isLeftDown;
+	}
+
+	public static boolean isRightDown() {
+		return isRightDown;
 	}
 }

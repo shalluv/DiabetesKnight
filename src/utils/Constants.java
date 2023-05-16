@@ -51,4 +51,11 @@ public class Constants {
 		public static final int ATTACK_DELAY = 50;
 		public static final int SIGHT_SIZE = 400;
 	}
+	
+	public static class BulletConstants {
+		public static final int WIDTH = 10;
+		public static final int HEIGHT = 5;
+		public static final double X_SPEED = 5;
+		public static final int DAMAGE = 5;
+	}
 }

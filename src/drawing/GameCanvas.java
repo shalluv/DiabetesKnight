@@ -35,10 +35,14 @@ public class GameCanvas extends Canvas {
 		setOnMousePressed((MouseEvent event) -> {
 			if (event.getButton() == MouseButton.PRIMARY)
 				InputUtility.mouseLeftDown();
+			else if (event.getButton() == MouseButton.SECONDARY)
+				InputUtility.mouseRightDown();
 		});
 		setOnMouseReleased((MouseEvent event) -> {
 			if (event.getButton() == MouseButton.PRIMARY)
 				InputUtility.mouseLeftUp();
+			else if (event.getButton() == MouseButton.SECONDARY)
+				InputUtility.mouseRightUp();
 		});
 	}
 

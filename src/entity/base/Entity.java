@@ -21,6 +21,8 @@ public abstract class Entity implements Renderable {
 		this.isDestroy = false;
 	}
 
+	public abstract void update();
+
 	@Override
 	public boolean isDestroyed() {
 		return isDestroy;

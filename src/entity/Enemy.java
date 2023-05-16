@@ -5,12 +5,13 @@ import static utils.Constants.EnemyConstants.*;
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
+import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import utils.Helper;
 
-public class Enemy extends Entity {
+public class Enemy extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
@@ -191,11 +192,13 @@ public class Enemy extends Entity {
 		}
 	}
 
+	@Override
 	public void receiveDamage(int damage) {
 		setCurrentHealth(currentHealth - damage);
 		System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
+	@Override
 	public void update() {
 		updateXSpeed();
 
