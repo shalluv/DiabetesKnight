@@ -26,6 +26,7 @@ public class Player extends Entity {
 	private int attackProgress;
 	private Thread attacking;
 	private Image image;
+	private Rectangle2D.Double attackBox;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -101,14 +102,26 @@ public class Player extends Entity {
 		attackProgress += value;
 	}
 
-	private boolean isAttackHit() {
-		Rectangle2D.Double attackBox;
+	private void updateAttackBox() {
 		if (attackLeft) {
 			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.y + height / 2 - 5,
 					attackProgress + 20, 10);
 		} else {
 			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + height / 2 - 5, attackProgress, 10);
 		}
+	}
+
+	private boolean isAttackingWall() {
+		if (attackLeft
+				&& !Helper.CanMoveHere(attackBox.x - attackProgress, attackBox.y, attackBox.width, attackBox.height))
+			return true;
+		if (!attackLeft
+				&& !Helper.CanMoveHere(attackBox.x, attackBox.y, attackBox.width + attackProgress, attackBox.height))
+			return true;
+		return false;
+	}
+
+	private boolean isAttackHit() {
 		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
@@ -121,25 +134,36 @@ public class Player extends Entity {
 		return false;
 	}
 
+	private void attackingLoop() {
+		boolean hit = false;
+		while (attackProgress <= ATTACK_RANGE) {
+			try {
+				updateAttackProgress(ATTACK_SPEED);
+			} catch (InterruptedException e) {
+				break;
+			}
+			updateAttackBox();
+			if (isAttackingWall())
+				break;
+			if (!hit && isAttackHit())
+				hit = true;
+		}
+	}
+
+	private void afterAttackLoop() {
+		while (attackProgress > 0) {
+			try {
+				updateAttackProgress(-ATTACK_SPEED);
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
+	}
+
 	private void initAttackingThread() {
 		attacking = new Thread(() -> {
-			boolean hit = false;
-			while (attackProgress <= ATTACK_RANGE) {
-				try {
-					updateAttackProgress(ATTACK_SPEED);
-				} catch (InterruptedException e) {
-					break;
-				}
-				if (!hit && isAttackHit())
-					hit = true;
-			}
-			while (attackProgress > 0) {
-				try {
-					updateAttackProgress(-ATTACK_SPEED);
-				} catch (InterruptedException e) {
-					break;
-				}
-			}
+			attackingLoop();
+			afterAttackLoop();
 			attackProgress = 0;
 			isAttacking = false;
 		});
