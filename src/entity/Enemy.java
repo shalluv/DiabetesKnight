@@ -16,16 +16,16 @@ public class Enemy extends Entity {
 
 	private int maxHealth;
 	private int currentHealth;
-	private int xspeed;
-	private int yspeed;
+	private double xspeed;
+	private double yspeed;
 	private boolean isAttacking;
 	private Rectangle hitbox;
 	private Image image;
 
 	public Enemy(int x, int y) {
 		super(x, y);
-		xspeed = ORIGIN_X_SPEED;
-		yspeed = ORIGIN_Y_SPEED;
+		xspeed = INITIAL_X_SPEED;
+		yspeed = INITIAL_Y_SPEED;
 		maxHealth = 100;
 		currentHealth = 100;
 		isAttacking = false;
@@ -173,10 +173,10 @@ public class Enemy extends Entity {
 			} else if (player.getHitbox().x > hitbox.x && canMoveRight()) {
 				xspeed = BASE_X_SPEED;
 			} else {
-				xspeed = ORIGIN_X_SPEED;
+				xspeed = INITIAL_X_SPEED;
 			}
 		} else {
-			xspeed = ORIGIN_X_SPEED;
+			xspeed = INITIAL_X_SPEED;
 		}
 	}
 
@@ -207,8 +207,8 @@ public class Enemy extends Entity {
 		if (canAttack(player)) {
 			attack(player);
 		}
-		hitbox.x = x;
-		hitbox.y = y + OFFSET_HITBOX_Y;
+		hitbox.x = (int) x;
+		hitbox.y = (int) (y + OFFSET_HITBOX_Y);
 	}
 
 	@Override

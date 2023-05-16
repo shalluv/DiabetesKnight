@@ -4,8 +4,8 @@ import sharedObject.Renderable;
 
 public abstract class Entity implements Renderable {
 
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 
 	public Entity(int x, int y) {
 		this.x = x;
@@ -17,19 +17,19 @@ public abstract class Entity implements Renderable {
 		return false;
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
-	
-	public int getY() {
+
+	public double getY() {
 		return y;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 }

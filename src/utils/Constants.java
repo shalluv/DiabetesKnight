@@ -19,12 +19,12 @@ public class Constants {
 		public static final int ORIGIN_Y = 600;
 		public static final int WIDTH = 45;
 		public static final int HEIGHT = 45;
-		public static final int MAX_Y_SPEED = 16;
-		public static final int BASE_X_SPEED = 5;
-		public static final int ORIGIN_X_SPEED = 0;
-		public static final int ORIGIN_Y_SPEED = 32;
-		public static final int WEIGHT = 1;
-		public static final int OFFSET_HITBOX_X = 8;
+		public static final double MAX_Y_SPEED = 8;
+		public static final double BASE_X_SPEED = 3;
+		public static final double INITIAL_X_SPEED = 0;
+		public static final double INITIAL_Y_SPEED = 8;
+		public static final double WEIGHT = 0.2;
+		public static final int OFFSET_HITBOX_X = 7;
 		public static final int OFFSET_HITBOX_Y = 8;
 		public static final int HITBOX_WIDTH_REDUCER = 20;
 	}
@@ -34,11 +34,11 @@ public class Constants {
 		public static final int ORIGIN_Y = 600;
 		public static final int WIDTH = 32;
 		public static final int HEIGHT = 20;
-		public static final int MAX_Y_SPEED = 16;
-		public static final int BASE_X_SPEED = 1;
-		public static final int ORIGIN_X_SPEED = 0;
-		public static final int ORIGIN_Y_SPEED = 32;
-		public static final int WEIGHT = 1;
+		public static final double MAX_Y_SPEED = 16;
+		public static final double BASE_X_SPEED = 1;
+		public static final double INITIAL_X_SPEED = 0;
+		public static final double INITIAL_Y_SPEED = 16;
+		public static final double WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
 		public static final int ATTACK_RANGE = 8;
 		public static final int DAMAGE = 50;

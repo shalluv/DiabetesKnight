@@ -45,7 +45,7 @@ public class GameLogic {
 
 	public void update() {
 		RenderableHolder.getInstance().update();
-		
+
 		player.update();
 		enemy.update(player);
 		updateScreen();
@@ -53,10 +53,10 @@ public class GameLogic {
 
 	private void updateScreen() {
 		if (player.getX() > Resolution.WIDTH / 2 && player.getX() + Resolution.WIDTH / 2 < Map.getWidth()) {
-			Main.gameScreen.setX(-(player.getX() - Resolution.WIDTH / 2));
+			Main.gameScreen.setX(-((int) player.getX() - Resolution.WIDTH / 2));
 		}
 		if (player.getY() > Resolution.HEIGHT / 2 && player.getY() + Resolution.HEIGHT / 2 < Map.getHeight()) {
-			Main.gameScreen.setY(-(player.getY() - Resolution.HEIGHT / 2));
+			Main.gameScreen.setY(-((int) player.getY() - Resolution.HEIGHT / 2));
 		}
 	}
 }

@@ -17,15 +17,15 @@ public class Player extends Entity {
 
 	private int maxHealth;
 	private int currentHealth;
-	private int xspeed;
-	private int yspeed;
+	private double xspeed;
+	private double yspeed;
 	private Rectangle hitbox;
 	private Image image;
 
 	public Player(int x, int y) {
 		super(x, y);
-		xspeed = ORIGIN_X_SPEED;
-		yspeed = ORIGIN_Y_SPEED;
+		xspeed = INITIAL_X_SPEED;
+		yspeed = INITIAL_Y_SPEED;
 		hitbox = new Rectangle(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER,
 				HEIGHT - OFFSET_HITBOX_Y);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
@@ -155,8 +155,8 @@ public class Player extends Entity {
 
 		clampInCanvas();
 
-		hitbox.x = x + OFFSET_HITBOX_X;
-		hitbox.y = y + OFFSET_HITBOX_Y;
+		hitbox.x = (int) (x + OFFSET_HITBOX_X);
+		hitbox.y = (int) (y + OFFSET_HITBOX_Y);
 	}
 
 	@Override
