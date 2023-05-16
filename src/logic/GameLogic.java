@@ -22,7 +22,7 @@ public class GameLogic {
 		this.gameObjectContainer = new ArrayList<>();
 
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
-		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y);
+		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player);
 		addNewObject(player);
 		addNewObject(enemy);
 	}
@@ -42,7 +42,7 @@ public class GameLogic {
 		RenderableHolder.getInstance().update();
 
 		player.update();
-		enemy.update(player);
+		enemy.update();
 		updateScreen();
 	}
 

@@ -24,6 +24,7 @@ public class Player extends Entity {
 	private boolean attackLeft;
 	private boolean isAttacking;
 	private int attackProgress;
+	private Thread attacking;
 	private Image image;
 
 	public Player(int x, int y) {
@@ -95,13 +96,9 @@ public class Player extends Entity {
 		}
 	}
 
-	private void updateAttackProgress(int value) {
-		try {
-			Thread.sleep(ATTACK_DELAY);
-			attackProgress += value;
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private void updateAttackProgress(int value) throws InterruptedException {
+		Thread.sleep(ATTACK_DELAY);
+		attackProgress += value;
 	}
 
 	private boolean isAttackHit() {
@@ -124,20 +121,32 @@ public class Player extends Entity {
 		return false;
 	}
 
-	private void attack() {
-		isAttacking = true;
-		Thread attacking = new Thread(() -> {
+	private void initAttackingThread() {
+		attacking = new Thread(() -> {
 			while (attackProgress <= ATTACK_RANGE) {
-				updateAttackProgress(ATTACK_SPEED);
+				try {
+					updateAttackProgress(ATTACK_SPEED);
+				} catch (InterruptedException e) {
+					break;
+				}
 				if (isAttackHit())
 					break;
 			}
 			while (attackProgress > 0) {
-				updateAttackProgress(-ATTACK_SPEED);
+				try {
+					updateAttackProgress(-ATTACK_SPEED);
+				} catch (InterruptedException e) {
+					break;
+				}
 			}
 			attackProgress = 0;
 			isAttacking = false;
 		});
+	}
+
+	private void attack() {
+		isAttacking = true;
+		initAttackingThread();
 		attacking.start();
 	}
 
@@ -164,6 +173,7 @@ public class Player extends Entity {
 
 		// if the player is dead
 		if (currentHealth == 0) {
+			attacking.interrupt();
 			Platform.exit();
 		}
 	}

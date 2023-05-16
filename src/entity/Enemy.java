@@ -21,9 +21,11 @@ public class Enemy extends Entity {
 	private boolean attackLeft;
 	private Thread attacking;
 	private Image image;
+	private Player player;
 
-	public Enemy(int x, int y) {
+	public Enemy(int x, int y, Player player) {
 		super(x, y, WIDTH, HEIGHT);
+		this.player = player;
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxHealth = 100;
@@ -80,7 +82,7 @@ public class Enemy extends Entity {
 		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
-	private boolean isAttackHit(Player player) {
+	private boolean isAttackHit() {
 		Rectangle2D.Double attackBox;
 		if (attackLeft) {
 			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.y + height / 2 - 5,
@@ -100,16 +102,15 @@ public class Enemy extends Entity {
 		attackProgress += value;
 	}
 
-	private void attack(Player player) {
-		isAttacking = true;
-		this.attacking = new Thread(() -> {
+	private void initAttackingThread() {
+		attacking = new Thread(() -> {
 			while (attackProgress <= ATTACK_RANGE) {
 				try {
 					updateAttackProgress(ATTACK_SPEED);
 				} catch (InterruptedException e) {
 					break;
 				}
-				if (isAttackHit(player))
+				if (isAttackHit())
 					break;
 			}
 			while (attackProgress > 0) {
@@ -122,7 +123,12 @@ public class Enemy extends Entity {
 			attackProgress = 0;
 			isAttacking = false;
 		});
-		this.attacking.start();
+	}
+
+	private void attack() {
+		isAttacking = true;
+		initAttackingThread();
+		attacking.start();
 	}
 
 	private boolean isInSight(Player player) {
@@ -131,7 +137,7 @@ public class Enemy extends Entity {
 		return enemySight.intersects(player.getHitbox());
 	}
 
-	private void updateXSpeed(Player player) {
+	private void updateXSpeed() {
 		if (isInSight(player)) {
 			if (player.getHitbox().x < hitbox.x && Helper.IsEntityOnFloor(
 					new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
@@ -165,20 +171,18 @@ public class Enemy extends Entity {
 		System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
-	public void update(Player player) {
-		updateXSpeed(player);
+	public void update() {
+		updateXSpeed();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
 		if (canAttack(player) && !isAttacking)
-			attack(player);
+			attack();
 
 		if (currentHealth == 0) {
 			isDestroy = true;
-			this.attacking.interrupt();
-			attackProgress = 0;
-			isAttacking = false;
+			attacking.interrupt();
 		}
 	}
 
