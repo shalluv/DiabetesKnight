@@ -2,16 +2,14 @@ package logic;
 
 import java.util.ArrayList;
 
-import application.CSVParser;
 import application.Main;
 import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import sharedObject.RenderableHolder;
-
-import static utils.Constants.PlayerConstants;
-import static utils.Constants.EnemyConstants;
-import static utils.Constants.Resolution;
+import utils.Constants.EnemyConstants;
+import utils.Constants.PlayerConstants;
+import utils.Constants.Resolution;
 
 public class GameLogic {
 
@@ -23,11 +21,8 @@ public class GameLogic {
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
 
-		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
-		Map map = new Map(mapData);
-		addAllObject(map.getMap());
-		player = new Player(PlayerConstants.ORIGIN_X, PlayerConstants.ORIGIN_Y);
-		enemy = new Enemy(EnemyConstants.ORIGIN_X, EnemyConstants.ORIGIN_Y);
+		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
+		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y);
 		addNewObject(player);
 		addNewObject(enemy);
 	}
@@ -44,17 +39,21 @@ public class GameLogic {
 	}
 
 	public void update() {
+		RenderableHolder.getInstance().update();
+
 		player.update();
 		enemy.update(player);
 		updateScreen();
 	}
 
 	private void updateScreen() {
-		if (player.getX() > Resolution.WIDTH / 2 && player.getX() + Resolution.WIDTH / 2 < Map.getWidth()) {
-			Main.gameScreen.setX(-(player.getX() - Resolution.WIDTH / 2));
+		int mapWidth = Main.mapManager.getMapWidth();
+		int mapHeight = Main.mapManager.getMapHeight();
+		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
+			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
 		}
-		if (player.getY() > Resolution.HEIGHT / 2 && player.getY() + Resolution.HEIGHT / 2 < Map.getHeight()) {
-			Main.gameScreen.setY(-(player.getY() - Resolution.HEIGHT / 2));
+		if (player.getHitbox().y > Resolution.HEIGHT / 2 && player.getHitbox().y + Resolution.HEIGHT / 2 < mapHeight) {
+			Main.gameScreen.setY(-((int) player.getHitbox().y - Resolution.HEIGHT / 2));
 		}
 	}
 }

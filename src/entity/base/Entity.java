@@ -1,15 +1,22 @@
 package entity.base;
 
+import java.awt.geom.Rectangle2D;
+
 import sharedObject.Renderable;
 
 public abstract class Entity implements Renderable {
 
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
+	protected int width;
+	protected int height;
+	protected Rectangle2D.Double hitbox;
 
-	public Entity(int x, int y) {
+	public Entity(double x, double y, int width, int height) {
 		this.x = x;
 		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
@@ -17,19 +24,15 @@ public abstract class Entity implements Renderable {
 		return false;
 	}
 
-	public int getX() {
-		return x;
-	}
-	
-	public int getY() {
-		return y;
+	public Rectangle2D.Double getHitbox() {
+		return hitbox;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setHitbox(Rectangle2D.Double hitbox) {
+		this.hitbox = hitbox;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void initHitbox(double x, double y, int width, int height) {
+		hitbox = new Rectangle2D.Double(x, y, width, height);
 	}
 }
