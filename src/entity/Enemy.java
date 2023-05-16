@@ -1,6 +1,7 @@
 package entity;
 
 import static utils.Constants.EnemyConstants.*;
+import static utils.Constants.PlayerConstants.WEIGHT;
 
 import java.awt.geom.Rectangle2D;
 
@@ -26,7 +27,7 @@ public class Enemy extends Entity {
 		maxHealth = 100;
 		currentHealth = 100;
 		isAttacking = false;
-		initHitbox(x, y + OFFSET_HITBOX_Y, width, height - OFFSET_HITBOX_Y);
+		initHitbox(x, y, width, height);
 		image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
@@ -39,7 +40,7 @@ public class Enemy extends Entity {
 			gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
-		//gc.drawImage(image, hitbox.x, hitbox.y, width, height);
+		// gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {
@@ -59,6 +60,10 @@ public class Enemy extends Entity {
 			yspeed += WEIGHT;
 		} else {
 			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
+			if (yspeed < 0) {
+				yspeed = 0;
+				yspeed += WEIGHT;
+			}
 		}
 	}
 
@@ -92,11 +97,11 @@ public class Enemy extends Entity {
 
 	private void updateXSpeed(Player player) {
 		if (isInSight(player)) {
-			if (player.getHitbox().x < hitbox.x
-					&& Helper.CanMoveHere(hitbox.x - 1, hitbox.y, hitbox.width, hitbox.height)) {
+			if (player.getHitbox().x < hitbox.x && Helper
+					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
-			} else if (player.getHitbox().x > hitbox.x
-					&& Helper.CanMoveHere(hitbox.x + 1, hitbox.y, hitbox.width, hitbox.height)) {
+			} else if (player.getHitbox().x > hitbox.x && Helper
+					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
 			} else {
 				xspeed = INITIAL_X_SPEED;
@@ -124,9 +129,9 @@ public class Enemy extends Entity {
 		if (isAttacking)
 			return;
 		updateXSpeed(player);
-		
+
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-		
+
 		move();
 		if (canAttack(player)) {
 			attack(player);

@@ -33,12 +33,12 @@ public class Constants {
 	public static class EnemyConstants {
 		public static final int INITIAL_X = 1200;
 		public static final int INITIAL_Y = 600;
-		public static final int WIDTH = 32;
-		public static final int HEIGHT = 20;
-		public static final double MAX_Y_SPEED = 16;
+		public static final int WIDTH = 40;
+		public static final int HEIGHT = 40;
+		public static final double MAX_Y_SPEED = 5;
 		public static final double BASE_X_SPEED = 1;
 		public static final double INITIAL_X_SPEED = 0;
-		public static final double INITIAL_Y_SPEED = 16;
+		public static final double INITIAL_Y_SPEED = 5;
 		public static final double WEIGHT = 1;
 		public static final int OFFSET_HITBOX_Y = 5;
 		public static final int ATTACK_RANGE = 8;
