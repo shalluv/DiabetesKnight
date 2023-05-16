@@ -15,8 +15,8 @@ public class Constants {
 	}
 
 	public static class PlayerConstants {
-		public static final int ORIGIN_X = 50;
-		public static final int ORIGIN_Y = 600;
+		public static final int INITIAL_X = 50;
+		public static final int INITIAL_Y = 600;
 		public static final int WIDTH = 45;
 		public static final int HEIGHT = 45;
 		public static final double MAX_Y_SPEED = 8;
@@ -30,8 +30,8 @@ public class Constants {
 	}
 
 	public static class EnemyConstants {
-		public static final int ORIGIN_X = 1200;
-		public static final int ORIGIN_Y = 600;
+		public static final int INITIAL_X = 1200;
+		public static final int INITIAL_Y = 600;
 		public static final int WIDTH = 32;
 		public static final int HEIGHT = 20;
 		public static final double MAX_Y_SPEED = 16;

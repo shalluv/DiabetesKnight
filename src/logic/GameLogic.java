@@ -25,8 +25,8 @@ public class GameLogic {
 		int[][] mapData = CSVParser.readCSV("res/csv/Level_1.csv");
 		Map map = new Map(mapData);
 		addAllObject(map.getMap());
-		player = new Player(PlayerConstants.ORIGIN_X, PlayerConstants.ORIGIN_Y);
-		enemy = new Enemy(EnemyConstants.ORIGIN_X, EnemyConstants.ORIGIN_Y);
+		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
+		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y);
 		addNewObject(player);
 		addNewObject(enemy);
 	}
