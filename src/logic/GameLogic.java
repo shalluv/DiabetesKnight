@@ -48,8 +48,8 @@ public class GameLogic {
 	}
 
 	private void updateScreen() {
-		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length * BlockConstants.SIZE;
-		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length * BlockConstants.SIZE;
+		int mapWidth = Main.mapManager.getMapWidth();
+		int mapHeight = Main.mapManager.getMapHeight();
 		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
 			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
 		}

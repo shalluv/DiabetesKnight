@@ -13,8 +13,8 @@ public class GameScreen extends StackPane {
 	private int y;
 
 	public GameScreen() {
-		int mapWidth = Main.mapManager.getCurrentMap().getMapData()[0].length * BlockConstants.SIZE;
-		int mapHeight = Main.mapManager.getCurrentMap().getMapData().length * BlockConstants.SIZE;
+		int mapWidth = Main.mapManager.getMapWidth();
+		int mapHeight = Main.mapManager.getMapHeight();
 		x = 0;
 		y = Resolution.HEIGHT - mapHeight;
 		setAlignment(Pos.TOP_LEFT);

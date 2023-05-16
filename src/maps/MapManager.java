@@ -42,4 +42,11 @@ public class MapManager {
 		return mapOne;
 	}
 
+	public int getMapWidth() {
+		return mapOne.getMapData()[0].length * BlockConstants.SIZE;
+	}
+
+	public int getMapHeight() {
+		return mapOne.getMapData().length * BlockConstants.SIZE;
+	}
 }
