@@ -34,20 +34,51 @@ public class Main extends Application {
 
 			stage.show();
 
-			AnimationTimer animation = new AnimationTimer() {
-				private long lastUpdate = 0;
+			Thread gameThread = new Thread(new Runnable() {
+				public void run() {
+					double timePerFrame = 1_000_000_000 / FPS;
+					double timePerUpdate = 1_000_000_000 / UPS;
 
-				@Override
-				public void handle(long now) {
-					if (now - lastUpdate >= 1_000_000_000 / FPS) {
-						gameScreen.drawComponent();
-						gameLogic.update();
-						RenderableHolder.getInstance().update();
-						lastUpdate = now;
+					long previousTime = System.nanoTime();
+
+					int frames = 0;
+					int updates = 0;
+					long lastCheck = System.currentTimeMillis();
+
+					double deltaU = 0;
+					double deltaF = 0;
+
+					while (true) {
+						long currentTime = System.nanoTime();
+
+						deltaU += (currentTime - previousTime) / timePerUpdate;
+						deltaF += (currentTime - previousTime) / timePerFrame;
+						previousTime = currentTime;
+
+						if (deltaU >= 1) {
+							gameLogic.update();
+							updates++;
+							deltaU--;
+						}
+
+						if (deltaF >= 1) {
+							gameScreen.drawComponent();
+							frames++;
+							deltaF--;
+						}
+
+						if (System.currentTimeMillis() - lastCheck >= 1000) {
+							lastCheck = System.currentTimeMillis();
+							System.out.println("FPS: " + frames + " | UPS: " + updates);
+							frames = 0;
+							updates = 0;
+						}
 					}
 				}
-			};
-			animation.start();
+			});
+ 
+			gameThread.start();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

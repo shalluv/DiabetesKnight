@@ -44,6 +44,8 @@ public class GameLogic {
 	}
 
 	public void update() {
+		RenderableHolder.getInstance().update();
+		
 		player.update();
 		enemy.update(player);
 		updateScreen();
