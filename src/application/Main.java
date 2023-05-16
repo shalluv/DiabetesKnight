@@ -16,6 +16,7 @@ public class Main extends Application {
 	public static GameScreen gameScreen;
 	public static GameLogic gameLogic;
 	public static MapManager mapManager;
+	private Thread gameThread;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -37,7 +38,7 @@ public class Main extends Application {
 
 			stage.show();
 
-			Thread gameThread = new Thread(new Runnable() {
+			this.gameThread = new Thread(new Runnable() {
 				public void run() {
 					double timePerFrame = 1_000_000_000 / FPS;
 					double timePerUpdate = 1_000_000_000 / UPS;
@@ -52,6 +53,8 @@ public class Main extends Application {
 					double deltaF = 0;
 
 					while (true) {
+						if(Thread.interrupted())
+							break;
 						long currentTime = System.nanoTime();
 
 						deltaU += (currentTime - previousTime) / timePerUpdate;
@@ -80,10 +83,15 @@ public class Main extends Application {
 				}
 			});
 
-			gameThread.start();
+			this.gameThread.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		this.gameThread.interrupt();
 	}
 }
