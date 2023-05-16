@@ -39,7 +39,7 @@ public class Enemy extends Entity {
 			gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
-		gc.drawImage(image, hitbox.x, hitbox.y, width, height);
+		//gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {

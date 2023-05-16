@@ -27,27 +27,31 @@ public class Helper {
 	}
 
 	public static float GetEntityXPosNextToWall(Rectangle2D.Double hitbox, double xspeed) {
-		int currentTile = (int) (hitbox.getMinX() / BlockConstants.SIZE);
 		if (xspeed > 0) {
 			// Right
+			int currentTile = (int) (hitbox.getMaxX() / BlockConstants.SIZE);
 			int tileXPos = currentTile * BlockConstants.SIZE;
 			int xOffset = (int) (40 - hitbox.getWidth());
 			return tileXPos + xOffset - 1;
-		} else
+		} else {
 			// Left
+			int currentTile = (int) (hitbox.getMinX() / BlockConstants.SIZE);
 			return currentTile * BlockConstants.SIZE;
+		}
 	}
 
 	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double hitbox, double ypeed) {
-		int currentTile = (int) (hitbox.getMinY() / BlockConstants.SIZE);
 		if (ypeed > 0) {
 			// Falling - touching floor
+			int currentTile = (int) (hitbox.getMaxY() / BlockConstants.SIZE);
 			int tileYPos = currentTile * BlockConstants.SIZE;
 			int yOffset = (int) (BlockConstants.SIZE - hitbox.getHeight());
 			return tileYPos + yOffset - 1;
-		} else
+		} else {
 			// Jumping
+			int currentTile = (int) (hitbox.getMinY() / BlockConstants.SIZE);
 			return currentTile * BlockConstants.SIZE;
+		}
 
 	}
 

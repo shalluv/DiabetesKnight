@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import utils.Helper;
 
 public class Player extends Entity {
@@ -24,7 +25,7 @@ public class Player extends Entity {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		initHitbox(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER, HEIGHT - OFFSET_HITBOX_Y);
+		initHitbox(x, y, WIDTH, HEIGHT);
 		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
 		currentHealth = 100;
@@ -32,7 +33,8 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(image, hitbox.x, hitbox.y, width, height);
+		gc.setFill(Color.BLACK);
+		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
 	private void setCurrentHealth(int value) {
@@ -69,6 +71,10 @@ public class Player extends Entity {
 			yspeed += WEIGHT;
 		} else {
 			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
+			if (yspeed < 0) {
+				yspeed = 0;
+				yspeed += WEIGHT;
+			}
 		}
 	}
 
