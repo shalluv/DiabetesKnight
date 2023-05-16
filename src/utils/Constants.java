@@ -1,8 +1,9 @@
 package utils;
 
 public class Constants {
-	public static final int FPS = 120;
+	public static final int FPS = 60;
 	public static final int UPS = 200;
+	public final static float SCALE = 1f;
 
 	public static class Resolution {
 		public static final int WIDTH = 1280;
@@ -10,8 +11,8 @@ public class Constants {
 	}
 
 	public static class BlockConstants {
-		public static final int WIDTH = 40;
-		public static final int HEIGHT = 40;
+		public static final int DEFAULT_SIZE = 40;
+		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
 	}
 
 	public static class PlayerConstants {

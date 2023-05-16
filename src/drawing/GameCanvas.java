@@ -1,5 +1,6 @@
 package drawing;
 
+import application.Main;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -8,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 import utils.Constants.Resolution;
+import utils.Loader;
 
 public class GameCanvas extends Canvas {
 
@@ -17,7 +19,7 @@ public class GameCanvas extends Canvas {
 		super(width, height);
 		setVisible(true);
 		addListener();
-		background = new Image("file:res/2_Background/Day/Background.png");
+		background = Loader.GetSpriteAtlas(Loader.BACKGROUND_ATLAS);
 	}
 
 	public void addListener() {
@@ -33,6 +35,7 @@ public class GameCanvas extends Canvas {
 	public void drawComponent(double layoutX, double layoutY) {
 		GraphicsContext gc = getGraphicsContext2D();
 		gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+		Main.mapManager.draw(gc);
 		// draw entities
 		for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 			if (!entity.isDestroyed()) {
