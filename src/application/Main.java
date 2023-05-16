@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import maps.MapManager;
+import ui.Menu;
 import utils.Constants.Resolution;
 
 public class Main extends Application {
@@ -16,7 +17,9 @@ public class Main extends Application {
 	public static GameScreen gameScreen;
 	public static GameLogic gameLogic;
 	public static MapManager mapManager;
+	public static int gameState;
 	private Thread gameThread;
+	public static Menu menu;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -25,9 +28,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
+			gameState = 0;
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
+			menu = new Menu();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
@@ -62,7 +67,7 @@ public class Main extends Application {
 						previousTime = currentTime;
 
 						if (deltaU >= 1) {
-							gameLogic.update();
+							update();
 							updates++;
 							deltaU--;
 						}
@@ -87,6 +92,19 @@ public class Main extends Application {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void update() {
+		switch(gameState) {
+		case 0:
+			menu.update();
+			break;
+		case 1:
+			gameLogic.update();
+			break;
+		default:
+			break;
 		}
 	}
 
