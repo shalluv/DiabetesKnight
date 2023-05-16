@@ -1,15 +1,6 @@
 package entity;
 
-import static utils.Constants.PlayerConstants.BASE_X_SPEED;
-import static utils.Constants.PlayerConstants.HEIGHT;
-import static utils.Constants.PlayerConstants.HITBOX_WIDTH_REDUCER;
-import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
-import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
-import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
-import static utils.Constants.PlayerConstants.OFFSET_HITBOX_X;
-import static utils.Constants.PlayerConstants.OFFSET_HITBOX_Y;
-import static utils.Constants.PlayerConstants.WEIGHT;
-import static utils.Constants.PlayerConstants.WIDTH;
+import static utils.Constants.PlayerConstants.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -41,7 +32,7 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(image, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void setCurrentHealth(int value) {
@@ -82,12 +73,8 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
-
-			if (!Helper.IsEntityOnFloor(hitbox)) {
-				jump();
-			}
-
+		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
+			jump();
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
@@ -97,11 +84,7 @@ public class Player extends Entity {
 			xspeed = 0;
 		}
 
-		if (yspeed < -MAX_Y_SPEED) {
-			yspeed = -MAX_Y_SPEED;
-		} else if (yspeed > MAX_Y_SPEED) {
-			yspeed = MAX_Y_SPEED;
-		}
+		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
 

@@ -38,7 +38,7 @@ public class Main extends Application {
 
 			stage.show();
 
-			this.gameThread = new Thread(new Runnable() {
+			gameThread = new Thread(new Runnable() {
 				public void run() {
 					double timePerFrame = 1_000_000_000 / FPS;
 					double timePerUpdate = 1_000_000_000 / UPS;
@@ -83,7 +83,7 @@ public class Main extends Application {
 				}
 			});
 
-			this.gameThread.start();
+			gameThread.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,6 +92,6 @@ public class Main extends Application {
 
 	@Override
 	public void stop() throws Exception {
-		this.gameThread.interrupt();
+		gameThread.interrupt();
 	}
 }

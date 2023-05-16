@@ -8,12 +8,7 @@ import utils.Constants.BlockConstants;
 public class Helper {
 
 	public static boolean CanMoveHere(double x, double y, double width, double height) {
-		if (!IsSolid(x, y))
-			if (!IsSolid(x + width, y + height))
-				if (!IsSolid(x + width, y))
-					if (!IsSolid(x, y + height))
-						return true;
-		return false;
+		return (!IsSolid(x, y) && !IsSolid(x + width, y + height) && !IsSolid(x + width, y) && !IsSolid(x, y + height));
 	}
 
 	private static boolean IsSolid(double x, double y) {
@@ -28,7 +23,7 @@ public class Helper {
 
 		int value = mapData[(int) yIndex][(int) xIndex];
 
-		return value <= 0;
+		return value > 0;
 	}
 
 	public static float GetEntityXPosNextToWall(Rectangle2D.Double hitbox, double xspeed) {

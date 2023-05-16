@@ -1,18 +1,6 @@
 package entity;
 
-import static utils.Constants.EnemyConstants.AFTER_ATTACK_DELAY;
-import static utils.Constants.EnemyConstants.ATTACK_DELAY;
-import static utils.Constants.EnemyConstants.ATTACK_RANGE;
-import static utils.Constants.EnemyConstants.BASE_X_SPEED;
-import static utils.Constants.EnemyConstants.DAMAGE;
-import static utils.Constants.EnemyConstants.HEIGHT;
-import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
-import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
-import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
-import static utils.Constants.EnemyConstants.OFFSET_HITBOX_Y;
-import static utils.Constants.EnemyConstants.SIGHT_SIZE;
-import static utils.Constants.EnemyConstants.WEIGHT;
-import static utils.Constants.EnemyConstants.WIDTH;
+import static utils.Constants.EnemyConstants.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -51,7 +39,7 @@ public class Enemy extends Entity {
 			gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
-		gc.drawImage(image, x, y, WIDTH, HEIGHT);
+		gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {
@@ -59,14 +47,13 @@ public class Enemy extends Entity {
 	}
 
 	private void move() {
-		hitbox.x += xspeed;
 		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
 			hitbox.x += xspeed;
 		} else {
 			hitbox.x = Helper.GetEntityXPosNextToWall(hitbox, xspeed);
 			jump();
 		}
-		// gravity
+
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
 			hitbox.y += yspeed;
 			yspeed += WEIGHT;
@@ -137,17 +124,13 @@ public class Enemy extends Entity {
 		if (isAttacking)
 			return;
 		updateXSpeed(player);
-		if (yspeed < -MAX_Y_SPEED) {
-			yspeed = -MAX_Y_SPEED;
-		} else if (yspeed > MAX_Y_SPEED) {
-			yspeed = MAX_Y_SPEED;
-		}
+		
+		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
+		
 		move();
 		if (canAttack(player)) {
 			attack(player);
 		}
-		hitbox.x = (int) x;
-		hitbox.y = (int) (y + OFFSET_HITBOX_Y);
 	}
 
 	@Override
