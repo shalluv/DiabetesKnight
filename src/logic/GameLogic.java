@@ -22,27 +22,36 @@ public class GameLogic {
 		this.gameObjectContainer = new ArrayList<>();
 
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
-		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y);
+		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player);
 		addNewObject(player);
 		addNewObject(enemy);
 	}
 
-	protected void addAllObject(ArrayList<Entity> entities) {
+	public void addAllObject(ArrayList<Entity> entities) {
 		for (Entity entity : entities) {
 			addNewObject(entity);
 		}
 	}
 
-	protected void addNewObject(Entity entity) {
+	public void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
+	}
+
+	public ArrayList<Entity> getGameObjectContainer() {
+		return gameObjectContainer;
 	}
 
 	public void update() {
 		RenderableHolder.getInstance().update();
 
-		player.update();
-		enemy.update(player);
+		for (int i = gameObjectContainer.size() - 1; i >= 0; --i) {
+			Entity entity = gameObjectContainer.get(i);
+			if (!entity.isDestroyed())
+				entity.update();
+			else
+				gameObjectContainer.remove(i);
+		}
 		updateScreen();
 	}
 

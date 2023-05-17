@@ -1,38 +1,58 @@
 package entity;
 
 import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.BulletConstants;
 
 import java.awt.geom.Rectangle2D;
 
+import application.Main;
 import entity.base.Entity;
 import input.InputUtility;
+import interfaces.Damageable;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import utils.Helper;
 
-public class Player extends Entity {
+public class Player extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
 	private double xspeed;
 	private double yspeed;
-	private Image image;
+	private boolean attackLeft;
+	private boolean isAttacking;
+	private int meleeAttackProgress;
+	private Thread attacking;
+	// private Image image;
+	private Rectangle2D.Double meleeAttackBox;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		initHitbox(x - OFFSET_HITBOX_X, y + OFFSET_HITBOX_Y, WIDTH - HITBOX_WIDTH_REDUCER, HEIGHT - OFFSET_HITBOX_Y);
-		image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		initHitbox(x, y, width, height);
+		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
+		isAttacking = false;
+		meleeAttackProgress = 0;
 		currentHealth = 100;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(image, hitbox.x, hitbox.y, width, height);
+		gc.setFill(Color.BLACK);
+		if (isAttacking) {
+			if (attackLeft) {
+				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
+			} else {
+				gc.fillRect(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress,
+						ATTACK_BOX_HEIGHT);
+			}
+		}
+		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
 	private void setCurrentHealth(int value) {
@@ -45,12 +65,12 @@ public class Player extends Entity {
 		}
 	}
 
+	@Override
 	public void receiveDamage(int damage) {
+		if (damage < 0)
+			damage = 0;
 		setCurrentHealth(currentHealth - damage);
-	}
-
-	public Rectangle2D.Double getHitbox() {
-		return hitbox;
+		System.out.println("player is now " + currentHealth + " hp");
 	}
 
 	private void jump() {
@@ -69,20 +89,137 @@ public class Player extends Entity {
 			yspeed += WEIGHT;
 		} else {
 			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
+			if (yspeed < 0) {
+				yspeed = 0;
+				yspeed += WEIGHT;
+			}
 		}
 	}
 
+	private void updateMeleeAttackProgress(int value) throws InterruptedException {
+		Thread.sleep(MELEE_ATTACK_DELAY);
+		meleeAttackProgress += value;
+	}
+
+	private void updateMeleeAttackBox() {
+		if (attackLeft) {
+			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress,
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress + hitbox.width / 2,
+					ATTACK_BOX_HEIGHT);
+		} else {
+			meleeAttackBox = new Rectangle2D.Double(hitbox.getMaxX(),
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress, ATTACK_BOX_HEIGHT);
+		}
+	}
+
+	private boolean isMeleeAttackingWall() {
+		if (attackLeft && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
+				meleeAttackBox.width, meleeAttackBox.height))
+			return true;
+		if (!attackLeft && !Helper.CanMoveHere(meleeAttackBox.x, meleeAttackBox.y,
+				meleeAttackBox.width + meleeAttackProgress, meleeAttackBox.height))
+			return true;
+		return false;
+	}
+
+	private boolean isMeleeAttackHit() {
+		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+			if (!entity.isDestroyed() && entity instanceof Enemy) {
+				Enemy enemy = (Enemy) entity;
+				if (meleeAttackBox.intersects(enemy.getHitbox())) {
+					enemy.receiveDamage(MELEE_DAMAGE);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void meleeAttackingLoop() {
+		boolean hit = false;
+		while (meleeAttackProgress <= MELEE_ATTACK_RANGE) {
+			try {
+				updateMeleeAttackProgress(MELEE_ATTACK_SPEED);
+			} catch (InterruptedException e) {
+				break;
+			}
+			updateMeleeAttackBox();
+			if (isMeleeAttackingWall())
+				break;
+			if (!hit && isMeleeAttackHit())
+				hit = true;
+		}
+	}
+
+	private void afterMeleeAttackLoop() {
+		while (meleeAttackProgress > 0) {
+			try {
+				updateMeleeAttackProgress(-MELEE_ATTACK_SPEED);
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
+	}
+
+	private void initMeleeAttackingThread() {
+		attacking = new Thread(() -> {
+			meleeAttackingLoop();
+			afterMeleeAttackLoop();
+			meleeAttackProgress = 0;
+			isAttacking = false;
+		});
+	}
+
+	private void meleeAttack() {
+		isAttacking = true;
+		initMeleeAttackingThread();
+		attacking.start();
+	}
+
+	private void initRangeAttackingThread() {
+		attacking = new Thread(() -> {
+			double bulletSpeed = BulletConstants.X_SPEED;
+			double bulletX = hitbox.getMaxX();
+			double bulletY = hitbox.y + (hitbox.height - BulletConstants.HEIGHT) / 2;
+			if (attackLeft) {
+				bulletSpeed = -bulletSpeed;
+				bulletX = hitbox.x - BulletConstants.WIDTH;
+			}
+			new Bullet(bulletX, bulletY, bulletSpeed);
+			try {
+				Thread.sleep(RANGE_ATTACK_DELAY);
+			} catch (InterruptedException e) {
+				System.out.println("range attacking thread interrupted");
+			}
+			isAttacking = false;
+		});
+	}
+
+	private void shoot() {
+		isAttacking = true;
+		initRangeAttackingThread();
+		attacking.start();
+	}
+
+	@Override
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
 			jump();
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
+			attackLeft = true;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
 			xspeed = BASE_X_SPEED;
+			attackLeft = false;
 		} else {
 			xspeed = 0;
 		}
+
+		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && !isAttacking)
+			meleeAttack();
+		if (InputUtility.isRightDown() && !isAttacking)
+			shoot();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
@@ -90,6 +227,8 @@ public class Player extends Entity {
 
 		// if the player is dead
 		if (currentHealth == 0) {
+			if (attacking != null)
+				attacking.interrupt();
 			Platform.exit();
 		}
 	}

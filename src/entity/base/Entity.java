@@ -10,6 +10,7 @@ public abstract class Entity implements Renderable {
 	protected double y;
 	protected int width;
 	protected int height;
+	protected boolean isDestroy;
 	protected Rectangle2D.Double hitbox;
 
 	public Entity(double x, double y, int width, int height) {
@@ -17,11 +18,14 @@ public abstract class Entity implements Renderable {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.isDestroy = false;
 	}
+
+	public abstract void update();
 
 	@Override
 	public boolean isDestroyed() {
-		return false;
+		return isDestroy;
 	}
 
 	public Rectangle2D.Double getHitbox() {
