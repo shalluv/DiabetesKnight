@@ -54,6 +54,7 @@ public class Player extends Entity implements Damageable {
 	private int animationsState;
 	private int frameCount;
 	private Image[] animations;
+	private Image dustAnimation;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -82,6 +83,7 @@ public class Player extends Entity implements Damageable {
 		animations[0] = Loader.GetSpriteAtlas(Loader.PLAYER_IDLE_ATLAS);
 		animations[1] = Loader.GetSpriteAtlas(Loader.PLAYER_RUN_ATLAS);
 		animations[2] = Loader.GetSpriteAtlas(Loader.PLAYER_JUMP_ATLAS);
+		dustAnimation = Loader.GetSpriteAtlas(Loader.DUST_ATLAS);
 	}
 
 	@Override
@@ -133,6 +135,9 @@ public class Player extends Entity implements Damageable {
 			}
 		}
 		gc.drawImage(animations[animationsState], animationsFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, 32, 32);
+		if(animationsState == 1) {
+			gc.drawImage(dustAnimation, animationsFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, 32, 32);
+		}
 	}
 
 	private void setCurrentHealth(int value) {
