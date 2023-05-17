@@ -2,6 +2,7 @@ package entity;
 
 import static utils.Constants.EnemyConstants.*;
 import static utils.Constants.Directions.*;
+import static utils.Constants.AttackState.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -22,7 +23,7 @@ public class Enemy extends Entity implements Damageable {
 	private int currentHealth;
 	private double xspeed;
 	private double yspeed;
-	private boolean isAttacking;
+	private int attackState;
 	private int attackProgress;
 	private int facingDirection;
 	private Rectangle2D.Double attackBox;
@@ -38,7 +39,7 @@ public class Enemy extends Entity implements Damageable {
 		yspeed = INITIAL_Y_SPEED;
 		maxHealth = 100;
 		currentHealth = 100;
-		isAttacking = false;
+		attackState = READY;
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
 		lootItem = new Sugar();
@@ -50,7 +51,7 @@ public class Enemy extends Entity implements Damageable {
 	public void draw(GraphicsContext gc) {
 //		 Hitbox Rect
 		gc.setFill(Color.RED);
-		if (isAttacking) {
+		if (attackState != READY) {
 			switch (facingDirection) {
 			case LEFT:
 				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
@@ -84,7 +85,7 @@ public class Enemy extends Entity implements Damageable {
 			hitbox.x += xspeed;
 		} else {
 			hitbox.x = Helper.GetEntityXPosNextToWall(hitbox, xspeed);
-			if (!isAttacking)
+			if (attackState == READY)
 				jump();
 		}
 
@@ -174,15 +175,16 @@ public class Enemy extends Entity implements Damageable {
 
 	private void initAttackingThread() {
 		attacking = new Thread(() -> {
+			attackState = IN_PROGRESS;
 			attackingLoop();
+			attackState = ON_COOLDOWN;
 			afterAttackLoop();
 			attackProgress = 0;
-			isAttacking = false;
+			attackState = READY;
 		});
 	}
 
 	private void attack() {
-		isAttacking = true;
 		initAttackingThread();
 		attacking.start();
 	}
@@ -234,7 +236,7 @@ public class Enemy extends Entity implements Damageable {
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
-		if (canAttack(player) && !isAttacking)
+		if (canAttack(player) && attackState == READY)
 			attack();
 
 		if (currentHealth == 0) {

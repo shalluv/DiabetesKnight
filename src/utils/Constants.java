@@ -35,6 +35,12 @@ public class Constants {
 		public static final int DOWN = 3;
 	}
 
+	public static class AttackState {
+		public static final int READY = 0;
+		public static final int IN_PROGRESS = 1;
+		public static final int ON_COOLDOWN = 2;
+	}
+
 	public static class PlayerConstants {
 		public static final int INITIAL_X = 50;
 		public static final int INITIAL_Y = 600;

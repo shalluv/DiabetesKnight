@@ -2,6 +2,7 @@ package entity;
 
 import static utils.Constants.PlayerConstants.*;
 import static utils.Constants.Directions.*;
+import static utils.Constants.AttackState.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -28,7 +29,7 @@ public class Player extends Entity implements Damageable {
 	private double xspeed;
 	private double yspeed;
 	private int facingDirection;
-	private boolean isAttacking;
+	private int attackState;
 	private int meleeAttackProgress;
 	private Thread attacking;
 	// private Image image;
@@ -43,20 +44,20 @@ public class Player extends Entity implements Damageable {
 		initHitbox(x, y, width, height);
 		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
 		maxHealth = 100;
-		isAttacking = false;
-		meleeAttackProgress = 0;
 		currentHealth = 100;
 		maxPower = 100;
 		currentPower = 0;
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
 		facingDirection = RIGHT;
+		attackState = READY;
+		meleeAttackProgress = 0;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		if (isAttacking) {
+		if (attackState != READY) {
 			switch (facingDirection) {
 			case LEFT:
 				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
@@ -187,21 +188,23 @@ public class Player extends Entity implements Damageable {
 
 	private void initMeleeAttackingThread() {
 		attacking = new Thread(() -> {
+			attackState = IN_PROGRESS;
 			meleeAttackingLoop();
+			attackState = ON_COOLDOWN;
 			afterMeleeAttackLoop();
 			meleeAttackProgress = 0;
-			isAttacking = false;
+			attackState = READY;
 		});
 	}
 
 	private void meleeAttack() {
-		isAttacking = true;
 		initMeleeAttackingThread();
 		attacking.start();
 	}
 
 	private void initRangeAttackingThread() {
 		attacking = new Thread(() -> {
+			attackState = IN_PROGRESS;
 			double bulletSpeed = BulletConstants.X_SPEED;
 			double bulletX = hitbox.getMaxX();
 			double bulletY = hitbox.y + (hitbox.height - BulletConstants.HEIGHT) / 2;
@@ -210,17 +213,17 @@ public class Player extends Entity implements Damageable {
 				bulletX = hitbox.x - BulletConstants.WIDTH;
 			}
 			new Bullet(bulletX, bulletY, bulletSpeed);
+			attackState = ON_COOLDOWN;
 			try {
 				Thread.sleep(RANGE_ATTACK_DELAY);
 			} catch (InterruptedException e) {
 				System.out.println("range attacking thread interrupted");
 			}
-			isAttacking = false;
+			attackState = READY;
 		});
 	}
 
 	private void shoot() {
-		isAttacking = true;
 		initRangeAttackingThread();
 		attacking.start();
 	}
@@ -277,9 +280,9 @@ public class Player extends Entity implements Damageable {
 
 		updateCurrentInventoryFocus();
 
-		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && !isAttacking)
+		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY)
 			meleeAttack();
-		if (InputUtility.isRightDown() && !isAttacking)
+		if (InputUtility.isRightDown() && attackState == READY)
 			shoot();
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			useItem();
