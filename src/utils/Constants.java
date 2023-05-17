@@ -47,6 +47,7 @@ public class Constants {
 		public static final int MELEE_ATTACK_DELAY = 50;
 		public static final int RANGE_ATTACK_DELAY = 500;
 		public static final int ATTACK_BOX_HEIGHT = 10;
+		public static final int INVENTORY_SIZE = 10;
 	}
 
 	public static class EnemyConstants {
@@ -73,5 +74,10 @@ public class Constants {
 		public static final int HEIGHT = 5;
 		public static final double X_SPEED = 5;
 		public static final int DAMAGE = 5;
+	}
+
+	public static class DroppedItemConstants {
+		public static final int WIDTH = 32;
+		public static final int HEIGHT = 32;
 	}
 }

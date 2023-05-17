@@ -1,6 +1,5 @@
 package entity;
 
-
 import entity.base.Entity;
 import item.Item;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,13 +9,13 @@ public class DroppedItem extends Entity {
 
 	private Item item;
 	private int yspeed = 8;
-	
+
 	public DroppedItem(double x, double y, int width, int height, Item item) {
 		super(x, y, width, height);
 		initHitbox(x, y, width, height);
 		this.item = item;
 	}
-	
+
 	private void fall() {
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + 1, hitbox.width, hitbox.height)) {
 			hitbox.y += 1;
@@ -45,7 +44,7 @@ public class DroppedItem extends Entity {
 	public void update() {
 		fall();
 	}
-	
+
 	public Item getItem() {
 		return item;
 	}

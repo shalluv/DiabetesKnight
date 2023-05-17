@@ -18,6 +18,8 @@ import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import interfaces.Damageable;
+import item.Item;
+import item.derived.Sugar;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -38,6 +40,7 @@ public class Enemy extends Entity implements Damageable {
 	private Thread attacking;
 	// private Image image;
 	private Player player;
+	private Item lootItem;
 
 	public Enemy(int x, int y, Player player) {
 		super(x, y, WIDTH, HEIGHT);
@@ -49,6 +52,7 @@ public class Enemy extends Entity implements Damageable {
 		isAttacking = false;
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
+		lootItem = new Sugar();
 		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
@@ -243,6 +247,10 @@ public class Enemy extends Entity implements Damageable {
 	@Override
 	public int getZ() {
 		return 1;
+	}
+
+	public Item getLootItem() {
+		return lootItem;
 	}
 
 }
