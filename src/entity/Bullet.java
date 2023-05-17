@@ -5,7 +5,6 @@ import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import sharedObject.RenderableHolder;
 import utils.Helper;
 import utils.Constants.BulletConstants;
 

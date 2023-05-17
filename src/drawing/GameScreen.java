@@ -25,20 +25,7 @@ public class GameScreen extends StackPane {
 	}
 
 	public void drawComponent() {
-		switch (Main.gameState) {
-		case 0:
-			setLayoutX(0);
-			setLayoutY(0);
-			gameCanvas.drawMenu();
-			break;
-		case 1:
-			gameCanvas.drawGame(x, y);
-			setLayoutX(x);
-			setLayoutY(y);
-			break;
-		default:
-			break;
-		}
+		gameCanvas.drawComponent(x, y, this);
 	}
 
 	public GameCanvas getCanvas() {
