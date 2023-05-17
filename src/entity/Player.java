@@ -1,19 +1,7 @@
 package entity;
 
-import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
-import static utils.Constants.PlayerConstants.BASE_X_SPEED;
-import static utils.Constants.PlayerConstants.HEIGHT;
-import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
-import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
-import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
-import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
-import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
-import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
-import static utils.Constants.PlayerConstants.WEIGHT;
-import static utils.Constants.PlayerConstants.WIDTH;
+import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.Directions.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -27,7 +15,6 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import utils.Constants.BlockConstants;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
@@ -40,7 +27,7 @@ public class Player extends Entity implements Damageable {
 	private int currentPower;
 	private double xspeed;
 	private double yspeed;
-	private boolean attackLeft;
+	private int facingDirection;
 	private boolean isAttacking;
 	private int meleeAttackProgress;
 	private Thread attacking;
@@ -63,18 +50,24 @@ public class Player extends Entity implements Damageable {
 		currentPower = 0;
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
+		facingDirection = RIGHT;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		if (isAttacking) {
-			if (attackLeft) {
+			switch (facingDirection) {
+			case LEFT:
 				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-			} else {
+				break;
+			case RIGHT:
 				gc.fillRect(hitbox.getMaxX() - hitbox.width / 2, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
+				break;
+			default:
+				break;
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -127,22 +120,27 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void updateMeleeAttackBox() {
-		if (attackLeft) {
+		switch (facingDirection) {
+		case LEFT:
 			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress + hitbox.width / 2,
 					ATTACK_BOX_HEIGHT);
-		} else {
+			break;
+		case RIGHT:
 			meleeAttackBox = new Rectangle2D.Double(hitbox.getMaxX() - hitbox.width / 2,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress + hitbox.width / 2,
 					ATTACK_BOX_HEIGHT);
+			break;
+		default:
+			break;
 		}
 	}
 
 	private boolean isMeleeAttackingWall() {
-		if (attackLeft && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
+		if (facingDirection == LEFT && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
 				meleeAttackBox.width, meleeAttackBox.height))
 			return true;
-		if (!attackLeft && !Helper.CanMoveHere(meleeAttackBox.x + hitbox.width / 2, meleeAttackBox.y,
+		if (facingDirection == RIGHT && !Helper.CanMoveHere(meleeAttackBox.x + hitbox.width / 2, meleeAttackBox.y,
 				meleeAttackBox.width + meleeAttackProgress - hitbox.width / 2, meleeAttackBox.height))
 			return true;
 		return false;
@@ -152,7 +150,7 @@ public class Player extends Entity implements Damageable {
 		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
-				if (meleeAttackBox.intersects(enemy.getHitbox())) {
+				if (meleeAttackBox.intersects(enemy.getHitbox()) && !Thread.interrupted()) {
 					enemy.receiveDamage(MELEE_DAMAGE);
 					return true;
 				}
@@ -207,7 +205,7 @@ public class Player extends Entity implements Damageable {
 			double bulletSpeed = BulletConstants.X_SPEED;
 			double bulletX = hitbox.getMaxX();
 			double bulletY = hitbox.y + (hitbox.height - BulletConstants.HEIGHT) / 2;
-			if (attackLeft) {
+			if (facingDirection == LEFT) {
 				bulletSpeed = -bulletSpeed;
 				bulletX = hitbox.x - BulletConstants.WIDTH;
 			}
@@ -269,10 +267,10 @@ public class Player extends Entity implements Damageable {
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
-			attackLeft = true;
+			facingDirection = LEFT;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
 			xspeed = BASE_X_SPEED;
-			attackLeft = false;
+			facingDirection = RIGHT;
 		} else {
 			xspeed = 0;
 		}

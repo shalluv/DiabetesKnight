@@ -1,18 +1,7 @@
 package entity;
 
-import static utils.Constants.EnemyConstants.ATTACK_BOX_HEIGHT;
-import static utils.Constants.EnemyConstants.BASE_X_SPEED;
-import static utils.Constants.EnemyConstants.HEIGHT;
-import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
-import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
-import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
-import static utils.Constants.EnemyConstants.MELEE_ATTACK_DELAY;
-import static utils.Constants.EnemyConstants.MELEE_ATTACK_RANGE;
-import static utils.Constants.EnemyConstants.MELEE_ATTACK_SPEED;
-import static utils.Constants.EnemyConstants.MELEE_DAMAGE;
-import static utils.Constants.EnemyConstants.SIGHT_SIZE;
-import static utils.Constants.EnemyConstants.WEIGHT;
-import static utils.Constants.EnemyConstants.WIDTH;
+import static utils.Constants.EnemyConstants.*;
+import static utils.Constants.Directions.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -35,7 +24,7 @@ public class Enemy extends Entity implements Damageable {
 	private double yspeed;
 	private boolean isAttacking;
 	private int attackProgress;
-	private boolean attackLeft;
+	private int facingDirection;
 	private Rectangle2D.Double attackBox;
 	private Thread attacking;
 	// private Image image;
@@ -53,6 +42,7 @@ public class Enemy extends Entity implements Damageable {
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
 		lootItem = new Sugar();
+		facingDirection = LEFT;
 		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
@@ -61,12 +51,17 @@ public class Enemy extends Entity implements Damageable {
 //		 Hitbox Rect
 		gc.setFill(Color.RED);
 		if (isAttacking) {
-			if (attackLeft) {
+			switch (facingDirection) {
+			case LEFT:
 				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-			} else {
+				break;
+			case RIGHT:
 				gc.fillRect(hitbox.getMaxX() - hitbox.width / 2, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
+				break;
+			default:
+				break;
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -112,29 +107,34 @@ public class Enemy extends Entity implements Damageable {
 	}
 
 	private void updateAttackBox() {
-		if (attackLeft) {
+		switch (facingDirection) {
+		case LEFT:
 			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
 					ATTACK_BOX_HEIGHT);
-		} else {
+			break;
+		case RIGHT:
 			attackBox = new Rectangle2D.Double(hitbox.getMaxX() - hitbox.width / 2,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
 					ATTACK_BOX_HEIGHT);
+			break;
+		default:
+			break;
 		}
 	}
 
 	private boolean isAttackingWall() {
-		if (attackLeft
+		if (facingDirection == LEFT
 				&& !Helper.CanMoveHere(attackBox.x - attackProgress, attackBox.y, attackBox.width, attackBox.height))
 			return true;
-		if (!attackLeft && !Helper.CanMoveHere(attackBox.x + hitbox.width / 2, attackBox.y,
+		if (facingDirection == RIGHT && !Helper.CanMoveHere(attackBox.x + hitbox.width / 2, attackBox.y,
 				attackBox.width - hitbox.width / 2 + attackProgress, attackBox.height))
 			return true;
 		return false;
 	}
 
 	private boolean isAttackHit() {
-		if (attackBox.intersects(player.getHitbox())) {
+		if (attackBox.intersects(player.getHitbox()) && !Thread.interrupted()) {
 			player.receiveDamage(MELEE_DAMAGE);
 			return true;
 		}
@@ -198,11 +198,11 @@ public class Enemy extends Entity implements Damageable {
 			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
-				attackLeft = true;
-			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2    && Helper
+				facingDirection = LEFT;
+			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2 && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
-				attackLeft = false;
+				facingDirection = RIGHT;
 			} else {
 				xspeed = INITIAL_X_SPEED;
 			}
