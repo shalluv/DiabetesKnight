@@ -15,7 +15,7 @@ public class Constants {
 		public static final int PLAYING = 1;
 		public static final int PAUSE = 2;
 	}
-	
+
 	public static class UI {
 		public static class GameOverlay {
 			public static final int OFFSET_HP_X = 30;

@@ -33,7 +33,7 @@ public class Main extends Application {
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
-			
+
 			MenuOverlay.loadResources();
 			PauseOverlay.loadResources();
 

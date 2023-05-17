@@ -66,7 +66,7 @@ public class Enemy extends Entity implements Damageable {
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		
+
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);

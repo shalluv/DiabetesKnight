@@ -18,7 +18,7 @@ import utils.Constants.Resolution;
 import utils.Loader;
 
 public class GameCanvas extends Canvas {
-	
+
 	private Image background;
 
 	public GameCanvas(double width, double height) {
