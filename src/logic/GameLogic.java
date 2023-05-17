@@ -3,12 +3,14 @@ package logic;
 import java.util.ArrayList;
 
 import application.Main;
+import entity.DroppedItem;
 import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import input.InputUtility;
 import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
+import utils.Constants.DroppedItemConstants;
 import utils.Constants.EnemyConstants;
 import utils.Constants.PlayerConstants;
 import utils.Constants.Resolution;
@@ -55,8 +57,13 @@ public class GameLogic {
 			Entity entity = gameObjectContainer.get(i);
 			if (!entity.isDestroyed())
 				entity.update();
-			else
+			else {
+				if (entity instanceof Enemy) {
+					addNewObject(new DroppedItem(entity.getHitbox().x, entity.getHitbox().y, DroppedItemConstants.WIDTH,
+							DroppedItemConstants.HEIGHT, ((Enemy) entity).getLootItem()));
+				}
 				gameObjectContainer.remove(i);
+			}
 		}
 		updateScreen();
 	}

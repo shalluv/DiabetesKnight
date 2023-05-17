@@ -5,6 +5,7 @@ import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
 import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
 import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
 import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
@@ -19,18 +20,24 @@ import java.awt.geom.Rectangle2D;
 import application.Main;
 import entity.base.Entity;
 import input.InputUtility;
+import interfaces.Consumable;
 import interfaces.Damageable;
+import item.Item;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import utils.Constants.BlockConstants;
 import utils.Constants.BulletConstants;
+import utils.Constants.Resolution;
 import utils.Helper;
 
 public class Player extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
+	private int maxPower;
+	private int currentPower;
 	private double xspeed;
 	private double yspeed;
 	private boolean attackLeft;
@@ -39,6 +46,8 @@ public class Player extends Entity implements Damageable {
 	private Thread attacking;
 	// private Image image;
 	private Rectangle2D.Double meleeAttackBox;
+	private Item[] inventory;
+	private int currentInventoryFocus;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -50,6 +59,10 @@ public class Player extends Entity implements Damageable {
 		isAttacking = false;
 		meleeAttackProgress = 0;
 		currentHealth = 100;
+		maxPower = 100;
+		currentPower = 0;
+		inventory = new Item[INVENTORY_SIZE];
+		currentInventoryFocus = 0;
 	}
 
 	@Override
@@ -213,6 +226,41 @@ public class Player extends Entity implements Damageable {
 		attacking.start();
 	}
 
+	private boolean addItem(Item item) {
+		for (int i = 0; i < INVENTORY_SIZE; ++i) {
+			if (inventory[i] == null) {
+				inventory[i] = item;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void pickUpItems() {
+		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+			if (!entity.isDestroyed() && entity instanceof DroppedItem) {
+				DroppedItem item = (DroppedItem) entity;
+				if (hitbox.intersects(item.getHitbox())) {
+					if (addItem(item.getItem())) {
+						item.setDestroy(true);
+					}
+				}
+			}
+		}
+	}
+
+	private void useItem() {
+		Item currentItem = inventory[currentInventoryFocus];
+		if (currentItem == null)
+			return;
+
+		if (currentItem instanceof Consumable) {
+			inventory[currentInventoryFocus] = null;
+
+			((Consumable) currentItem).consume();
+		}
+	}
+
 	@Override
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
@@ -228,14 +276,24 @@ public class Player extends Entity implements Damageable {
 			xspeed = 0;
 		}
 
+		updateCurrentInventoryFocus();
+
 		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && !isAttacking)
 			meleeAttack();
 		if (InputUtility.isRightDown() && !isAttacking)
 			shoot();
+		if (InputUtility.getKeyPressed(KeyCode.E)) {
+			useItem();
+		}
+		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
+
+		if (hitbox.y + hitbox.height >= Resolution.HEIGHT) {
+			currentHealth = 0;
+		}
 
 		// if the player is dead
 		if (currentHealth == 0) {
@@ -252,5 +310,59 @@ public class Player extends Entity implements Damageable {
 
 	public int getCurrentHealth() {
 		return currentHealth;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public int getMaxPower() {
+		return maxPower;
+	}
+
+	public int getCurrentPower() {
+		return currentPower;
+	}
+
+	public void setCurrentPower(int power) {
+		if (power > maxPower) {
+			currentPower = maxPower;
+		} else if (power < 0) {
+			currentPower = 0;
+		} else {
+			currentPower = power;
+		}
+	}
+
+	public Item[] getInventory() {
+		return inventory;
+	}
+
+	public int getCurrentInventoryFocus() {
+		return currentInventoryFocus;
+	}
+
+	public void updateCurrentInventoryFocus() {
+		if (InputUtility.getKeyPressed(KeyCode.DIGIT0)) {
+			currentInventoryFocus = 9;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT1)) {
+			currentInventoryFocus = 0;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT2)) {
+			currentInventoryFocus = 1;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT3)) {
+			currentInventoryFocus = 2;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT4)) {
+			currentInventoryFocus = 3;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT5)) {
+			currentInventoryFocus = 4;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT6)) {
+			currentInventoryFocus = 5;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT7)) {
+			currentInventoryFocus = 6;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT8)) {
+			currentInventoryFocus = 7;
+		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT9)) {
+			currentInventoryFocus = 8;
+		}
 	}
 }
