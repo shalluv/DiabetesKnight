@@ -31,6 +31,8 @@ public class Player extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
+	private int maxPower;
+	private int currentPower;
 	private double xspeed;
 	private double yspeed;
 	private boolean attackLeft;
@@ -50,6 +52,8 @@ public class Player extends Entity implements Damageable {
 		isAttacking = false;
 		meleeAttackProgress = 0;
 		currentHealth = 100;
+		maxPower = 100;
+		currentPower = 0;
 	}
 
 	@Override
@@ -213,6 +217,18 @@ public class Player extends Entity implements Damageable {
 		attacking.start();
 	}
 
+	private void pickUpItems() {
+		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+			if (!entity.isDestroyed() && entity instanceof DroppedItem) {
+				DroppedItem item = (DroppedItem) entity;
+				if (hitbox.intersects(item.getHitbox())) {
+					item.setDestroy(true);
+					setCurrentPower(currentPower + item.getItem().getPower());
+				}
+			}
+		}
+	}
+
 	@Override
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
@@ -232,6 +248,7 @@ public class Player extends Entity implements Damageable {
 			meleeAttack();
 		if (InputUtility.isRightDown() && !isAttacking)
 			shoot();
+		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
@@ -252,5 +269,27 @@ public class Player extends Entity implements Damageable {
 
 	public int getCurrentHealth() {
 		return currentHealth;
+	}
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public int getMaxPower() {
+		return maxPower;
+	}
+
+	public int getCurrentPower() {
+		return currentPower;
+	}
+
+	public void setCurrentPower(int power) {
+		if (power > maxPower) {
+			currentPower = maxPower;
+		} else if (power < 0) {
+			currentPower = 0;
+		} else {
+			currentPower = power;
+		}
 	}
 }

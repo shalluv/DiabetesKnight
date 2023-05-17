@@ -39,4 +39,8 @@ public abstract class Entity implements Renderable {
 	public void initHitbox(double x, double y, int width, int height) {
 		hitbox = new Rectangle2D.Double(x, y, width, height);
 	}
+
+	public void setDestroy(boolean isDestroy) {
+		this.isDestroy = isDestroy;
+	}
 }

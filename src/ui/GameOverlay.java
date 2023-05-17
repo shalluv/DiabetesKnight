@@ -12,18 +12,21 @@ import utils.Constants.UI;
 public class GameOverlay {
 
 	public void update() {
-
 	}
 
 	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
 		int currentHealth = GameLogic.player.getCurrentHealth();
+		int maxHealth = GameLogic.player.getMaxHealth();
+		int currentPower = GameLogic.player.getCurrentPower();
+		int maxPower = GameLogic.player.getMaxPower();
 
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
-		gc.fillText("Player HP : " + Integer.toString(currentHealth), UI.GameOverlay.OFFSET_HP_X - layoutX,
+		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth), UI.GameOverlay.OFFSET_HP_X - layoutX,
 				Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
+		gc.fillText("Power : " + Integer.toString(currentPower) + " / " + Integer.toString(maxPower), UI.GameOverlay.OFFSET_HP_X - layoutX,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY + 30);
 		gc.setFont(new Font(20));
-
 	}
 }

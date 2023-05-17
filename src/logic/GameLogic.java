@@ -3,10 +3,12 @@ package logic;
 import java.util.ArrayList;
 
 import application.Main;
+import entity.DroppedItem;
 import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
 import input.InputUtility;
+import item.derived.Sugar;
 import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
 import utils.Constants.EnemyConstants;
@@ -19,14 +21,18 @@ public class GameLogic {
 
 	public static Player player;
 	private Enemy enemy;
+	private DroppedItem item;
 
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
 
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
 		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player);
+		Sugar sugar = new Sugar();
+		item = new DroppedItem(500, 80, 32, 32, sugar);
 		addNewObject(player);
 		addNewObject(enemy);
+		addNewObject(item);
 	}
 
 	public void addAllObject(ArrayList<Entity> entities) {
