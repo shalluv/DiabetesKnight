@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
 
@@ -24,7 +25,7 @@ public class Pause {
 
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
-			Main.gameState = 1;
+			Main.gameState = GameState.MENU;
 		}
 	}
 

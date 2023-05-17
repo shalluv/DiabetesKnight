@@ -12,6 +12,7 @@ import maps.MapManager;
 import ui.Menu;
 import ui.Pause;
 import utils.Constants.Resolution;
+import utils.Constants.GameState;
 
 public class Main extends Application {
 
@@ -30,7 +31,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			gameState = 0;
+			gameState = GameState.MENU;
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
@@ -100,13 +101,13 @@ public class Main extends Application {
 	
 	public void update() {
 		switch(gameState) {
-		case 0:
+		case GameState.MENU:
 			menu.update();
 			break;
-		case 1:
+		case GameState.PLAYING:
 			gameLogic.update();
 			break;
-		case 2:
+		case GameState.PAUSE:
 			pause.update();
 		default:
 			break;

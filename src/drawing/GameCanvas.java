@@ -10,6 +10,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
+import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
 
@@ -50,13 +51,13 @@ public class GameCanvas extends Canvas {
 		GraphicsContext gc = getGraphicsContext2D();
 
 		switch (Main.gameState) {
-		case 0:
+		case GameState.MENU:
 			gameScreen.setLayoutX(0);
 			gameScreen.setLayoutY(0);
 
 			Main.menu.draw(gc);
 			break;
-		case 1:
+		case GameState.PLAYING:
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
 
@@ -69,7 +70,7 @@ public class GameCanvas extends Canvas {
 				}
 			}
 			break;
-		case 2:
+		case GameState.PAUSE:
 			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 			Main.mapManager.draw(gc);
 			// draw entities

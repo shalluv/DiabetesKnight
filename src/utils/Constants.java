@@ -9,6 +9,12 @@ public class Constants {
 		public static final int WIDTH = 1280;
 		public static final int HEIGHT = 960;
 	}
+	
+	public static class GameState {
+		public static final int MENU = 0;
+		public static final int PLAYING = 1;
+		public static final int PAUSE = 2;
+	}
 
 	public static class BlockConstants {
 		public static final int DEFAULT_SIZE = 40;
