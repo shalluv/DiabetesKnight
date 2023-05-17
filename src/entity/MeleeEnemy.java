@@ -32,7 +32,7 @@ public class MeleeEnemy extends Enemy {
 	private Player player;
 
 	public MeleeEnemy(double x, double y, Player player) {
-		super(x, y, WIDTH, HEIGHT);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		attackState = READY;
@@ -128,6 +128,12 @@ public class MeleeEnemy extends Enemy {
 			player.receiveDamage(MELEE_DAMAGE);
 			attackState = MELEE_HIT;
 		}
+	}
+
+	private boolean canAttack(Player player) {
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - MELEE_ATTACK_RANGE, hitbox.y,
+				WIDTH + 2 * MELEE_ATTACK_RANGE, HEIGHT);
+		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
 	private void updateMeleeAttack() {
