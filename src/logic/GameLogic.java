@@ -52,6 +52,7 @@ public class GameLogic {
 			return;
 		}
 		RenderableHolder.getInstance().update();
+		InputUtility.update();
 
 		for (int i = gameObjectContainer.size() - 1; i >= 0; --i) {
 			Entity entity = gameObjectContainer.get(i);

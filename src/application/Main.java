@@ -20,6 +20,7 @@ public class Main extends Application {
 	public static GameLogic gameLogic;
 	public static MapManager mapManager;
 	public static int gameState;
+	public static Stage gameStage;
 	private Thread gameThread;
 
 	public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class Main extends Application {
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
+			gameStage = stage;
 
 			MenuOverlay.loadResources();
 			PauseOverlay.loadResources();

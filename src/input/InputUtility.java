@@ -2,12 +2,16 @@ package input;
 
 import java.util.ArrayList;
 
+import application.Main;
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
+import javafx.scene.robot.Robot;
 
 public class InputUtility {
 	private static ArrayList<KeyCode> keyPressed = new ArrayList<>();
 	private static boolean isLeftDown = false;
 	private static boolean isRightDown = false;
+	private static double mouseX;
 
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
@@ -45,5 +49,20 @@ public class InputUtility {
 
 	public static boolean isRightDown() {
 		return isRightDown;
+	}
+
+	public static void setMouseX(double x) {
+		mouseX = x;
+	}
+
+	public static double getMouseX() {
+		return mouseX;
+	}
+
+	public static void update() {
+		Platform.runLater(() -> {
+			Robot robot = new Robot();
+			setMouseX(robot.getMouseX() - Main.gameScreen.getLayoutX() - Main.gameStage.getX());
+		});
 	}
 }

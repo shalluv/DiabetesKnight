@@ -25,7 +25,7 @@ public class Enemy extends Entity implements Damageable {
 	private double yspeed;
 	private int attackState;
 	private int attackProgress;
-	private int facingDirection;
+	private int attackDirection;
 	private Rectangle2D.Double attackBox;
 	private Thread attacking;
 	// private Image image;
@@ -43,7 +43,7 @@ public class Enemy extends Entity implements Damageable {
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
 		lootItem = new Sugar();
-		facingDirection = LEFT;
+		attackDirection = LEFT;
 		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
@@ -52,7 +52,7 @@ public class Enemy extends Entity implements Damageable {
 //		 Hitbox Rect
 		gc.setFill(Color.RED);
 		if (attackState != READY) {
-			switch (facingDirection) {
+			switch (attackDirection) {
 			case LEFT:
 				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
@@ -108,7 +108,7 @@ public class Enemy extends Entity implements Damageable {
 	}
 
 	private void updateAttackBox() {
-		switch (facingDirection) {
+		switch (attackDirection) {
 		case LEFT:
 			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
@@ -125,10 +125,10 @@ public class Enemy extends Entity implements Damageable {
 	}
 
 	private boolean isAttackingWall() {
-		if (facingDirection == LEFT
+		if (attackDirection == LEFT
 				&& !Helper.CanMoveHere(attackBox.x - attackProgress, attackBox.y, attackBox.width, attackBox.height))
 			return true;
-		if (facingDirection == RIGHT && !Helper.CanMoveHere(attackBox.x + hitbox.width / 2, attackBox.y,
+		if (attackDirection == RIGHT && !Helper.CanMoveHere(attackBox.x + hitbox.width / 2, attackBox.y,
 				attackBox.width - hitbox.width / 2 + attackProgress, attackBox.height))
 			return true;
 		return false;
@@ -200,11 +200,13 @@ public class Enemy extends Entity implements Damageable {
 			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
-				facingDirection = LEFT;
+				if (attackState == READY)
+					attackDirection = LEFT;
 			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2 && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
-				facingDirection = RIGHT;
+				if (attackState == READY)
+					attackDirection = RIGHT;
 			} else {
 				xspeed = INITIAL_X_SPEED;
 			}

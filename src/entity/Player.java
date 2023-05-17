@@ -4,6 +4,7 @@ import static utils.Constants.PlayerConstants.*;
 import static utils.Constants.Directions.*;
 import static utils.Constants.AttackState.*;
 
+import java.awt.MouseInfo;
 import java.awt.geom.Rectangle2D;
 
 import application.Main;
@@ -16,6 +17,8 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.robot.Robot;
+import javafx.stage.Stage;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
@@ -28,7 +31,7 @@ public class Player extends Entity implements Damageable {
 	private int currentPower;
 	private double xspeed;
 	private double yspeed;
-	private int facingDirection;
+	private int attackDirection;
 	private int attackState;
 	private int meleeAttackProgress;
 	private Thread attacking;
@@ -49,7 +52,6 @@ public class Player extends Entity implements Damageable {
 		currentPower = 0;
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
-		facingDirection = RIGHT;
 		attackState = READY;
 		meleeAttackProgress = 0;
 	}
@@ -57,8 +59,8 @@ public class Player extends Entity implements Damageable {
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		if (attackState != READY) {
-			switch (facingDirection) {
+		if (attackState != READY && meleeAttackProgress != 0) {
+			switch (attackDirection) {
 			case LEFT:
 				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
@@ -121,7 +123,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void updateMeleeAttackBox() {
-		switch (facingDirection) {
+		switch (attackDirection) {
 		case LEFT:
 			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress,
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, meleeAttackProgress + hitbox.width / 2,
@@ -138,10 +140,10 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private boolean isMeleeAttackingWall() {
-		if (facingDirection == LEFT && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
+		if (attackDirection == LEFT && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
 				meleeAttackBox.width, meleeAttackBox.height))
 			return true;
-		if (facingDirection == RIGHT && !Helper.CanMoveHere(meleeAttackBox.x + hitbox.width / 2, meleeAttackBox.y,
+		if (attackDirection == RIGHT && !Helper.CanMoveHere(meleeAttackBox.x + hitbox.width / 2, meleeAttackBox.y,
 				meleeAttackBox.width + meleeAttackProgress - hitbox.width / 2, meleeAttackBox.height))
 			return true;
 		return false;
@@ -208,7 +210,7 @@ public class Player extends Entity implements Damageable {
 			double bulletSpeed = BulletConstants.X_SPEED;
 			double bulletX = hitbox.getMaxX();
 			double bulletY = hitbox.y + (hitbox.height - BulletConstants.HEIGHT) / 2;
-			if (facingDirection == LEFT) {
+			if (attackDirection == LEFT) {
 				bulletSpeed = -bulletSpeed;
 				bulletX = hitbox.x - BulletConstants.WIDTH;
 			}
@@ -263,6 +265,13 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	private void updateAttackDirection() {
+		if (InputUtility.getMouseX() >= hitbox.x + hitbox.width / 2)
+			attackDirection = RIGHT;
+		else
+			attackDirection = LEFT;
+	}
+
 	@Override
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
@@ -270,18 +279,18 @@ public class Player extends Entity implements Damageable {
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
-			facingDirection = LEFT;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
 			xspeed = BASE_X_SPEED;
-			facingDirection = RIGHT;
 		} else {
 			xspeed = 0;
 		}
 
 		updateCurrentInventoryFocus();
 
-		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY)
+		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY) {
+			updateAttackDirection();
 			meleeAttack();
+		}
 		if (InputUtility.isRightDown() && attackState == READY)
 			shoot();
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
