@@ -1,7 +1,18 @@
 package entity;
 
-import static utils.Constants.PlayerConstants.*;
-import static utils.Constants.BulletConstants;
+import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.PlayerConstants.BASE_X_SPEED;
+import static utils.Constants.PlayerConstants.HEIGHT;
+import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
+import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
+import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
+import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
+import static utils.Constants.PlayerConstants.WEIGHT;
+import static utils.Constants.PlayerConstants.WIDTH;
 
 import java.awt.geom.Rectangle2D;
 
@@ -13,6 +24,7 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import utils.Constants.BulletConstants;
 import utils.Helper;
 
 public class Player extends Entity implements Damageable {

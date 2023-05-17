@@ -9,7 +9,7 @@ public class Constants {
 		public static final int WIDTH = 1280;
 		public static final int HEIGHT = 960;
 	}
-	
+
 	public static class GameState {
 		public static final int MENU = 0;
 		public static final int PLAYING = 1;

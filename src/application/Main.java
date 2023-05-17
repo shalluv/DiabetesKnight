@@ -11,8 +11,8 @@ import logic.GameLogic;
 import maps.MapManager;
 import ui.Menu;
 import ui.Pause;
-import utils.Constants.Resolution;
 import utils.Constants.GameState;
+import utils.Constants.Resolution;
 
 public class Main extends Application {
 
@@ -84,7 +84,7 @@ public class Main extends Application {
 
 						if (System.currentTimeMillis() - lastCheck >= 1000) {
 							lastCheck = System.currentTimeMillis();
-							 System.out.println("FPS: " + frames + " | UPS: " + updates);
+							System.out.println("FPS: " + frames + " | UPS: " + updates);
 							frames = 0;
 							updates = 0;
 						}
@@ -98,9 +98,9 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void update() {
-		switch(gameState) {
+		switch (gameState) {
 		case GameState.MENU:
 			menu.update();
 			break;

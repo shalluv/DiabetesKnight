@@ -1,6 +1,18 @@
 package entity;
 
-import static utils.Constants.EnemyConstants.*;
+import static utils.Constants.EnemyConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.EnemyConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.MELEE_ATTACK_DELAY;
+import static utils.Constants.EnemyConstants.MELEE_ATTACK_RANGE;
+import static utils.Constants.EnemyConstants.MELEE_ATTACK_SPEED;
+import static utils.Constants.EnemyConstants.MELEE_DAMAGE;
+import static utils.Constants.EnemyConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.WIDTH;
 
 import java.awt.geom.Rectangle2D;
 

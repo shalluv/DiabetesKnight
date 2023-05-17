@@ -5,8 +5,8 @@ import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import utils.Helper;
 import utils.Constants.BulletConstants;
+import utils.Helper;
 
 public class Bullet extends Entity {
 

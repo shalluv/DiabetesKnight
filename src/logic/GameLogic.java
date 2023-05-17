@@ -45,7 +45,7 @@ public class GameLogic {
 	}
 
 	public void update() {
-		if(InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
+		if (InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
 			Main.gameState = 2;
 			return;
 		}
