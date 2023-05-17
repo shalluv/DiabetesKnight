@@ -27,11 +27,13 @@ import interfaces.Damageable;
 import item.Item;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
+import utils.Loader;
 
 public class Player extends Entity implements Damageable {
 
@@ -45,17 +47,20 @@ public class Player extends Entity implements Damageable {
 	private boolean isAttacking;
 	private int meleeAttackProgress;
 	private Thread attacking;
-	// private Image image;
 	private Rectangle2D.Double meleeAttackBox;
 	private Item[] inventory;
 	private int currentInventoryFocus;
+	private int animationsFrame;
+	private int animationsState;
+	private int frameCount;
+	private Image[] animations;
 
 	public Player(int x, int y) {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
-		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		loadResources();
 		maxHealth = INITIAL_MAX_HEALTH;
 		currentHealth = INITIAL_MAX_HEALTH;
 
@@ -67,6 +72,16 @@ public class Player extends Entity implements Damageable {
 
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
+	}
+
+	private void loadResources() {
+		animations = new Image[3];
+		animationsFrame = 0;
+		frameCount = 0;
+		animationsState = 0;
+		animations[0] = Loader.GetSpriteAtlas(Loader.PLAYER_IDLE_ATLAS);
+		animations[1] = Loader.GetSpriteAtlas(Loader.PLAYER_RUN_ATLAS);
+		animations[2] = Loader.GetSpriteAtlas(Loader.PLAYER_JUMP_ATLAS);
 	}
 
 	@Override
@@ -81,7 +96,43 @@ public class Player extends Entity implements Damageable {
 						ATTACK_BOX_HEIGHT);
 			}
 		}
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+//		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		
+		frameCount++;
+		if (!Helper.IsEntityOnFloor(hitbox)) {
+			if (animationsState != 2)
+				animationsFrame = 0;
+			animationsState = 2;
+		} else if (Math.abs(xspeed) > 0) {
+			if (animationsState != 1)
+				animationsFrame = 0;
+			animationsState = 1;
+		} else {
+			if (animationsState != 0)
+				animationsFrame = 0;
+			animationsState = 0;
+		}
+		if (frameCount > 8) {
+			frameCount -= 8;
+			animationsFrame++;
+			switch (animationsState) {
+			case 0:
+				animationsFrame %= 4;
+				break;
+			case 1:
+				animationsFrame %= 6;
+				break;
+			case 2:
+				if (yspeed > 0) {
+					animationsFrame = Math.min(6, animationsFrame);
+				} else {
+					animationsFrame = Math.min(3, animationsFrame);
+				}
+			default:
+				break;
+			}
+		}
+		gc.drawImage(animations[animationsState], animationsFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, 32, 32);
 	}
 
 	private void setCurrentHealth(int value) {

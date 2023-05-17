@@ -2,7 +2,7 @@ package utils;
 
 public class Constants {
 	public static final int FPS = 60;
-	public static final int UPS = 200;
+	public static final int UPS = 150;
 	public final static float SCALE = 1f;
 
 	public static class Resolution {
@@ -37,8 +37,8 @@ public class Constants {
 	public static class PlayerConstants {
 		public static final int INITIAL_X = 50;
 		public static final int INITIAL_Y = 600;
-		public static final int WIDTH = 40;
-		public static final int HEIGHT = 40;
+		public static final int WIDTH = 32;
+		public static final int HEIGHT = 32;
 		public static final double MAX_Y_SPEED = 8;
 		public static final double BASE_X_SPEED = 3;
 		public static final double INITIAL_X_SPEED = 0;
