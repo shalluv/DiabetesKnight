@@ -3,6 +3,8 @@ package entity;
 import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
+import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.PlayerConstants.INITIAL_MAX_POWER;
 import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
 import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
 import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
@@ -27,7 +29,6 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import utils.Constants.BlockConstants;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
@@ -55,12 +56,15 @@ public class Player extends Entity implements Damageable {
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
 		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
-		maxHealth = 100;
+		maxHealth = INITIAL_MAX_HEALTH;
+		currentHealth = INITIAL_MAX_HEALTH;
+
+		maxPower = INITIAL_MAX_POWER;
+		currentPower = 0;
+
 		isAttacking = false;
 		meleeAttackProgress = 0;
-		currentHealth = 100;
-		maxPower = 100;
-		currentPower = 0;
+
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
 	}
@@ -296,7 +300,7 @@ public class Player extends Entity implements Damageable {
 		}
 
 		// if the player is dead
-		if (currentHealth == 0) {
+		if (currentHealth <= 0) {
 			if (attacking != null)
 				attacking.interrupt();
 			Platform.exit();

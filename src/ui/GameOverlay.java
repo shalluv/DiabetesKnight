@@ -30,7 +30,7 @@ public class GameOverlay {
 		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth),
 				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
 		gc.fillText("Power : " + Integer.toString(currentPower) + " / " + Integer.toString(maxPower),
-				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY + 30);
+				UI.GameOverlay.OFFSET_POWER_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
 
 		Item[] inventory = GameLogic.player.getInventory();
 		int currentInventoryFocus = GameLogic.player.getCurrentInventoryFocus();
@@ -41,20 +41,31 @@ public class GameOverlay {
 			} else {
 				gc.setStroke(Color.WHITE);
 			}
-			gc.strokeRect((Resolution.WIDTH / 2) + ((i - 4) * 50) - layoutX,
-					Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY, BlockConstants.SIZE, BlockConstants.SIZE);
+			gc.strokeRect((Resolution.WIDTH / 2)
+					+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP) - layoutX,
+					Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY, BlockConstants.SIZE,
+					BlockConstants.SIZE);
 
+			// Items
 			if (inventory[i] != null) {
 				gc.setFill(inventory[i].getColor());
-				gc.fillRect((Resolution.WIDTH / 2) + ((i - 4) * 50) - layoutX + 2,
-						Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY + 2, 36, 36);
+				gc.fillRect(
+						(Resolution.WIDTH / 2)
+								+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
+								- layoutX + UI.GameOverlay.INVENTORY_PADDING,
+						Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY
+								+ UI.GameOverlay.INVENTORY_PADDING,
+						UI.GameOverlay.ITEM_SIZE, UI.GameOverlay.ITEM_SIZE);
 			}
 
 			// Numbering
 			gc.setFill(Color.WHITE);
 			gc.setTextAlign(TextAlignment.RIGHT);
 			gc.setTextBaseline(VPos.BOTTOM);
-			gc.fillText(Integer.toString(i + 1), (Resolution.WIDTH / 2) + ((i - 4) * 50) - layoutX + 40,
+			gc.fillText(Integer.toString(i + 1),
+					(Resolution.WIDTH / 2)
+							+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
+							- layoutX + BlockConstants.SIZE,
 					Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
 
 		}
