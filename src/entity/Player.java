@@ -97,7 +97,7 @@ public class Player extends Entity implements Damageable {
 			}
 		}
 //		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		
+
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
 			if (animationsState != 2)
