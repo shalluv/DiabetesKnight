@@ -71,11 +71,13 @@ public class GameLogic {
 	private void updateScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
 		int mapHeight = Main.mapManager.getMapHeight();
-		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
-			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
+		double x = player.getHitbox().x + player.getHitbox().width / 2;
+		double y = player.getHitbox().y + player.getHitbox().height / 2;
+		if (x >= Resolution.WIDTH / 2 && x + Resolution.WIDTH / 2 < mapWidth) {
+			Main.gameScreen.setX(-(x - Resolution.WIDTH / 2));
 		}
-		if (player.getHitbox().y > Resolution.HEIGHT / 2 && player.getHitbox().y + Resolution.HEIGHT / 2 < mapHeight) {
-			Main.gameScreen.setY(-((int) player.getHitbox().y - Resolution.HEIGHT / 2));
+		if (y >= Resolution.HEIGHT / 2 && y + Resolution.HEIGHT / 2 < mapHeight) {
+			Main.gameScreen.setY(-(y - Resolution.HEIGHT / 2));
 		}
 	}
 }

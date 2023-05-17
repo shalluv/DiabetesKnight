@@ -65,8 +65,8 @@ public class Enemy extends Entity implements Damageable {
 				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			} else {
-				gc.fillRect(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress,
-						ATTACK_BOX_HEIGHT);
+				gc.fillRect(hitbox.getMaxX() - hitbox.width / 2, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -117,8 +117,9 @@ public class Enemy extends Entity implements Damageable {
 					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
 					ATTACK_BOX_HEIGHT);
 		} else {
-			attackBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
-					attackProgress, ATTACK_BOX_HEIGHT);
+			attackBox = new Rectangle2D.Double(hitbox.getMaxX() - hitbox.width / 2,
+					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
+					ATTACK_BOX_HEIGHT);
 		}
 	}
 
@@ -126,8 +127,8 @@ public class Enemy extends Entity implements Damageable {
 		if (attackLeft
 				&& !Helper.CanMoveHere(attackBox.x - attackProgress, attackBox.y, attackBox.width, attackBox.height))
 			return true;
-		if (!attackLeft
-				&& !Helper.CanMoveHere(attackBox.x, attackBox.y, attackBox.width + attackProgress, attackBox.height))
+		if (!attackLeft && !Helper.CanMoveHere(attackBox.x + hitbox.width / 2, attackBox.y,
+				attackBox.width - hitbox.width / 2 + attackProgress, attackBox.height))
 			return true;
 		return false;
 	}
