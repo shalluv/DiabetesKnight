@@ -195,17 +195,16 @@ public class Enemy extends Entity implements Damageable {
 
 	private void updateXSpeed() {
 		if (isInSight(player)) {
-			if (player.getHitbox().x < hitbox.x && Helper.IsEntityOnFloor(
-					new Rectangle2D.Double(hitbox.getMinX() - WIDTH, hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
+			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
+					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
 				attackLeft = true;
-			} else if (player.getHitbox().x > hitbox.x && Helper
-					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 5 * WIDTH, WIDTH, HEIGHT))) {
+			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2    && Helper
+					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
 				attackLeft = false;
 			} else {
 				xspeed = INITIAL_X_SPEED;
-				attackLeft = true;
 			}
 		} else {
 			xspeed = INITIAL_X_SPEED;
