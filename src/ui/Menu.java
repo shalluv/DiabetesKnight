@@ -25,7 +25,7 @@ public class Menu {
 
 	public void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
-			Main.gameState = GameState.MENU;
+			Main.gameState = GameState.PLAYING;
 		}
 	}
 
