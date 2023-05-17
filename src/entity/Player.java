@@ -31,7 +31,7 @@ public class Player extends Entity implements Damageable {
 	private int attackDirection;
 	private int attackState;
 	private int meleeAttackProgress;
-	private Thread attacking;
+	private Thread attackCooldown;
 	// private Image image;
 	private Rectangle2D.Double meleeAttackBox;
 	private Item[] inventory;
@@ -114,11 +114,6 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
-	private void updateMeleeAttackProgress(int value) throws InterruptedException {
-		Thread.sleep(MELEE_ATTACK_DELAY);
-		meleeAttackProgress += value;
-	}
-
 	private void updateMeleeAttackBox() {
 		switch (attackDirection) {
 		case LEFT:
@@ -146,80 +141,82 @@ public class Player extends Entity implements Damageable {
 		return false;
 	}
 
-	private boolean isMeleeAttackHit() {
+	private void checkAttackHit() {
 		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
 				if (meleeAttackBox.intersects(enemy.getHitbox()) && !Thread.interrupted()) {
 					enemy.receiveDamage(MELEE_DAMAGE);
-					return true;
+					attackState = MELEE_HIT;
+					return;
 				}
 			}
 		}
-		return false;
 	}
 
-	private void meleeAttackingLoop() {
-		boolean hit = false;
-		while (meleeAttackProgress <= MELEE_ATTACK_RANGE) {
+	private void initAttackCooldown(int delay) {
+		attackCooldown = new Thread(() -> {
 			try {
-				updateMeleeAttackProgress(MELEE_ATTACK_SPEED);
+				Thread.sleep(delay);
 			} catch (InterruptedException e) {
-				break;
+				System.out.println("melee cooldown interrupted");
+			}
+		});
+	}
+
+	private void updateMeleeAttack() {
+		if (attackCooldown != null && attackCooldown.isAlive())
+			return;
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
+			if (meleeAttackProgress < MELEE_ATTACK_RANGE) {
+				if (attackCooldown == null || !attackCooldown.isAlive())
+					initAttackCooldown(MELEE_ATTACK_DELAY);
+				meleeAttackProgress += MELEE_ATTACK_SPEED;
 			}
 			updateMeleeAttackBox();
-			if (isMeleeAttackingWall())
-				break;
-			if (!hit && isMeleeAttackHit())
-				hit = true;
-		}
-	}
-
-	private void afterMeleeAttackLoop() {
-		while (meleeAttackProgress > 0) {
-			try {
-				updateMeleeAttackProgress(-MELEE_ATTACK_SPEED);
-			} catch (InterruptedException e) {
-				break;
+			if (isMeleeAttackingWall()) {
+				meleeAttackProgress -= MELEE_ATTACK_SPEED;
+				attackState = MELEE_ON_COOLDOWN;
+			}
+			if (attackState != MELEE_HIT)
+				checkAttackHit();
+			attackCooldown.start();
+			if (meleeAttackProgress >= MELEE_ATTACK_RANGE)
+				attackState = MELEE_ON_COOLDOWN;
+		} else if (attackState == MELEE_ON_COOLDOWN) {
+			if (meleeAttackProgress > 0) {
+				if (attackCooldown == null || !attackCooldown.isAlive())
+					initAttackCooldown(MELEE_ATTACK_DELAY);
+				meleeAttackProgress -= MELEE_ATTACK_SPEED;
+				attackCooldown.start();
+			} else {
+				attackCooldown = null;
+				meleeAttackProgress = 0;
+				attackState = READY;
 			}
 		}
-	}
-
-	private void initMeleeAttackingThread() {
-		attacking = new Thread(() -> {
-			meleeAttackingLoop();
-			attackState = ON_COOLDOWN;
-			afterMeleeAttackLoop();
-			meleeAttackProgress = 0;
-			attackState = READY;
-		});
 	}
 
 	private void meleeAttack() {
-		initMeleeAttackingThread();
-		attackState = IN_PROGRESS;
-		attacking.start();
+		attackState = MELEE_IN_PROGRESS;
 	}
 
-	private void initRangeAttackingThread() {
-		attacking = new Thread(() -> {
-			double bulletX = hitbox.x + hitbox.width / 2 - BulletConstants.WIDTH / 2;
-			double bulletY = hitbox.y + hitbox.height / 2 - BulletConstants.HEIGHT / 2;
+	private void updateShoot() {
+		if (attackState == RANGED_IN_PROGRESS) {
+			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
+			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
 			new Bullet(bulletX, bulletY, InputUtility.getMouseX(), InputUtility.getMouseY(), this);
-			attackState = ON_COOLDOWN;
-			try {
-				Thread.sleep(RANGE_ATTACK_DELAY);
-			} catch (InterruptedException e) {
-				System.out.println("range attacking thread interrupted");
-			}
+			initAttackCooldown(RANGED_ATTACK_DELAY);
+			attackCooldown.start();
+			attackState = RANGED_ON_COOLDOWN;
+		} else if (attackState == RANGED_ON_COOLDOWN && !attackCooldown.isAlive()) {
+			attackCooldown = null;
 			attackState = READY;
-		});
+		}
 	}
 
 	private void shoot() {
-		initRangeAttackingThread();
-		attackState = IN_PROGRESS;
-		attacking.start();
+		attackState = RANGED_IN_PROGRESS;
 	}
 
 	private boolean addItem(Item item) {
@@ -278,6 +275,11 @@ public class Player extends Entity implements Damageable {
 		}
 
 		updateCurrentInventoryFocus();
+
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == MELEE_ON_COOLDOWN)
+			updateMeleeAttack();
+		if (attackState == RANGED_IN_PROGRESS || attackState == RANGED_ON_COOLDOWN)
+			updateShoot();
 		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY) {
 			updateAttackDirection();
 			meleeAttack();
@@ -300,8 +302,8 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth == 0) {
-			if (attacking != null)
-				attacking.interrupt();
+			if (attackCooldown != null)
+				attackCooldown.interrupt();
 			Platform.exit();
 		}
 	}

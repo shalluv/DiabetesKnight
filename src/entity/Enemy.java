@@ -1,6 +1,9 @@
 package entity;
 
 import static utils.Constants.EnemyConstants.*;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
 import static utils.Constants.Directions.*;
 import static utils.Constants.AttackState.*;
 
@@ -27,7 +30,7 @@ public class Enemy extends Entity implements Damageable {
 	private int attackProgress;
 	private int attackDirection;
 	private Rectangle2D.Double attackBox;
-	private Thread attacking;
+	private Thread attackCooldown;
 	// private Image image;
 	private Player player;
 	private Item lootItem;
@@ -134,59 +137,58 @@ public class Enemy extends Entity implements Damageable {
 		return false;
 	}
 
-	private boolean isAttackHit() {
+	private void checkAttackHit() {
 		if (attackBox.intersects(player.getHitbox()) && !Thread.interrupted()) {
 			player.receiveDamage(MELEE_DAMAGE);
-			return true;
+			attackState = MELEE_HIT;
 		}
-		return false;
 	}
 
-	private void updateAttackProgress(int value) throws InterruptedException {
-		Thread.sleep(MELEE_ATTACK_DELAY);
-		attackProgress += value;
-	}
-
-	private void attackingLoop() {
-		boolean hit = false;
-		while (attackProgress <= MELEE_ATTACK_RANGE) {
+	private void initAttackCooldown(int delay) {
+		attackCooldown = new Thread(() -> {
 			try {
-				updateAttackProgress(MELEE_ATTACK_SPEED);
+				Thread.sleep(delay);
 			} catch (InterruptedException e) {
-				break;
+				System.out.println("melee cooldown interrupted");
 			}
-			updateAttackBox();
-			if (isAttackingWall())
-				break;
-			if (!hit && isAttackHit())
-				hit = true;
-		}
-	}
-
-	private void afterAttackLoop() {
-		while (attackProgress > 0) {
-			try {
-				updateAttackProgress(-MELEE_ATTACK_SPEED);
-			} catch (InterruptedException e) {
-				break;
-			}
-		}
-	}
-
-	private void initAttackingThread() {
-		attacking = new Thread(() -> {
-			attackState = IN_PROGRESS;
-			attackingLoop();
-			attackState = ON_COOLDOWN;
-			afterAttackLoop();
-			attackProgress = 0;
-			attackState = READY;
 		});
 	}
 
+	private void updateMeleeAttack() {
+		if (attackCooldown != null && attackCooldown.isAlive())
+			return;
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
+			if (attackProgress < MELEE_ATTACK_RANGE) {
+				if (attackCooldown == null || !attackCooldown.isAlive())
+					initAttackCooldown(MELEE_ATTACK_DELAY);
+				attackProgress += MELEE_ATTACK_SPEED;
+			}
+			updateAttackBox();
+			if (isAttackingWall()) {
+				attackProgress -= MELEE_ATTACK_SPEED;
+				attackState = MELEE_ON_COOLDOWN;
+			}
+			if (attackState != MELEE_HIT)
+				checkAttackHit();
+			attackCooldown.start();
+			if (attackProgress >= MELEE_ATTACK_RANGE)
+				attackState = MELEE_ON_COOLDOWN;
+		} else if (attackState == MELEE_ON_COOLDOWN) {
+			if (attackProgress > 0) {
+				if (attackCooldown == null || !attackCooldown.isAlive())
+					initAttackCooldown(MELEE_ATTACK_DELAY);
+				attackProgress -= MELEE_ATTACK_SPEED;
+				attackCooldown.start();
+			} else {
+				attackCooldown = null;
+				attackProgress = 0;
+				attackState = READY;
+			}
+		}
+	}
+
 	private void attack() {
-		initAttackingThread();
-		attacking.start();
+		attackState = MELEE_IN_PROGRESS;
 	}
 
 	private boolean isInSight(Player player) {
@@ -200,13 +202,9 @@ public class Enemy extends Entity implements Damageable {
 			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
-				if (attackState == READY)
-					attackDirection = LEFT;
 			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2 && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
-				if (attackState == READY)
-					attackDirection = RIGHT;
 			} else {
 				xspeed = INITIAL_X_SPEED;
 			}
@@ -231,20 +229,32 @@ public class Enemy extends Entity implements Damageable {
 		System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
+	private void updateAttackDirection() {
+		double playerCenterX = player.getHitbox().getCenterX();
+		double enemyCenterX = hitbox.getCenterX();
+		if (playerCenterX < enemyCenterX)
+			attackDirection = LEFT;
+		else
+			attackDirection = RIGHT;
+	}
+
 	@Override
 	public void update() {
 		updateXSpeed();
+		updateAttackDirection();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == MELEE_ON_COOLDOWN)
+			updateMeleeAttack();
 		if (canAttack(player) && attackState == READY)
 			attack();
 
 		if (currentHealth == 0) {
 			isDestroy = true;
-			if (attacking != null)
-				attacking.interrupt();
+			if (attackCooldown != null)
+				attackCooldown.interrupt();
 		}
 	}
 
