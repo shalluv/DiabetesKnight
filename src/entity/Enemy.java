@@ -3,6 +3,7 @@ package entity;
 import static utils.Constants.EnemyConstants.ATTACK_BOX_HEIGHT;
 import static utils.Constants.EnemyConstants.BASE_X_SPEED;
 import static utils.Constants.EnemyConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.INITIAL_MAX_HEALTH;
 import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
 import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
 import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
@@ -47,8 +48,10 @@ public class Enemy extends Entity implements Damageable {
 		this.player = player;
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		maxHealth = 100;
-		currentHealth = 100;
+
+		maxHealth = INITIAL_MAX_HEALTH;
+		currentHealth = INITIAL_MAX_HEALTH;
+
 		isAttacking = false;
 		attackProgress = 0;
 		initHitbox(x, y, width, height);

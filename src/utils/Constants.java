@@ -73,6 +73,7 @@ public class Constants {
 		public static final int MELEE_ATTACK_DELAY = 50;
 		public static final int SIGHT_SIZE = 800;
 		public static final int ATTACK_BOX_HEIGHT = 10;
+		public static final int INITIAL_MAX_HEALTH = 100;
 	}
 
 	public static class BulletConstants {

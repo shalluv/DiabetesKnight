@@ -13,9 +13,9 @@ public class Helper {
 
 	private static boolean IsSolid(double x, double y) {
 		int[][] mapData = Main.mapManager.getCurrentMap().getMapData();
-		if (x < 0 || x >= BlockConstants.SIZE * 80)
+		if (x < 0 || x >= BlockConstants.SIZE * mapData[0].length)
 			return true;
-		if (y < 0 || y >= BlockConstants.SIZE * 25)
+		if (y < 0 || y >= BlockConstants.SIZE * mapData.length)
 			return true;
 
 		double xIndex = x / BlockConstants.SIZE;
