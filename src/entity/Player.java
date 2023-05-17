@@ -4,7 +4,6 @@ import static utils.Constants.PlayerConstants.*;
 import static utils.Constants.Directions.*;
 import static utils.Constants.AttackState.*;
 
-import java.awt.MouseInfo;
 import java.awt.geom.Rectangle2D;
 
 import application.Main;
@@ -17,8 +16,6 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.robot.Robot;
-import javafx.stage.Stage;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
@@ -207,14 +204,9 @@ public class Player extends Entity implements Damageable {
 	private void initRangeAttackingThread() {
 		attacking = new Thread(() -> {
 			attackState = IN_PROGRESS;
-			double bulletSpeed = BulletConstants.X_SPEED;
-			double bulletX = hitbox.getMaxX();
-			double bulletY = hitbox.y + (hitbox.height - BulletConstants.HEIGHT) / 2;
-			if (attackDirection == LEFT) {
-				bulletSpeed = -bulletSpeed;
-				bulletX = hitbox.x - BulletConstants.WIDTH;
-			}
-			new Bullet(bulletX, bulletY, bulletSpeed);
+			double bulletX = hitbox.x + hitbox.width / 2 - BulletConstants.WIDTH / 2;
+			double bulletY = hitbox.y + hitbox.height / 2 - BulletConstants.HEIGHT / 2;
+			new Bullet(bulletX, bulletY, InputUtility.getMouseX(), InputUtility.getMouseY(), this);
 			attackState = ON_COOLDOWN;
 			try {
 				Thread.sleep(RANGE_ATTACK_DELAY);
@@ -286,13 +278,13 @@ public class Player extends Entity implements Damageable {
 		}
 
 		updateCurrentInventoryFocus();
-
 		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY) {
 			updateAttackDirection();
 			meleeAttack();
 		}
-		if (InputUtility.isRightDown() && attackState == READY)
+		if (InputUtility.isRightDown() && attackState == READY) {
 			shoot();
+		}
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			useItem();
 		}

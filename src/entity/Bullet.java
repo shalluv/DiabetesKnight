@@ -11,11 +11,14 @@ import utils.Helper;
 public class Bullet extends Entity {
 
 	private double xspeed;
+	private double yspeed;
+	private Entity owner;
 
-	public Bullet(double x, double y, double speed) {
+	public Bullet(double x, double y, double targetX, double targetY, Entity owner) {
 		super(x, y, BulletConstants.WIDTH, BulletConstants.HEIGHT);
 		initHitbox(x, y, width, height);
-		this.xspeed = speed;
+		this.owner = owner;
+		calculateSpeed(x, y, targetX, targetY);
 		Main.gameLogic.addNewObject(this);
 	}
 
@@ -36,22 +39,34 @@ public class Bullet extends Entity {
 		checkHit();
 	}
 
-	public void move() {
-		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
+	private void move() {
+		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
 			hitbox.x += xspeed;
+			hitbox.y += yspeed;
 		} else {
 			isDestroy = true;
 		}
 	}
 
-	public void checkHit() {
+	private void checkHit() {
 		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
-			if (entity instanceof Damageable && hitbox.intersects(entity.getHitbox())) {
+			if (entity instanceof Damageable
+					&& ((entity instanceof Enemy && owner instanceof Player)
+							|| (entity instanceof Player && owner instanceof Enemy))
+					&& hitbox.intersects(entity.getHitbox())) {
 				((Damageable) entity).receiveDamage(BulletConstants.DAMAGE);
 				isDestroy = true;
 				break;
 			}
 		}
+	}
+
+	private void calculateSpeed(double x, double y, double targetX, double targetY) {
+		double dx = targetX - x;
+		double dy = targetY - y;
+		double vectorSize = Math.sqrt(dx * dx + dy * dy);
+		xspeed = BulletConstants.SPEED * dx / vectorSize;
+		yspeed = BulletConstants.SPEED * dy / vectorSize;
 	}
 
 }

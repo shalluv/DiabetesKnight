@@ -83,14 +83,19 @@ public class Constants {
 	}
 
 	public static class BulletConstants {
-		public static final int WIDTH = 10;
+		public static final int WIDTH = 5;
 		public static final int HEIGHT = 5;
-		public static final double X_SPEED = 5;
+		public static final double SPEED = 10;
 		public static final int DAMAGE = 5;
 	}
 
 	public static class DroppedItemConstants {
 		public static final int WIDTH = 32;
 		public static final int HEIGHT = 32;
+	}
+
+	public static class InputConstatns {
+		public static final int CURSOR_OFFSET_X = 5;
+		public static final int CURSOR_OFFSET_Y = 25;
 	}
 }

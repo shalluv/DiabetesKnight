@@ -1,5 +1,7 @@
 package input;
 
+import static utils.Constants.InputConstatns.*;
+
 import java.util.ArrayList;
 
 import application.Main;
@@ -12,6 +14,7 @@ public class InputUtility {
 	private static boolean isLeftDown = false;
 	private static boolean isRightDown = false;
 	private static double mouseX;
+	private static double mouseY;
 
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
@@ -59,10 +62,21 @@ public class InputUtility {
 		return mouseX;
 	}
 
+	public static void setMouseY(double y) {
+		mouseY = y;
+	}
+
+	public static double getMouseY() {
+		return mouseY;
+	}
+
 	public static void update() {
 		Platform.runLater(() -> {
 			Robot robot = new Robot();
-			setMouseX(robot.getMouseX() - Main.gameScreen.getLayoutX() - Main.gameStage.getX());
+			double mouseX = robot.getMouseX();
+			double mouseY = robot.getMouseY();
+			setMouseX(mouseX - Main.gameScreen.getLayoutX() - Main.gameStage.getX() - CURSOR_OFFSET_X);
+			setMouseY(mouseY - Main.gameScreen.getLayoutY() - Main.gameStage.getY() - CURSOR_OFFSET_Y);
 		});
 	}
 }
