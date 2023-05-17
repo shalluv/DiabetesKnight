@@ -15,21 +15,21 @@ import utils.Loader;
 
 public class Pause {
 
-	private Image[] background = new Image[5];
+	private static Image[] background = new Image[5];
 
-	public Pause() {
+	public static void loadResources() {
 		for (int i = 5; i <= 5; ++i) {
 			background[i - 1] = Loader.GetSpriteAtlas(String.format("res/2_Background/Night/%d.png", i));
 		}
 	}
 
-	public void update() {
+	public static void update() {
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 			Main.gameState = GameState.PLAYING;
 		}
 	}
 
-	public void draw(GraphicsContext gc, double layoutX, double layoutY) {
+	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
 		for (int i = 4; i < 5; ++i) {
 			gc.drawImage(background[i], -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		}

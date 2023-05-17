@@ -17,7 +17,7 @@ public class GameLogic {
 
 	private ArrayList<Entity> gameObjectContainer;
 
-	private Player player;
+	public static Player player;
 	private Enemy enemy;
 
 	public GameLogic() {

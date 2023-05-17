@@ -21,8 +21,6 @@ public class Main extends Application {
 	public static MapManager mapManager;
 	public static int gameState;
 	private Thread gameThread;
-	public static Menu menu;
-	public static Pause pause;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -35,8 +33,9 @@ public class Main extends Application {
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
-			menu = new Menu();
-			pause = new Pause();
+			
+			Menu.loadResources();
+			Pause.loadResources();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
@@ -102,13 +101,13 @@ public class Main extends Application {
 	public void update() {
 		switch (gameState) {
 		case GameState.MENU:
-			menu.update();
+			Menu.update();
 			break;
 		case GameState.PLAYING:
 			gameLogic.update();
 			break;
 		case GameState.PAUSE:
-			pause.update();
+			Pause.update();
 		default:
 			break;
 		}
