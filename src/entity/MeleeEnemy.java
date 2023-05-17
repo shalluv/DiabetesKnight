@@ -9,8 +9,7 @@ import static utils.Constants.AttackState.*;
 
 import java.awt.geom.Rectangle2D;
 
-import entity.base.Entity;
-import interfaces.Damageable;
+import entity.base.Enemy;
 import item.Item;
 import item.derived.Sugar;
 import javafx.geometry.VPos;
@@ -20,30 +19,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import utils.Helper;
 
-public class Enemy extends Entity implements Damageable {
+public class MeleeEnemy extends Enemy {
 
-	private int maxHealth;
-	private int currentHealth;
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
 	private int attackProgress;
 	private int attackDirection;
 	private Rectangle2D.Double attackBox;
-	private Thread attackCooldown;
 	// private Image image;
-	private Player player;
 	private Item lootItem;
+	private Player player;
 
-	public Enemy(int x, int y, Player player) {
+	public MeleeEnemy(double x, double y, Player player) {
 		super(x, y, WIDTH, HEIGHT);
-		this.player = player;
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		maxHealth = 100;
-		currentHealth = 100;
 		attackState = READY;
 		attackProgress = 0;
+		this.player = player;
 		initHitbox(x, y, width, height);
 		lootItem = new Sugar();
 		attackDirection = LEFT;
@@ -104,12 +98,6 @@ public class Enemy extends Entity implements Damageable {
 		}
 	}
 
-	private boolean canAttack(Player player) {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - MELEE_ATTACK_RANGE, hitbox.y,
-				WIDTH + 2 * MELEE_ATTACK_RANGE, HEIGHT);
-		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
-	}
-
 	private void updateAttackBox() {
 		switch (attackDirection) {
 		case LEFT:
@@ -140,16 +128,6 @@ public class Enemy extends Entity implements Damageable {
 			player.receiveDamage(MELEE_DAMAGE);
 			attackState = MELEE_HIT;
 		}
-	}
-
-	private void initAttackCooldown(int delay) {
-		attackCooldown = new Thread(() -> {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				System.out.println("enemy melee cooldown interrupted");
-			}
-		});
 	}
 
 	private void updateMeleeAttack() {
@@ -189,12 +167,6 @@ public class Enemy extends Entity implements Damageable {
 		attackState = MELEE_IN_PROGRESS;
 	}
 
-	private boolean isInSight(Player player) {
-		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.x - SIGHT_SIZE, hitbox.y - SIGHT_SIZE,
-				hitbox.width + 2 * SIGHT_SIZE, hitbox.height + 2 * SIGHT_SIZE);
-		return enemySight.intersects(player.getHitbox());
-	}
-
 	private void updateXSpeed() {
 		if (isInSight(player)) {
 			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
@@ -209,22 +181,6 @@ public class Enemy extends Entity implements Damageable {
 		} else {
 			xspeed = INITIAL_X_SPEED;
 		}
-	}
-
-	private void setCurrentHealth(int value) {
-		if (value < 0) {
-			currentHealth = 0;
-		} else if (value > maxHealth) {
-			currentHealth = maxHealth;
-		} else {
-			currentHealth = value;
-		}
-	}
-
-	@Override
-	public void receiveDamage(int damage) {
-		setCurrentHealth(currentHealth - damage);
-		System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
 	private void updateAttackDirection() {
@@ -257,10 +213,6 @@ public class Enemy extends Entity implements Damageable {
 	}
 
 	@Override
-	public int getZ() {
-		return 1;
-	}
-
 	public Item getLootItem() {
 		return lootItem;
 	}

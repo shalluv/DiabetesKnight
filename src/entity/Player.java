@@ -7,6 +7,7 @@ import static utils.Constants.AttackState.*;
 import java.awt.geom.Rectangle2D;
 
 import application.Main;
+import entity.base.Enemy;
 import entity.base.Entity;
 import input.InputUtility;
 import interfaces.Consumable;
@@ -37,7 +38,7 @@ public class Player extends Entity implements Damageable {
 	private Item[] inventory;
 	private int currentInventoryFocus;
 
-	public Player(int x, int y) {
+	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;

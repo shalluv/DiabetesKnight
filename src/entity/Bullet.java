@@ -1,6 +1,7 @@
 package entity;
 
 import application.Main;
+import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;

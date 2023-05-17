@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import application.Main;
 import entity.DroppedItem;
-import entity.Enemy;
+import entity.MeleeEnemy;
 import entity.Player;
+import entity.base.Enemy;
 import entity.base.Entity;
 import input.InputUtility;
 import javafx.scene.input.KeyCode;
@@ -20,15 +21,13 @@ public class GameLogic {
 	private ArrayList<Entity> gameObjectContainer;
 
 	public static Player player;
-	private Enemy enemy;
 
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
 
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
-		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player);
 		addNewObject(player);
-		addNewObject(enemy);
+		addNewObject(new MeleeEnemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player));
 	}
 
 	public void addAllObject(ArrayList<Entity> entities) {
