@@ -27,7 +27,9 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import utils.Constants.BlockConstants;
 import utils.Constants.BulletConstants;
+import utils.Constants.Resolution;
 import utils.Helper;
 
 public class Player extends Entity implements Damageable {
@@ -288,6 +290,10 @@ public class Player extends Entity implements Damageable {
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
+
+		if (hitbox.y + hitbox.height >= Resolution.HEIGHT) {
+			currentHealth = 0;
+		}
 
 		// if the player is dead
 		if (currentHealth == 0) {
