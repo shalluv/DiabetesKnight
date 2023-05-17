@@ -6,6 +6,8 @@ import application.Main;
 import entity.Enemy;
 import entity.Player;
 import entity.base.Entity;
+import input.InputUtility;
+import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
 import utils.Constants.EnemyConstants;
 import utils.Constants.PlayerConstants;
@@ -43,6 +45,10 @@ public class GameLogic {
 	}
 
 	public void update() {
+		if (InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
+			Main.gameState = 2;
+			return;
+		}
 		RenderableHolder.getInstance().update();
 
 		for (int i = gameObjectContainer.size() - 1; i >= 0; --i) {

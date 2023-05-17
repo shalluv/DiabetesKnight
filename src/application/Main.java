@@ -5,12 +5,13 @@ import static utils.Constants.UPS;
 
 import drawing.GameScreen;
 import javafx.application.Application;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import maps.MapManager;
 import ui.Menu;
+import ui.Pause;
+import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
 public class Main extends Application {
@@ -21,6 +22,7 @@ public class Main extends Application {
 	public static int gameState;
 	private Thread gameThread;
 	public static Menu menu;
+	public static Pause pause;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -29,11 +31,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			gameState = 0;
+			gameState = GameState.MENU;
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 			menu = new Menu();
+			pause = new Pause();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
@@ -81,7 +84,7 @@ public class Main extends Application {
 
 						if (System.currentTimeMillis() - lastCheck >= 1000) {
 							lastCheck = System.currentTimeMillis();
-							// System.out.println("FPS: " + frames + " | UPS: " + updates);
+							System.out.println("FPS: " + frames + " | UPS: " + updates);
 							frames = 0;
 							updates = 0;
 						}
@@ -95,15 +98,17 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void update() {
-		switch(gameState) {
-		case 0:
+		switch (gameState) {
+		case GameState.MENU:
 			menu.update();
 			break;
-		case 1:
+		case GameState.PLAYING:
 			gameLogic.update();
 			break;
+		case GameState.PAUSE:
+			pause.update();
 		default:
 			break;
 		}

@@ -13,12 +13,12 @@ import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
 
-public class Menu {
+public class Pause {
 
 	private Image[] background = new Image[5];
 
-	public Menu() {
-		for (int i = 1; i <= 5; ++i) {
+	public Pause() {
+		for (int i = 5; i <= 5; ++i) {
 			background[i - 1] = Loader.GetSpriteAtlas(String.format("res/2_Background/Night/%d.png", i));
 		}
 	}
@@ -29,15 +29,15 @@ public class Menu {
 		}
 	}
 
-	public void draw(GraphicsContext gc) {
-		for (int i = 0; i < 5; ++i) {
-			gc.drawImage(background[i], 0, 0, Resolution.WIDTH, Resolution.HEIGHT);
+	public void draw(GraphicsContext gc, double layoutX, double layoutY) {
+		for (int i = 4; i < 5; ++i) {
+			gc.drawImage(background[i], -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		}
 
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.RED);
-		gc.fillText("Press SPACE to continue...", Resolution.WIDTH / 2, Resolution.HEIGHT / 2);
+		gc.fillText("Press SPACE to continue...", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY);
 		gc.setFont(new Font(20));
 
 	}
