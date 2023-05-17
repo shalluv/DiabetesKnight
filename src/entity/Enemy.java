@@ -57,11 +57,11 @@ public class Enemy extends Entity implements Damageable {
 		if (attackState != READY) {
 			switch (attackDirection) {
 			case LEFT:
-				gc.fillRect(hitbox.x - attackProgress, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+				gc.fillRect(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 				break;
 			case RIGHT:
-				gc.fillRect(hitbox.getMaxX() - hitbox.width / 2, hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2,
+				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
 						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 				break;
 			default:
@@ -113,14 +113,12 @@ public class Enemy extends Entity implements Damageable {
 	private void updateAttackBox() {
 		switch (attackDirection) {
 		case LEFT:
-			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress,
-					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
-					ATTACK_BOX_HEIGHT);
+			attackBox = new Rectangle2D.Double(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
+					attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			break;
 		case RIGHT:
-			attackBox = new Rectangle2D.Double(hitbox.getMaxX() - hitbox.width / 2,
-					hitbox.y + (hitbox.height - ATTACK_BOX_HEIGHT) / 2, attackProgress + hitbox.width / 2,
-					ATTACK_BOX_HEIGHT);
+			attackBox = new Rectangle2D.Double(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
+					attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
 			break;
 		default:
 			break;
@@ -149,7 +147,7 @@ public class Enemy extends Entity implements Damageable {
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
-				System.out.println("melee cooldown interrupted");
+				System.out.println("enemy melee cooldown interrupted");
 			}
 		});
 	}
