@@ -9,8 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import maps.MapManager;
-import ui.Menu;
-import ui.Pause;
+import ui.MenuOverlay;
+import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
@@ -21,8 +21,6 @@ public class Main extends Application {
 	public static MapManager mapManager;
 	public static int gameState;
 	private Thread gameThread;
-	public static Menu menu;
-	public static Pause pause;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -35,8 +33,9 @@ public class Main extends Application {
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
-			menu = new Menu();
-			pause = new Pause();
+
+			MenuOverlay.loadResources();
+			PauseOverlay.loadResources();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
@@ -102,13 +101,13 @@ public class Main extends Application {
 	public void update() {
 		switch (gameState) {
 		case GameState.MENU:
-			menu.update();
+			MenuOverlay.update();
 			break;
 		case GameState.PLAYING:
 			gameLogic.update();
 			break;
 		case GameState.PAUSE:
-			pause.update();
+			PauseOverlay.update();
 		default:
 			break;
 		}

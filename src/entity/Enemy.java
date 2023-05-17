@@ -18,8 +18,11 @@ import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import interfaces.Damageable;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import utils.Helper;
 
 public class Enemy extends Entity implements Damageable {
@@ -63,7 +66,14 @@ public class Enemy extends Entity implements Damageable {
 			}
 		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		// gc.drawImage(image, hitbox.x, hitbox.y, width, height);
+
+		// draw HP
+		gc.setTextAlign(TextAlignment.LEFT);
+		gc.setTextBaseline(VPos.BOTTOM);
+		gc.setFill(Color.RED);
+		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
+		gc.setFont(new Font(20));
+//		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {

@@ -249,4 +249,8 @@ public class Player extends Entity implements Damageable {
 	public int getZ() {
 		return 69;
 	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
 }
