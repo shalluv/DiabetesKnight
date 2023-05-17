@@ -135,7 +135,7 @@ public class Player extends Entity implements Damageable {
 			}
 		}
 		gc.drawImage(animations[animationsState], animationsFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, 32, 32);
-		if(animationsState == 1) {
+		if (animationsState == 1) {
 			gc.drawImage(dustAnimation, animationsFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, 32, 32);
 		}
 	}
