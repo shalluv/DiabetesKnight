@@ -187,7 +187,6 @@ public class Player extends Entity implements Damageable {
 
 	private void initMeleeAttackingThread() {
 		attacking = new Thread(() -> {
-			attackState = IN_PROGRESS;
 			meleeAttackingLoop();
 			attackState = ON_COOLDOWN;
 			afterMeleeAttackLoop();
@@ -198,12 +197,12 @@ public class Player extends Entity implements Damageable {
 
 	private void meleeAttack() {
 		initMeleeAttackingThread();
+		attackState = IN_PROGRESS;
 		attacking.start();
 	}
 
 	private void initRangeAttackingThread() {
 		attacking = new Thread(() -> {
-			attackState = IN_PROGRESS;
 			double bulletX = hitbox.x + hitbox.width / 2 - BulletConstants.WIDTH / 2;
 			double bulletY = hitbox.y + hitbox.height / 2 - BulletConstants.HEIGHT / 2;
 			new Bullet(bulletX, bulletY, InputUtility.getMouseX(), InputUtility.getMouseY(), this);
@@ -219,6 +218,7 @@ public class Player extends Entity implements Damageable {
 
 	private void shoot() {
 		initRangeAttackingThread();
+		attackState = IN_PROGRESS;
 		attacking.start();
 	}
 
