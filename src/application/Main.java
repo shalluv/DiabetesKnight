@@ -9,8 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import maps.MapManager;
-import ui.Menu;
-import ui.Pause;
+import ui.MenuOverlay;
+import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
@@ -34,8 +34,8 @@ public class Main extends Application {
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 			
-			Menu.loadResources();
-			Pause.loadResources();
+			MenuOverlay.loadResources();
+			PauseOverlay.loadResources();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("OurGame");
@@ -101,13 +101,13 @@ public class Main extends Application {
 	public void update() {
 		switch (gameState) {
 		case GameState.MENU:
-			Menu.update();
+			MenuOverlay.update();
 			break;
 		case GameState.PLAYING:
 			gameLogic.update();
 			break;
 		case GameState.PAUSE:
-			Pause.update();
+			PauseOverlay.update();
 		default:
 			break;
 		}

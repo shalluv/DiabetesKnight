@@ -13,7 +13,7 @@ import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
 
-public class Pause {
+public class PauseOverlay {
 
 	private static Image[] background = new Image[5];
 

@@ -11,8 +11,8 @@ import javafx.scene.input.MouseEvent;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 import ui.GameOverlay;
-import ui.Menu;
-import ui.Pause;
+import ui.MenuOverlay;
+import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
@@ -58,7 +58,7 @@ public class GameCanvas extends Canvas {
 			gameScreen.setLayoutX(0);
 			gameScreen.setLayoutY(0);
 
-			Menu.draw(gc);
+			MenuOverlay.draw(gc);
 			break;
 		case GameState.PLAYING:
 			gameScreen.setLayoutX(layoutX);
@@ -84,7 +84,7 @@ public class GameCanvas extends Canvas {
 				}
 			}
 
-			Pause.draw(gc, layoutX, layoutY);
+			PauseOverlay.draw(gc, layoutX, layoutY);
 			break;
 		default:
 			break;

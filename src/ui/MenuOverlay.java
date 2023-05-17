@@ -13,7 +13,7 @@ import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Loader;
 
-public class Menu {
+public class MenuOverlay {
 
 	private static Image[] background = new Image[5];
 
