@@ -61,7 +61,7 @@ public class Constants {
 	}
 
 	public static class GunConstants {
-		public static final int ATTACK_DELAY = 500;
+		public static final int ATTACK_DELAY = 1000;
 	}
 
 	public static class PlayerConstants {
