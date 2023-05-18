@@ -8,8 +8,16 @@ import logic.GameLogic;
 
 public class Sugar extends Item implements Consumable {
 
-	public Sugar() {
-		super("Sugar", 10, Color.YELLOW);
+	private int power;
+
+	public Sugar(int power) {
+		super("Sugar", Color.YELLOW);
+		this.power = power;
+	}
+
+	@Override
+	public int getPower() {
+		return power;
 	}
 
 	@Override

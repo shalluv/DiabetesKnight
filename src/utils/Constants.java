@@ -52,6 +52,18 @@ public class Constants {
 		public static final int RANGED_ON_COOLDOWN = 5;
 	}
 
+	public static class SpearConstants {
+		public static final int ATTACK_RANGE = (int) (12 * SCALE);
+		public static final int DAMAGE = 10;
+		public static final int ATTACK_SPEED = 3;
+		public static final int ATTACK_DELAY = 50;
+		public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
+	}
+
+	public static class GunConstants {
+		public static final int ATTACK_DELAY = 500;
+	}
+
 	public static class PlayerConstants {
 		public static final int WIDTH = (int) (32 * SCALE);
 		public static final int HEIGHT = (int) (32 * SCALE);
@@ -60,12 +72,6 @@ public class Constants {
 		public static final double INITIAL_X_SPEED = 0 * SCALE;
 		public static final double INITIAL_Y_SPEED = 4 * SCALE;
 		public static final double WEIGHT = 0.12 * SCALE;
-		public static final int MELEE_ATTACK_RANGE = (int) (12 * SCALE);
-		public static final int MELEE_DAMAGE = 10;
-		public static final int MELEE_ATTACK_SPEED = 3;
-		public static final int MELEE_ATTACK_DELAY = 50;
-		public static final int RANGE_ATTACK_DELAY = 500;
-		public static final int ATTACK_BOX_HEIGHT = (int) (10 * SCALE);
 		public static final int INVENTORY_SIZE = 10;
 		public static final int INITIAL_MAX_HEALTH = 100;
 		public static final int INITIAL_MAX_POWER = 100;
@@ -91,12 +97,7 @@ public class Constants {
 		public static final double INITIAL_X_SPEED = 0 * SCALE;
 		public static final double INITIAL_Y_SPEED = 5 * SCALE;
 		public static final double WEIGHT = 1 * SCALE;
-		public static final int MELEE_ATTACK_RANGE = (int) (12 * SCALE);
-		public static final int MELEE_DAMAGE = 10;
-		public static final int MELEE_ATTACK_SPEED = 3;
-		public static final int MELEE_ATTACK_DELAY = 50;
-		public static final int SIGHT_SIZE = (int) (800 * SCALE);
-		public static final int ATTACK_BOX_HEIGHT = (int) (10 * SCALE);
+		public static final int SIGHT_SIZE = (int) (400 * SCALE);
 		public static final int INITIAL_MAX_HEALTH = 100;
 	}
 
@@ -113,7 +114,7 @@ public class Constants {
 	}
 
 	public static class InputConstants {
-		public static final int CURSOR_OFFSET_X = 5;
-		public static final int CURSOR_OFFSET_Y = 25;
+		public static final int CURSOR_OFFSET_X = 8;
+		public static final int CURSOR_OFFSET_Y = 30;
 	}
 }

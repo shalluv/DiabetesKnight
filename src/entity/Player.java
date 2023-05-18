@@ -1,14 +1,6 @@
 package entity;
 
-import static utils.Constants.AttackState.MELEE_HIT;
-import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
-import static utils.Constants.AttackState.MELEE_ON_COOLDOWN;
-import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
-import static utils.Constants.AttackState.RANGED_ON_COOLDOWN;
-import static utils.Constants.AttackState.READY;
-import static utils.Constants.Directions.LEFT;
-import static utils.Constants.Directions.RIGHT;
-import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
@@ -17,11 +9,6 @@ import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
 import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
 import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
 import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
-import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
-import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
 import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
@@ -31,22 +18,21 @@ import static utils.Constants.PlayerConstants.Animations.JUMPING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
 
-import java.awt.geom.Rectangle2D;
-
 import application.Main;
-import entity.base.Enemy;
 import entity.base.Entity;
 import input.InputUtility;
 import interfaces.Consumable;
 import interfaces.Damageable;
 import item.Item;
+import item.Weapon;
+import item.derived.Gun;
+import item.derived.Spear;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
-import utils.Constants.BulletConstants;
 import utils.Helper;
 import utils.Loader;
 
@@ -58,12 +44,11 @@ public class Player extends Entity implements Damageable {
 	private int currentPower;
 	private double xspeed;
 	private double yspeed;
-	private int attackDirection;
 	private int attackState;
-	private int meleeAttackProgress;
-	private Thread attackCooldown;
-	private Rectangle2D.Double meleeAttackBox;
+	// private Image image;
 	private Item[] inventory;
+	private Item currentItem;
+	private Weapon currentWeapon;
 	private int currentInventoryFocus;
 	private int animationFrame;
 	private int animationState;
@@ -83,10 +68,11 @@ public class Player extends Entity implements Damageable {
 
 		maxPower = INITIAL_MAX_POWER;
 		currentPower = 0;
-
-		meleeAttackProgress = 0;
+		attackState = READY;
 
 		inventory = new Item[INVENTORY_SIZE];
+		addItem(new Spear());
+		addItem(new Gun());
 		currentInventoryFocus = 0;
 		
 		isFacingLeft = false;
@@ -106,19 +92,8 @@ public class Player extends Entity implements Damageable {
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		if (attackState != READY && meleeAttackProgress != 0) {
-			switch (attackDirection) {
-			case LEFT:
-				gc.fillRect(hitbox.x - meleeAttackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			case RIGHT:
-				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			default:
-				break;
-			}
+		if (attackState != READY && currentWeapon != null) {
+			currentWeapon.draw(gc, this);
 		}
 		gc.setFill(Color.RED);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -211,110 +186,6 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
-	private void updateMeleeAttackBox() {
-		switch (attackDirection) {
-		case LEFT:
-			meleeAttackBox = new Rectangle2D.Double(hitbox.x - meleeAttackProgress,
-					hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2, meleeAttackProgress + hitbox.width / 2,
-					ATTACK_BOX_HEIGHT);
-			break;
-		case RIGHT:
-			meleeAttackBox = new Rectangle2D.Double(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-					meleeAttackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-			break;
-		default:
-			break;
-		}
-	}
-
-	private boolean isMeleeAttackingWall() {
-		if (attackDirection == LEFT && !Helper.CanMoveHere(meleeAttackBox.x - meleeAttackProgress, meleeAttackBox.y,
-				meleeAttackBox.width, meleeAttackBox.height))
-			return true;
-		if (attackDirection == RIGHT && !Helper.CanMoveHere(meleeAttackBox.x + hitbox.width / 2, meleeAttackBox.y,
-				meleeAttackBox.width + meleeAttackProgress - hitbox.width / 2, meleeAttackBox.height))
-			return true;
-		return false;
-	}
-
-	private void checkAttackHit() {
-		for (Entity entity : GameLogic.getGameObjectContainer()) {
-			if (!entity.isDestroyed() && entity instanceof Enemy) {
-				Enemy enemy = (Enemy) entity;
-				if (meleeAttackBox.intersects(enemy.getHitbox()) && !Thread.interrupted()) {
-					enemy.receiveDamage(MELEE_DAMAGE);
-					attackState = MELEE_HIT;
-					return;
-				}
-			}
-		}
-	}
-
-	private void initAttackCooldown(int delay) {
-		attackCooldown = new Thread(() -> {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				System.out.println("player melee cooldown interrupted");
-			}
-		});
-	}
-
-	private void updateMeleeAttack() {
-		if (attackCooldown != null && attackCooldown.isAlive())
-			return;
-		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
-			if (meleeAttackProgress < MELEE_ATTACK_RANGE) {
-				if (attackCooldown == null || !attackCooldown.isAlive())
-					initAttackCooldown(MELEE_ATTACK_DELAY);
-				meleeAttackProgress += MELEE_ATTACK_SPEED;
-			}
-			updateMeleeAttackBox();
-			if (isMeleeAttackingWall()) {
-				meleeAttackProgress -= MELEE_ATTACK_SPEED;
-				attackState = MELEE_ON_COOLDOWN;
-			}
-			if (attackState != MELEE_HIT)
-				checkAttackHit();
-			attackCooldown.start();
-			if (meleeAttackProgress >= MELEE_ATTACK_RANGE)
-				attackState = MELEE_ON_COOLDOWN;
-		} else if (attackState == MELEE_ON_COOLDOWN) {
-			if (meleeAttackProgress > 0) {
-				if (attackCooldown == null || !attackCooldown.isAlive())
-					initAttackCooldown(MELEE_ATTACK_DELAY);
-				meleeAttackProgress -= MELEE_ATTACK_SPEED;
-				attackCooldown.start();
-			} else {
-				attackCooldown = null;
-				meleeAttackProgress = 0;
-				attackState = READY;
-			}
-		}
-	}
-
-	private void meleeAttack() {
-		attackState = MELEE_IN_PROGRESS;
-	}
-
-	private void updateShoot() {
-		if (attackState == RANGED_IN_PROGRESS) {
-			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
-			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
-			new Bullet(bulletX, bulletY, InputUtility.getMouseX(), InputUtility.getMouseY(), this);
-			initAttackCooldown(RANGE_ATTACK_DELAY);
-			attackCooldown.start();
-			attackState = RANGED_ON_COOLDOWN;
-		} else if (attackState == RANGED_ON_COOLDOWN && !attackCooldown.isAlive()) {
-			attackCooldown = null;
-			attackState = READY;
-		}
-	}
-
-	private void shoot() {
-		attackState = RANGED_IN_PROGRESS;
-	}
-
 	private boolean addItem(Item item) {
 		for (int i = 0; i < INVENTORY_SIZE; ++i) {
 			if (inventory[i] == null) {
@@ -339,7 +210,6 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void useItem() {
-		Item currentItem = inventory[currentInventoryFocus];
 		if (currentItem == null)
 			return;
 
@@ -350,11 +220,14 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
-	private void updateAttackDirection() {
-		if (InputUtility.getMouseX() >= hitbox.x + hitbox.width / 2)
-			attackDirection = RIGHT;
-		else
-			attackDirection = LEFT;
+	private void attack() {
+		if (currentItem == null)
+			return;
+
+		if (currentItem instanceof Weapon) {
+			currentWeapon = ((Weapon) currentItem);
+			attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+		}
 	}
 
 	@Override
@@ -371,17 +244,12 @@ public class Player extends Entity implements Damageable {
 		}
 
 		updateCurrentInventoryFocus();
-
-		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == MELEE_ON_COOLDOWN)
-			updateMeleeAttack();
-		if (attackState == RANGED_IN_PROGRESS || attackState == RANGED_ON_COOLDOWN)
-			updateShoot();
-		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY) {
-			updateAttackDirection();
-			meleeAttack();
+		currentItem = inventory[currentInventoryFocus];
+		if (attackState != READY && currentWeapon != null) {
+			attackState = currentWeapon.updateAttack(this);
 		}
-		if (InputUtility.isRightDown() && attackState == READY) {
-			shoot();
+		if (InputUtility.isLeftDown() && attackState == READY) {
+			attack();
 		}
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			useItem();
@@ -403,8 +271,9 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth <= 0) {
-			if (attackCooldown != null)
-				attackCooldown.interrupt();
+			if (attackState != READY && currentWeapon != null) {
+				((Weapon) currentWeapon).cancelAttack();
+			}
 			Platform.exit();
 		}
 	}
@@ -449,6 +318,8 @@ public class Player extends Entity implements Damageable {
 	}
 
 	public void updateCurrentInventoryFocus() {
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == RANGED_IN_PROGRESS)
+			return;
 		if (InputUtility.getKeyPressed(KeyCode.DIGIT0)) {
 			currentInventoryFocus = 9;
 		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT1)) {
@@ -470,5 +341,10 @@ public class Player extends Entity implements Damageable {
 		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT9)) {
 			currentInventoryFocus = 8;
 		}
+	}
+
+	@Override
+	public int getHealth() {
+		return currentHealth;
 	}
 }

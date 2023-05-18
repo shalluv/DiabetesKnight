@@ -66,7 +66,6 @@ public class GameCanvas extends Canvas {
 		case GameState.PLAYING:
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
-
 			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 			Main.mapManager.draw(gc);
 			// draw entities
