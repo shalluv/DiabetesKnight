@@ -23,8 +23,6 @@ import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
-import item.Item;
-import item.derived.Sugar;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -41,7 +39,6 @@ public class MeleeEnemy extends Enemy {
 	private int attackDirection;
 	private Rectangle2D.Double attackBox;
 	// private Image image;
-	private Item lootItem;
 
 	public MeleeEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE);
@@ -50,7 +47,6 @@ public class MeleeEnemy extends Enemy {
 		attackState = READY;
 		attackProgress = 0;
 		initHitbox(x, y, width, height);
-		lootItem = new Sugar();
 		attackDirection = LEFT;
 		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
@@ -231,11 +227,6 @@ public class MeleeEnemy extends Enemy {
 			if (attackCooldown != null)
 				attackCooldown.interrupt();
 		}
-	}
-
-	@Override
-	public Item getLootItem() {
-		return lootItem;
 	}
 
 }

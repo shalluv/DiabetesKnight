@@ -246,7 +246,7 @@ public class Player extends Entity implements Damageable {
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
-				System.out.println("player melee cooldown interrupted");
+				System.out.println("player cooldown interrupted");
 			}
 		});
 	}
