@@ -103,17 +103,13 @@ public class MeleeEnemy extends Enemy {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
 		}
-
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-
 		move();
-
 		if (attackState != READY)
 			attackState = spear.updateAttack(this);
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
 			attackState = spear.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
-
 		if (currentHealth <= 0) {
 			isDestroy = true;
 			if (attackState != READY)

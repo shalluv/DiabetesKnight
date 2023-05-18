@@ -48,9 +48,7 @@ public class RangedEnemy extends Enemy {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
 		}
-
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-
 		move();
 		if (attackState != READY)
 			attackState = gun.updateAttack(this);
@@ -72,7 +70,6 @@ public class RangedEnemy extends Enemy {
 			if (attackState == READY)
 				jump();
 		}
-
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
 			hitbox.y += yspeed;
 			yspeed += WEIGHT;
