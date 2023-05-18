@@ -6,6 +6,7 @@ import static utils.Constants.GunConstants.ATTACK_DELAY;
 import java.awt.geom.Rectangle2D;
 
 import entity.Bullet;
+import entity.base.Enemy;
 import entity.base.Entity;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,6 +33,12 @@ public class Gun extends Weapon {
 		if (attackState == RANGED_IN_PROGRESS) {
 			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
 			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
+			if (attacker instanceof Enemy) {
+				if (targetX > bulletX)
+					bulletX = hitbox.getMaxX();
+				else if (targetX < bulletX)
+					bulletX = hitbox.x;
+			}
 			new Bullet(bulletX, bulletY, targetX, targetY, attacker);
 			initCooldown(ATTACK_DELAY);
 			cooldown.start();
