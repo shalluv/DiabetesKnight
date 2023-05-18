@@ -2,7 +2,7 @@ package utils;
 
 public class Constants {
 	public static final int FPS = 60;
-	public static final int UPS = 200;
+	public static final int UPS = 150;
 	public final static float SCALE = 1f;
 
 	public static class Resolution {
@@ -53,8 +53,8 @@ public class Constants {
 	public static class PlayerConstants {
 		public static final int INITIAL_X = 50;
 		public static final int INITIAL_Y = 600;
-		public static final int WIDTH = 40;
-		public static final int HEIGHT = 40;
+		public static final int WIDTH = (int) (32 * SCALE);
+		public static final int HEIGHT = (int) (32 * SCALE);
 		public static final double MAX_Y_SPEED = 8;
 		public static final double BASE_X_SPEED = 3;
 		public static final double INITIAL_X_SPEED = 0;
@@ -70,6 +70,18 @@ public class Constants {
 		public static final int INVENTORY_SIZE = 10;
 		public static final int INITIAL_MAX_HEALTH = 100;
 		public static final int INITIAL_MAX_POWER = 100;
+		
+		public static class Animations {
+			public static final int ANIMATION_SPEED = 8;
+			
+			public static final int IDLE = 0;
+			public static final int RUNNING = 1;
+			public static final int JUMPING = 2;
+
+			public static final int IDLE_FRAMES_COUNT = 4;
+			public static final int RUNNING_FRAMES_COUNT = 6;
+			public static final int JUMPING_FRAMES_COUNT = 8;
+		}
 	}
 
 	public static class EnemyConstants {

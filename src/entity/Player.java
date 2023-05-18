@@ -16,6 +16,12 @@ import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
 import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
+import static utils.Constants.PlayerConstants.Animations.IDLE;
+import static utils.Constants.PlayerConstants.Animations.RUNNING;
+import static utils.Constants.PlayerConstants.Animations.JUMPING;
+import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
 import static utils.Constants.Directions.*;
 import static utils.Constants.AttackState.*;
 
@@ -30,11 +36,13 @@ import interfaces.Damageable;
 import item.Item;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import utils.Constants.BulletConstants;
 import utils.Constants.Resolution;
 import utils.Helper;
+import utils.Loader;
 
 public class Player extends Entity implements Damageable {
 
@@ -52,13 +60,18 @@ public class Player extends Entity implements Damageable {
 	private Rectangle2D.Double meleeAttackBox;
 	private Item[] inventory;
 	private int currentInventoryFocus;
+	private int animationFrame;
+	private int animationState;
+	private int frameCount;
+	private Image[] animation;
+	private Image dustAnimation;
 
 	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
-		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
+		loadResources();
 		maxHealth = INITIAL_MAX_HEALTH;
 		currentHealth = INITIAL_MAX_HEALTH;
 
@@ -69,8 +82,17 @@ public class Player extends Entity implements Damageable {
 
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
-		attackState = READY;
-		meleeAttackProgress = 0;
+	}
+
+	private void loadResources() {
+		animation = new Image[3];
+		animationFrame = 0;
+		frameCount = 0;
+		animationState = IDLE;
+		animation[0] = Loader.GetSpriteAtlas(Loader.PLAYER_IDLE_ATLAS);
+		animation[1] = Loader.GetSpriteAtlas(Loader.PLAYER_RUN_ATLAS);
+		animation[2] = Loader.GetSpriteAtlas(Loader.PLAYER_JUMP_ATLAS);
+		dustAnimation = Loader.GetSpriteAtlas(Loader.DUST_ATLAS);
 	}
 
 	@Override
@@ -90,7 +112,45 @@ public class Player extends Entity implements Damageable {
 				break;
 			}
 		}
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		
+		frameCount++;
+		if (!Helper.IsEntityOnFloor(hitbox)) {
+			if (animationState != JUMPING)
+				animationFrame = 0;
+			animationState = JUMPING;
+		} else if (Math.abs(xspeed) > 0) {
+			if (animationState != RUNNING)
+				animationFrame = 0;
+			animationState = RUNNING;
+		} else {
+			if (animationState != IDLE)
+				animationFrame = 0;
+			animationState = IDLE;
+		}
+		if (frameCount > ANIMATION_SPEED) {
+			frameCount -= ANIMATION_SPEED;
+			animationFrame++;
+			switch (animationState) {
+			case IDLE:
+				animationFrame %= IDLE_FRAMES_COUNT;
+				break;
+			case RUNNING:
+				animationFrame %= RUNNING_FRAMES_COUNT;
+				break;
+			case JUMPING:
+				if (yspeed > 0) {
+					animationFrame = Math.min(6, animationFrame);
+				} else {
+					animationFrame = Math.min(3, animationFrame);
+				}
+			default:
+				break;
+			}
+		}
+		gc.drawImage(animation[animationState], animationFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, width, height);
+		if (animationState == 1) {
+			gc.drawImage(dustAnimation, animationFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, width, height);
+		}
 	}
 
 	private void setCurrentHealth(int value) {
