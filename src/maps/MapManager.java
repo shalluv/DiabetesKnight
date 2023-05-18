@@ -17,9 +17,9 @@ public class MapManager {
 	}
 
 	public void importImages() {
-		mapSprite = new Image[97];
-		for (int i = 1; i <= 96; ++i) {
-			mapSprite[i] = Loader.GetSpriteAtlas(Loader.TILES_ATLAS + String.format("Tile_%02d.png", i));
+		mapSprite = new Image[5];
+		for (int i = 1; i <= 4; ++i) {
+			mapSprite[i] = Loader.GetSpriteAtlas(Loader.TILES_ATLAS + String.format("Tiles_%02d.png", i));
 		}
 	}
 

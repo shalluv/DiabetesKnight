@@ -16,6 +16,12 @@ import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
 import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
+import static utils.Constants.PlayerConstants.Animations.IDLE;
+import static utils.Constants.PlayerConstants.Animations.RUNNING;
+import static utils.Constants.PlayerConstants.Animations.JUMPING;
+import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
 
 import java.awt.geom.Rectangle2D;
 
@@ -50,10 +56,10 @@ public class Player extends Entity implements Damageable {
 	private Rectangle2D.Double meleeAttackBox;
 	private Item[] inventory;
 	private int currentInventoryFocus;
-	private int animationsFrame;
-	private int animationsState;
+	private int animationFrame;
+	private int animationState;
 	private int frameCount;
-	private Image[] animations;
+	private Image[] animation;
 	private Image dustAnimation;
 
 	public Player(int x, int y) {
@@ -76,13 +82,13 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void loadResources() {
-		animations = new Image[3];
-		animationsFrame = 0;
+		animation = new Image[3];
+		animationFrame = 0;
 		frameCount = 0;
-		animationsState = 0;
-		animations[0] = Loader.GetSpriteAtlas(Loader.PLAYER_IDLE_ATLAS);
-		animations[1] = Loader.GetSpriteAtlas(Loader.PLAYER_RUN_ATLAS);
-		animations[2] = Loader.GetSpriteAtlas(Loader.PLAYER_JUMP_ATLAS);
+		animationState = IDLE;
+		animation[0] = Loader.GetSpriteAtlas(Loader.PLAYER_IDLE_ATLAS);
+		animation[1] = Loader.GetSpriteAtlas(Loader.PLAYER_RUN_ATLAS);
+		animation[2] = Loader.GetSpriteAtlas(Loader.PLAYER_JUMP_ATLAS);
 		dustAnimation = Loader.GetSpriteAtlas(Loader.DUST_ATLAS);
 	}
 
@@ -102,41 +108,41 @@ public class Player extends Entity implements Damageable {
 
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
-			if (animationsState != 2)
-				animationsFrame = 0;
-			animationsState = 2;
+			if (animationState != JUMPING)
+				animationFrame = 0;
+			animationState = JUMPING;
 		} else if (Math.abs(xspeed) > 0) {
-			if (animationsState != 1)
-				animationsFrame = 0;
-			animationsState = 1;
+			if (animationState != RUNNING)
+				animationFrame = 0;
+			animationState = RUNNING;
 		} else {
-			if (animationsState != 0)
-				animationsFrame = 0;
-			animationsState = 0;
+			if (animationState != IDLE)
+				animationFrame = 0;
+			animationState = IDLE;
 		}
-		if (frameCount > 8) {
-			frameCount -= 8;
-			animationsFrame++;
-			switch (animationsState) {
-			case 0:
-				animationsFrame %= 4;
+		if (frameCount > ANIMATION_SPEED) {
+			frameCount -= ANIMATION_SPEED;
+			animationFrame++;
+			switch (animationState) {
+			case IDLE:
+				animationFrame %= IDLE_FRAMES_COUNT;
 				break;
-			case 1:
-				animationsFrame %= 6;
+			case RUNNING:
+				animationFrame %= RUNNING_FRAMES_COUNT;
 				break;
-			case 2:
+			case JUMPING:
 				if (yspeed > 0) {
-					animationsFrame = Math.min(6, animationsFrame);
+					animationFrame = Math.min(6, animationFrame);
 				} else {
-					animationsFrame = Math.min(3, animationsFrame);
+					animationFrame = Math.min(3, animationFrame);
 				}
 			default:
 				break;
 			}
 		}
-		gc.drawImage(animations[animationsState], animationsFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, 32, 32);
-		if (animationsState == 1) {
-			gc.drawImage(dustAnimation, animationsFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, 32, 32);
+		gc.drawImage(animation[animationState], animationFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, width, height);
+		if (animationState == 1) {
+			gc.drawImage(dustAnimation, animationFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, width, height);
 		}
 	}
 
