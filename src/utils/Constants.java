@@ -70,10 +70,10 @@ public class Constants {
 		public static final int INVENTORY_SIZE = 10;
 		public static final int INITIAL_MAX_HEALTH = 100;
 		public static final int INITIAL_MAX_POWER = 100;
-		
+
 		public static class Animations {
 			public static final int ANIMATION_SPEED = 8;
-			
+
 			public static final int IDLE = 0;
 			public static final int RUNNING = 1;
 			public static final int JUMPING = 2;
@@ -116,7 +116,7 @@ public class Constants {
 		public static final int SIZE = (int) (32 * SCALE);
 	}
 
-	public static class InputConstatns {
+	public static class InputConstants {
 		public static final int CURSOR_OFFSET_X = 5;
 		public static final int CURSOR_OFFSET_Y = 25;
 	}

@@ -1,11 +1,24 @@
 package entity;
 
-import static utils.Constants.EnemyConstants.*;
+import static utils.Constants.AttackState.MELEE_HIT;
+import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
+import static utils.Constants.AttackState.MELEE_ON_COOLDOWN;
+import static utils.Constants.AttackState.READY;
+import static utils.Constants.Directions.LEFT;
+import static utils.Constants.Directions.RIGHT;
+import static utils.Constants.EnemyConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.EnemyConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.MELEE_DAMAGE;
+import static utils.Constants.EnemyConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.WIDTH;
 import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
 import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
-import static utils.Constants.Directions.*;
-import static utils.Constants.AttackState.*;
 
 import java.awt.geom.Rectangle2D;
 

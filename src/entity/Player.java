@@ -1,5 +1,13 @@
 package entity;
 
+import static utils.Constants.AttackState.MELEE_HIT;
+import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
+import static utils.Constants.AttackState.MELEE_ON_COOLDOWN;
+import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
+import static utils.Constants.AttackState.RANGED_ON_COOLDOWN;
+import static utils.Constants.AttackState.READY;
+import static utils.Constants.Directions.LEFT;
+import static utils.Constants.Directions.RIGHT;
 import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
@@ -16,14 +24,12 @@ import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
 import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
-import static utils.Constants.PlayerConstants.Animations.IDLE;
-import static utils.Constants.PlayerConstants.Animations.RUNNING;
-import static utils.Constants.PlayerConstants.Animations.JUMPING;
-import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
-import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
 import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
-import static utils.Constants.Directions.*;
-import static utils.Constants.AttackState.*;
+import static utils.Constants.PlayerConstants.Animations.IDLE;
+import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.JUMPING;
+import static utils.Constants.PlayerConstants.Animations.RUNNING;
+import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
 
 import java.awt.geom.Rectangle2D;
 
@@ -40,7 +46,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import utils.Constants.BulletConstants;
-import utils.Constants.Resolution;
 import utils.Helper;
 import utils.Loader;
 
@@ -374,7 +379,7 @@ public class Player extends Entity implements Damageable {
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
-		
+
 		if (hitbox.y + hitbox.height + 1 >= Main.mapManager.getMapHeight()) {
 			currentHealth = 0;
 		}
