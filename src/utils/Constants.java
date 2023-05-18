@@ -114,7 +114,7 @@ public class Constants {
 	}
 
 	public static class InputConstants {
-		public static final int CURSOR_OFFSET_X = 5;
-		public static final int CURSOR_OFFSET_Y = 25;
+		public static final int CURSOR_OFFSET_X = 8;
+		public static final int CURSOR_OFFSET_Y = 30;
 	}
 }
