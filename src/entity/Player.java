@@ -1,6 +1,21 @@
 package entity;
 
-import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.PlayerConstants.BASE_X_SPEED;
+import static utils.Constants.PlayerConstants.HEIGHT;
+import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.PlayerConstants.INITIAL_MAX_POWER;
+import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
+import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
+import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
+import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
+import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
+import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
+import static utils.Constants.PlayerConstants.WEIGHT;
+import static utils.Constants.PlayerConstants.WIDTH;
 import static utils.Constants.Directions.*;
 import static utils.Constants.AttackState.*;
 
@@ -44,10 +59,14 @@ public class Player extends Entity implements Damageable {
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
 		// image = new Image("file:res/Owlet_Monster/Owlet_Monster.png");
-		maxHealth = 100;
-		currentHealth = 100;
-		maxPower = 100;
+		maxHealth = INITIAL_MAX_HEALTH;
+		currentHealth = INITIAL_MAX_HEALTH;
+
+		maxPower = INITIAL_MAX_POWER;
 		currentPower = 0;
+
+		meleeAttackProgress = 0;
+
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
 		attackState = READY;
@@ -206,7 +225,7 @@ public class Player extends Entity implements Damageable {
 			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
 			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
 			new Bullet(bulletX, bulletY, InputUtility.getMouseX(), InputUtility.getMouseY(), this);
-			initAttackCooldown(RANGED_ATTACK_DELAY);
+			initAttackCooldown(RANGE_ATTACK_DELAY);
 			attackCooldown.start();
 			attackState = RANGED_ON_COOLDOWN;
 		} else if (attackState == RANGED_ON_COOLDOWN && !attackCooldown.isAlive()) {
@@ -301,7 +320,7 @@ public class Player extends Entity implements Damageable {
 		}
 
 		// if the player is dead
-		if (currentHealth == 0) {
+		if (currentHealth <= 0) {
 			if (attackCooldown != null)
 				attackCooldown.interrupt();
 			Platform.exit();

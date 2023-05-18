@@ -5,7 +5,6 @@ import java.awt.geom.Rectangle2D;
 import entity.Player;
 import interfaces.Damageable;
 import item.Item;
-import utils.Helper;
 
 public abstract class Enemy extends Entity implements Damageable {
 

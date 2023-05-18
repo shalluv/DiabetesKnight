@@ -59,8 +59,8 @@ public class GameLogic {
 				entity.update();
 			else {
 				if (entity instanceof Enemy) {
-					addNewObject(new DroppedItem(entity.getHitbox().x, entity.getHitbox().y, DroppedItemConstants.WIDTH,
-							DroppedItemConstants.HEIGHT, ((Enemy) entity).getLootItem()));
+					addNewObject(new DroppedItem(entity.getHitbox().x, entity.getHitbox().y, DroppedItemConstants.SIZE,
+							DroppedItemConstants.SIZE, ((Enemy) entity).getLootItem()));
 				}
 				gameObjectContainer.remove(i);
 			}
