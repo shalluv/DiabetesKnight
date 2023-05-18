@@ -1,11 +1,14 @@
 package entity.base;
 
+import static utils.Constants.Directions.LEFT;
+
 import java.awt.geom.Rectangle2D;
 
 import entity.Player;
 import interfaces.Damageable;
 import item.Item;
 import item.derived.Sugar;
+import utils.Helper;
 
 public abstract class Enemy extends Entity implements Damageable {
 
@@ -53,4 +56,22 @@ public abstract class Enemy extends Entity implements Damageable {
 		return lootItem;
 	}
 
+	public int getHealth() {
+		return currentHealth;
+	}
+
+	protected boolean moveToFalling(int direction) {
+		for (int i = 0; i < 6; ++i) {
+			Rectangle2D.Double checkBox;
+			if (direction == LEFT)
+				checkBox = new Rectangle2D.Double(hitbox.x - hitbox.width, hitbox.y + i * hitbox.height, hitbox.width,
+						hitbox.height);
+			else
+				checkBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + i * hitbox.height, hitbox.width,
+						hitbox.height);
+			if (Helper.IsEntityOnFloor(checkBox))
+				return false;
+		}
+		return true;
+	}
 }

@@ -1,6 +1,7 @@
 package maps;
 
 import entity.MeleeEnemy;
+import entity.RangedEnemy;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
 
@@ -8,6 +9,7 @@ public class Map {
 
 	public static final int PLAYER_SPAWN_CODE = 3000;
 	public static final int MELEE_ENEMY_SPAWN_CODE = 3001;
+	public static final int RANGED_ENEMY_SPAWN_CODE = 3002;
 
 	private int[][] mapData;
 
@@ -22,6 +24,10 @@ public class Map {
 				case MELEE_ENEMY_SPAWN_CODE:
 					mapData[i][j] = 0;
 					GameLogic.addNewObject(new MeleeEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					break;
+				case RANGED_ENEMY_SPAWN_CODE:
+					mapData[i][j] = 0;
+					GameLogic.addNewObject(new RangedEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				default:
 					break;

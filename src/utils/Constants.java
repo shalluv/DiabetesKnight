@@ -89,7 +89,7 @@ public class Constants {
 		}
 	}
 
-	public static class EnemyConstants {
+	public static class MeleeEnemyConstants {
 		public static final int WIDTH = (int) (32 * SCALE);
 		public static final int HEIGHT = (int) (32 * SCALE);
 		public static final double MAX_Y_SPEED = 5 * SCALE;
@@ -99,6 +99,19 @@ public class Constants {
 		public static final double WEIGHT = 1 * SCALE;
 		public static final int SIGHT_SIZE = (int) (400 * SCALE);
 		public static final int INITIAL_MAX_HEALTH = 100;
+	}
+
+	public static class RangedEnemyConstants {
+		public static final int WIDTH = (int) (32 * SCALE);
+		public static final int HEIGHT = (int) (32 * SCALE);
+		public static final double MAX_Y_SPEED = 5 * SCALE;
+		public static final double BASE_X_SPEED = 1 * SCALE;
+		public static final double INITIAL_X_SPEED = 0 * SCALE;
+		public static final double INITIAL_Y_SPEED = 5 * SCALE;
+		public static final double WEIGHT = 1 * SCALE;
+		public static final int SIGHT_SIZE = (int) (1500 * SCALE);
+		public static final int INITIAL_MAX_HEALTH = 100;
+		public static final int ATTACK_RANGE = (int) (1000 * SCALE);
 	}
 
 	public static class BulletConstants {

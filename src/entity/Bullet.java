@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.geom.Rectangle2D;
 import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
@@ -68,6 +69,29 @@ public class Bullet extends Entity {
 		double vectorSize = Math.sqrt(dx * dx + dy * dy);
 		xspeed = BulletConstants.SPEED * dx / vectorSize;
 		yspeed = BulletConstants.SPEED * dy / vectorSize;
+	}
+
+	public static boolean canBulletHit(Rectangle2D.Double targetHitbox, Rectangle2D.Double sourceHitbox,
+			Rectangle2D.Double attackBox) {
+		double sx = sourceHitbox.getCenterX();
+		double sy = sourceHitbox.getCenterY();
+		double dx = targetHitbox.getCenterX() - sx;
+		double dy = targetHitbox.getCenterY() - sy;
+		double vectorSize = Math.sqrt(dx * dx + dy * dy);
+		double vx = BulletConstants.SPEED * dx / vectorSize;
+		double vy = BulletConstants.SPEED * dy / vectorSize;
+		Rectangle2D.Double bullet = new Rectangle2D.Double(sx, sy, BulletConstants.WIDTH, BulletConstants.HEIGHT);
+		while (attackBox.contains(bullet)) {
+			if (Helper.CanMoveHere(bullet.x + vx, bullet.y + vy, bullet.width, bullet.height)) {
+				bullet.x += vx;
+				bullet.y += vy;
+				if (bullet.intersects(targetHitbox))
+					return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

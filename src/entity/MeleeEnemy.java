@@ -1,14 +1,8 @@
 package entity;
 
 import static utils.Constants.AttackState.READY;
-import static utils.Constants.EnemyConstants.BASE_X_SPEED;
-import static utils.Constants.EnemyConstants.HEIGHT;
-import static utils.Constants.EnemyConstants.INITIAL_X_SPEED;
-import static utils.Constants.EnemyConstants.INITIAL_Y_SPEED;
-import static utils.Constants.EnemyConstants.MAX_Y_SPEED;
-import static utils.Constants.EnemyConstants.SIGHT_SIZE;
-import static utils.Constants.EnemyConstants.WEIGHT;
-import static utils.Constants.EnemyConstants.WIDTH;
+import static utils.Constants.MeleeEnemyConstants.*;
+import static utils.Constants.Directions.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -90,11 +84,11 @@ public class MeleeEnemy extends Enemy {
 
 	private void updateXSpeed() {
 		if (isInSight(GameLogic.getPlayer())) {
-			if (GameLogic.getPlayer().getHitbox().getMaxX() + spear.getAttackRange() / 2 < hitbox.x && Helper
-					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
+			if (GameLogic.getPlayer().getHitbox().getMaxX() + spear.getAttackRange() / 2 < hitbox.x
+					&& !moveToFalling(LEFT)) {
 				xspeed = -BASE_X_SPEED;
-			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + spear.getAttackRange() / 2 && Helper
-					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
+			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + spear.getAttackRange() / 2
+					&& !moveToFalling(RIGHT)) {
 				xspeed = BASE_X_SPEED;
 			} else {
 				xspeed = INITIAL_X_SPEED;
@@ -125,11 +119,6 @@ public class MeleeEnemy extends Enemy {
 			if (attackState != READY)
 				spear.cancelAttack();
 		}
-	}
-
-	@Override
-	public int getHealth() {
-		return currentHealth;
 	}
 
 }
