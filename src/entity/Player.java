@@ -45,6 +45,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import logic.GameLogic;
 import utils.Constants.BulletConstants;
 import utils.Helper;
 import utils.Loader;
@@ -226,7 +227,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void checkAttackHit() {
-		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
 				if (meleeAttackBox.intersects(enemy.getHitbox()) && !Thread.interrupted()) {
@@ -314,7 +315,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void pickUpItems() {
-		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof DroppedItem) {
 				DroppedItem item = (DroppedItem) entity;
 				if (hitbox.intersects(item.getHitbox())) {

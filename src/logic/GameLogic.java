@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import application.Main;
 import entity.DroppedItem;
-import entity.MeleeEnemy;
 import entity.Player;
 import entity.base.Enemy;
 import entity.base.Entity;
@@ -12,36 +11,28 @@ import input.InputUtility;
 import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
 import utils.Constants.DroppedItemConstants;
-import utils.Constants.EnemyConstants;
-import utils.Constants.PlayerConstants;
 import utils.Constants.Resolution;
 
 public class GameLogic {
 
-	private ArrayList<Entity> gameObjectContainer;
-
-	public static Player player;
+	private static ArrayList<Entity> gameObjectContainer = new ArrayList<Entity>();
+	private static Player player;
 
 	public GameLogic() {
-		this.gameObjectContainer = new ArrayList<>();
-
-		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
-		addNewObject(player);
-		addNewObject(new MeleeEnemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player));
 	}
 
-	public void addAllObject(ArrayList<Entity> entities) {
+	public static void addAllObject(ArrayList<Entity> entities) {
 		for (Entity entity : entities) {
 			addNewObject(entity);
 		}
 	}
 
-	public void addNewObject(Entity entity) {
+	public static void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
 
-	public ArrayList<Entity> getGameObjectContainer() {
+	public static ArrayList<Entity> getGameObjectContainer() {
 		return gameObjectContainer;
 	}
 
@@ -71,13 +62,30 @@ public class GameLogic {
 	private void updateScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
 		int mapHeight = Main.mapManager.getMapHeight();
-		double x = player.getHitbox().x + player.getHitbox().width / 2;
-		double y = player.getHitbox().y + player.getHitbox().height / 2;
+
+		double x, y;
+		if (player != null) {
+			x = player.getHitbox().x + player.getHitbox().width / 2;
+			y = player.getHitbox().y + player.getHitbox().height / 2;
+		} else {
+			x = 0;
+			y = 0;
+		}
+
 		if (x >= Resolution.WIDTH / 2 && x + Resolution.WIDTH / 2 < mapWidth) {
 			Main.gameScreen.setX(-(x - Resolution.WIDTH / 2));
 		}
 		if (y >= Resolution.HEIGHT / 2 && y + Resolution.HEIGHT / 2 < mapHeight) {
 			Main.gameScreen.setY(-(y - Resolution.HEIGHT / 2));
 		}
+	}
+
+	public static void spawnPlayer(int x, int y) {
+		player = new Player(x, y);
+		addNewObject(player);
+	}
+
+	public static Player getPlayer() {
+		return player;
 	}
 }

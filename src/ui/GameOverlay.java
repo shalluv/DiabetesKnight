@@ -4,7 +4,6 @@ import item.Item;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
@@ -18,22 +17,21 @@ public class GameOverlay {
 	}
 
 	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
-		int currentHealth = GameLogic.player.getCurrentHealth();
-		int maxHealth = GameLogic.player.getMaxHealth();
-		int currentPower = GameLogic.player.getCurrentPower();
-		int maxPower = GameLogic.player.getMaxPower();
+		int currentHealth = GameLogic.getPlayer().getCurrentHealth();
+		int maxHealth = GameLogic.getPlayer().getMaxHealth();
+		int currentPower = GameLogic.getPlayer().getCurrentPower();
+		int maxPower = GameLogic.getPlayer().getMaxPower();
 
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
-		gc.setFont(new Font(20));
 		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth),
 				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
 		gc.fillText("Power : " + Integer.toString(currentPower) + " / " + Integer.toString(maxPower),
 				UI.GameOverlay.OFFSET_POWER_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
 
-		Item[] inventory = GameLogic.player.getInventory();
-		int currentInventoryFocus = GameLogic.player.getCurrentInventoryFocus();
+		Item[] inventory = GameLogic.getPlayer().getInventory();
+		int currentInventoryFocus = GameLogic.getPlayer().getCurrentInventoryFocus();
 		for (int i = 0; i < PlayerConstants.INVENTORY_SIZE; ++i) {
 			// Rect Stroke
 			if (currentInventoryFocus == i) {

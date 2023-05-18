@@ -31,7 +31,7 @@ public class Helper {
 			// Right
 			int currentTile = (int) (hitbox.getMaxX() / BlockConstants.SIZE);
 			int tileXPos = currentTile * BlockConstants.SIZE;
-			int xOffset = (int) (40 - hitbox.getWidth());
+			int xOffset = (int) (BlockConstants.SIZE - hitbox.getWidth());
 			return tileXPos + xOffset - 1;
 		} else {
 			// Left

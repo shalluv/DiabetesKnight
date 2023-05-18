@@ -28,8 +28,8 @@ import item.derived.Sugar;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import logic.GameLogic;
 import utils.Helper;
 
 public class MeleeEnemy extends Enemy {
@@ -42,15 +42,13 @@ public class MeleeEnemy extends Enemy {
 	private Rectangle2D.Double attackBox;
 	// private Image image;
 	private Item lootItem;
-	private Player player;
 
-	public MeleeEnemy(double x, double y, Player player) {
+	public MeleeEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		attackState = READY;
 		attackProgress = 0;
-		this.player = player;
 		initHitbox(x, y, width, height);
 		lootItem = new Sugar();
 		attackDirection = LEFT;
@@ -82,7 +80,6 @@ public class MeleeEnemy extends Enemy {
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-		gc.setFont(new Font(20));
 //		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
@@ -137,16 +134,16 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void checkAttackHit() {
-		if (attackBox.intersects(player.getHitbox()) && !Thread.interrupted()) {
-			player.receiveDamage(MELEE_DAMAGE);
+		if (attackBox.intersects(GameLogic.getPlayer().getHitbox()) && !Thread.interrupted()) {
+			GameLogic.getPlayer().receiveDamage(MELEE_DAMAGE);
 			attackState = MELEE_HIT;
 		}
 	}
 
-	private boolean canAttack(Player player) {
+	private boolean canAttack() {
 		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - MELEE_ATTACK_RANGE, hitbox.y,
 				WIDTH + 2 * MELEE_ATTACK_RANGE, HEIGHT);
-		return canAttackBox.intersects(player.getHitbox()) && Helper.IsEntityOnFloor(hitbox);
+		return canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
 	private void updateMeleeAttack() {
@@ -187,11 +184,11 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void updateXSpeed() {
-		if (isInSight(player)) {
-			if (player.getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
+		if (isInSight(GameLogic.getPlayer())) {
+			if (GameLogic.getPlayer().getHitbox().getMaxX() + MELEE_ATTACK_RANGE / 2 < hitbox.x && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.x - WIDTH, hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = -BASE_X_SPEED;
-			} else if (player.getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2 && Helper
+			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + MELEE_ATTACK_RANGE / 2 && Helper
 					.IsEntityOnFloor(new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + 3 * HEIGHT, WIDTH, HEIGHT))) {
 				xspeed = BASE_X_SPEED;
 			} else {
@@ -203,7 +200,7 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void updateAttackDirection() {
-		double playerCenterX = player.getHitbox().getCenterX();
+		double playerCenterX = GameLogic.getPlayer().getHitbox().getCenterX();
 		double enemyCenterX = hitbox.getCenterX();
 		if (playerCenterX < enemyCenterX)
 			attackDirection = LEFT;
@@ -213,15 +210,18 @@ public class MeleeEnemy extends Enemy {
 
 	@Override
 	public void update() {
-		updateXSpeed();
-		updateAttackDirection();
+		if (GameLogic.getPlayer() != null) {
+			updateXSpeed();
+			updateAttackDirection();
+		}
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
+
 		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == MELEE_ON_COOLDOWN)
 			updateMeleeAttack();
-		if (canAttack(player) && attackState == READY)
+		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
 			attack();
 
 		if (currentHealth == 0) {

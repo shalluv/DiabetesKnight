@@ -1,11 +1,11 @@
 package entity;
 
-import application.Main;
 import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import logic.GameLogic;
 import utils.Constants.BulletConstants;
 import utils.Helper;
 
@@ -20,7 +20,7 @@ public class Bullet extends Entity {
 		initHitbox(x, y, width, height);
 		this.owner = owner;
 		calculateSpeed(x, y, targetX, targetY);
-		Main.gameLogic.addNewObject(this);
+		GameLogic.addNewObject(this);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Bullet extends Entity {
 	}
 
 	private void checkHit() {
-		for (Entity entity : Main.gameLogic.getGameObjectContainer()) {
+		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (entity instanceof Damageable
 					&& ((entity instanceof Enemy && owner instanceof Player)
 							|| (entity instanceof Player && owner instanceof Enemy))

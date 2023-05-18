@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
 import ui.GameOverlay;
@@ -15,6 +16,7 @@ import ui.MenuOverlay;
 import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
+import utils.Constants.UI;
 import utils.Loader;
 
 public class GameCanvas extends Canvas {
@@ -52,6 +54,7 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY, GameScreen gameScreen) {
 		GraphicsContext gc = getGraphicsContext2D();
+		gc.setFont(new Font(UI.FONT_SIZE));
 
 		switch (Main.gameState) {
 		case GameState.MENU:
