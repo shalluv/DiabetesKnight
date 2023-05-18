@@ -227,6 +227,8 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void checkAttackHit() {
+		if (meleeAttackBox == null)
+			return;
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Enemy) {
 				Enemy enemy = (Enemy) entity;
@@ -250,6 +252,8 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void updateMeleeAttack() {
+		if (attackState == MELEE_IN_PROGRESS)
+			checkAttackHit();
 		if (attackCooldown != null && attackCooldown.isAlive())
 			return;
 		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
@@ -263,8 +267,6 @@ public class Player extends Entity implements Damageable {
 				meleeAttackProgress -= MELEE_ATTACK_SPEED;
 				attackState = MELEE_ON_COOLDOWN;
 			}
-			if (attackState != MELEE_HIT)
-				checkAttackHit();
 			attackCooldown.start();
 			if (meleeAttackProgress >= MELEE_ATTACK_RANGE)
 				attackState = MELEE_ON_COOLDOWN;

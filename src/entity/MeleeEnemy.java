@@ -134,6 +134,8 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void checkAttackHit() {
+		if (attackBox == null)
+			return;
 		if (attackBox.intersects(GameLogic.getPlayer().getHitbox()) && !Thread.interrupted()) {
 			GameLogic.getPlayer().receiveDamage(MELEE_DAMAGE);
 			attackState = MELEE_HIT;
@@ -147,6 +149,8 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void updateMeleeAttack() {
+		if (attackState == MELEE_IN_PROGRESS)
+			checkAttackHit();
 		if (attackCooldown != null && attackCooldown.isAlive())
 			return;
 		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
@@ -160,8 +164,6 @@ public class MeleeEnemy extends Enemy {
 				attackProgress -= MELEE_ATTACK_SPEED;
 				attackState = MELEE_ON_COOLDOWN;
 			}
-			if (attackState != MELEE_HIT)
-				checkAttackHit();
 			attackCooldown.start();
 			if (attackProgress >= MELEE_ATTACK_RANGE)
 				attackState = MELEE_ON_COOLDOWN;
