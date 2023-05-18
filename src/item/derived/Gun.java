@@ -1,7 +1,7 @@
 package item.derived;
 
 import static utils.Constants.AttackState.*;
-import static utils.Constants.PlayerConstants.RANGE_ATTACK_DELAY;
+import static utils.Constants.GunConstants.ATTACK_DELAY;
 
 import java.awt.geom.Rectangle2D;
 
@@ -33,7 +33,7 @@ public class Gun extends Weapon {
 			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
 			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
 			new Bullet(bulletX, bulletY, targetX, targetY, attacker);
-			initCooldown(RANGE_ATTACK_DELAY);
+			initCooldown(ATTACK_DELAY);
 			cooldown.start();
 			attackState = RANGED_ON_COOLDOWN;
 		} else if (attackState == RANGED_ON_COOLDOWN && !cooldown.isAlive()) {

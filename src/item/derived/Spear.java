@@ -3,18 +3,17 @@ package item.derived;
 import static utils.Constants.AttackState.*;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
-import static utils.Constants.PlayerConstants.ATTACK_BOX_HEIGHT;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_DELAY;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_RANGE;
-import static utils.Constants.PlayerConstants.MELEE_ATTACK_SPEED;
-import static utils.Constants.PlayerConstants.MELEE_DAMAGE;
+import static utils.Constants.SpearConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.SpearConstants.ATTACK_DELAY;
+import static utils.Constants.SpearConstants.ATTACK_RANGE;
+import static utils.Constants.SpearConstants.ATTACK_SPEED;
+import static utils.Constants.SpearConstants.DAMAGE;
 
 import java.awt.geom.Rectangle2D;
 
 import entity.Player;
 import entity.base.Enemy;
 import entity.base.Entity;
-import input.InputUtility;
 import interfaces.Damageable;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,10 +25,12 @@ public class Spear extends Weapon {
 
 	private int attackDirection;
 	private int attackProgress;
+	private int attackRange;
 	private Rectangle2D.Double attackBox;
 
 	public Spear() {
 		super("Spear", Color.RED);
+		this.attackRange = ATTACK_RANGE;
 	}
 
 	@Override
@@ -59,24 +60,24 @@ public class Spear extends Weapon {
 		if (cooldown != null && cooldown.isAlive()) // cooldown then don't update progress
 			return attackState;
 		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT) {
-			if (attackProgress < MELEE_ATTACK_RANGE) {
+			if (attackProgress < ATTACK_RANGE) {
 				if (cooldown == null || !cooldown.isAlive()) // if it is not cooldown init cooldown thread
-					initCooldown(MELEE_ATTACK_DELAY);
-				attackProgress += MELEE_ATTACK_SPEED;
+					initCooldown(ATTACK_DELAY);
+				attackProgress += ATTACK_SPEED;
 			}
 			updateAttackBox(attacker);
 			if (isAttackingWall(attacker)) {
-				attackProgress -= MELEE_ATTACK_SPEED;
+				attackProgress -= ATTACK_SPEED;
 				attackState = MELEE_ON_COOLDOWN;
 			}
 			cooldown.start();
-			if (attackProgress >= MELEE_ATTACK_RANGE) // if it is out of range then stop the attack
+			if (attackProgress >= ATTACK_RANGE) // if it is out of range then stop the attack
 				attackState = MELEE_ON_COOLDOWN;
 		} else if (attackState == MELEE_ON_COOLDOWN) {
 			if (attackProgress > 0) {
 				if (cooldown == null || !cooldown.isAlive())
-					initCooldown(MELEE_ATTACK_DELAY);
-				attackProgress -= MELEE_ATTACK_SPEED;
+					initCooldown(ATTACK_DELAY);
+				attackProgress -= ATTACK_SPEED;
 				cooldown.start();
 			} else {
 				cooldown = null;
@@ -90,13 +91,17 @@ public class Spear extends Weapon {
 
 	@Override
 	public int attack(double targetX, double targetY, Entity attacker) {
-		updateAttackDirection(attacker);
+		updateAttackDirection(targetX, attacker);
 		this.attackState = MELEE_IN_PROGRESS;
 		return attackState;
 	}
 
-	private void updateAttackDirection(Entity attacker) {
-		if (InputUtility.getMouseX() >= attacker.getHitbox().getCenterX())
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	private void updateAttackDirection(double targetX, Entity attacker) {
+		if (targetX >= attacker.getHitbox().getCenterX())
 			attackDirection = RIGHT;
 		else
 			attackDirection = LEFT;
@@ -108,7 +113,7 @@ public class Spear extends Weapon {
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Damageable && isEnemy(entity, attacker)) {
 				if (attackBox.intersects(entity.getHitbox())) {
-					((Damageable) entity).receiveDamage(MELEE_DAMAGE);
+					((Damageable) entity).receiveDamage(DAMAGE);
 					attackState = MELEE_HIT;
 					return;
 				}
