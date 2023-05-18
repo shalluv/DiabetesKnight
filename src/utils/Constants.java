@@ -95,7 +95,7 @@ public class Constants {
 		public static final int MELEE_DAMAGE = 10;
 		public static final int MELEE_ATTACK_SPEED = 3;
 		public static final int MELEE_ATTACK_DELAY = 50;
-		public static final int SIGHT_SIZE = (int) (800 * SCALE);
+		public static final int SIGHT_SIZE = (int) (400 * SCALE);
 		public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
 		public static final int INITIAL_MAX_HEALTH = 100;
 	}
