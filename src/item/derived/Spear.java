@@ -70,9 +70,10 @@ public class Spear extends Weapon {
 				attackProgress -= ATTACK_SPEED;
 				attackState = MELEE_ON_COOLDOWN;
 			}
-			cooldown.start();
 			if (attackProgress >= ATTACK_RANGE) // if it is out of range then stop the attack
 				attackState = MELEE_ON_COOLDOWN;
+			else
+				cooldown.start();
 		} else if (attackState == MELEE_ON_COOLDOWN) {
 			if (attackProgress > 0) {
 				if (cooldown == null || !cooldown.isAlive())
