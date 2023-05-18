@@ -77,14 +77,14 @@ public class Constants {
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {
-			public static final int ANIMATION_SPEED = 8;
+			public static final int ANIMATION_SPEED = 6;
 
 			public static final int IDLE = 0;
 			public static final int RUNNING = 1;
 			public static final int JUMPING = 2;
 
 			public static final int IDLE_FRAMES_COUNT = 4;
-			public static final int RUNNING_FRAMES_COUNT = 6;
+			public static final int RUNNING_FRAMES_COUNT = 4;
 			public static final int JUMPING_FRAMES_COUNT = 8;
 		}
 	}
