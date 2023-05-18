@@ -40,7 +40,6 @@ public class MeleeEnemy extends Enemy {
 	private int attackProgress;
 	private int attackDirection;
 	private Rectangle2D.Double attackBox;
-	// private Image image;
 	private Item lootItem;
 
 	public MeleeEnemy(double x, double y) {

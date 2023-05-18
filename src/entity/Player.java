@@ -62,7 +62,6 @@ public class Player extends Entity implements Damageable {
 	private int attackState;
 	private int meleeAttackProgress;
 	private Thread attackCooldown;
-	// private Image image;
 	private Rectangle2D.Double meleeAttackBox;
 	private Item[] inventory;
 	private int currentInventoryFocus;
@@ -71,6 +70,7 @@ public class Player extends Entity implements Damageable {
 	private int frameCount;
 	private Image[] animation;
 	private Image dustAnimation;
+	private boolean isFacingLeft;
 
 	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -88,6 +88,8 @@ public class Player extends Entity implements Damageable {
 
 		inventory = new Item[INVENTORY_SIZE];
 		currentInventoryFocus = 0;
+		
+		isFacingLeft = false;
 	}
 
 	private void loadResources() {
@@ -118,6 +120,8 @@ public class Player extends Entity implements Damageable {
 				break;
 			}
 		}
+		gc.setFill(Color.RED);
+		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
@@ -153,9 +157,16 @@ public class Player extends Entity implements Damageable {
 				break;
 			}
 		}
-		gc.drawImage(animation[animationState], animationFrame * 32, 0, 32, 32, hitbox.x + 2, hitbox.y, width, height);
-		if (animationState == 1) {
-			gc.drawImage(dustAnimation, animationFrame * 32, 0, 32, 32, hitbox.x - 4, hitbox.y, width, height);
+
+		double x = hitbox.x + (isFacingLeft ? width : 0);
+		double y = hitbox.y;
+		double w = width * (isFacingLeft ? -1 : 1);
+		double h = height;
+		double offsetDust = 4 * (isFacingLeft ? 1 : -1);
+
+		gc.drawImage(animation[animationState], animationFrame * 32, 0, 32, 32, x, y, w, h);
+		if (animationState == RUNNING) {
+			gc.drawImage(dustAnimation, animationFrame * 32, 0, 32, 32, x + offsetDust, y, w, h);
 		}
 	}
 
@@ -376,6 +387,11 @@ public class Player extends Entity implements Damageable {
 			useItem();
 		}
 		pickUpItems();
+		if (xspeed > 0) {
+			isFacingLeft = false;
+		} else if (xspeed < 0) {
+			isFacingLeft = true;
+		}
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
