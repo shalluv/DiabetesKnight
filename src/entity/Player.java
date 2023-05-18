@@ -326,4 +326,9 @@ public class Player extends Entity implements Damageable {
 			currentInventoryFocus = 8;
 		}
 	}
+
+	@Override
+	public int getHealth() {
+		return currentHealth;
+	}
 }

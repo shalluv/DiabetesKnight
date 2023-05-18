@@ -110,9 +110,11 @@ public class Spear extends Weapon {
 	private void checkAttackHit(Entity attacker) {
 		if (attackBox == null)
 			return;
+		if (attacker instanceof Damageable && ((Damageable) attacker).getHealth() < 0)
+			return;
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Damageable && isEnemy(entity, attacker)) {
-				if (attackBox.intersects(entity.getHitbox()) && !attacker.isDestroyed()) {
+				if (attackBox.intersects(entity.getHitbox())) {
 					((Damageable) entity).receiveDamage(DAMAGE);
 					attackState = MELEE_HIT;
 					return;

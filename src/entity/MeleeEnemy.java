@@ -120,11 +120,16 @@ public class MeleeEnemy extends Enemy {
 			attackState = spear.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
 
-		if (currentHealth == 0) {
+		if (currentHealth <= 0) {
 			isDestroy = true;
 			if (attackState != READY)
 				spear.cancelAttack();
 		}
+	}
+
+	@Override
+	public int getHealth() {
+		return currentHealth;
 	}
 
 }
