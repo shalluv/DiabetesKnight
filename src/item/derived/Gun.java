@@ -19,7 +19,7 @@ public class Gun extends Weapon {
 	private double targetY;
 
 	public Gun() {
-		super("Gun", Color.GREEN);
+		super("Gun", Color.BLUE);
 	}
 
 	@Override

@@ -159,6 +159,12 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	public void heal(int value) {
+		if (value < 0)
+			value = 0;
+		setCurrentHealth(value + currentHealth);
+	}
+
 	@Override
 	public void receiveDamage(int damage) {
 		if (damage < 0)
