@@ -122,8 +122,8 @@ public class MeleeEnemy extends Enemy {
 
 		if (currentHealth == 0) {
 			isDestroy = true;
-			if (attackCooldown != null)
-				attackCooldown.interrupt();
+			if (attackState != READY)
+				spear.cancelAttack();
 		}
 	}
 

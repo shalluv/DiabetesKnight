@@ -112,7 +112,7 @@ public class Spear extends Weapon {
 			return;
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Damageable && isEnemy(entity, attacker)) {
-				if (attackBox.intersects(entity.getHitbox())) {
+				if (attackBox.intersects(entity.getHitbox()) && !attacker.isDestroyed()) {
 					((Damageable) entity).receiveDamage(DAMAGE);
 					attackState = MELEE_HIT;
 					return;

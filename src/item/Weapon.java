@@ -32,4 +32,11 @@ public abstract class Weapon extends Item {
 
 	public abstract int attack(double targetX, double targetY, Entity attacker);
 
+	public void cancelAttack() {
+		this.attackState = READY;
+		if (cooldown != null)
+			cooldown.interrupt();
+		cooldown = null;
+	}
+
 }

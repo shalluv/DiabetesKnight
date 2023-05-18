@@ -11,7 +11,6 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	protected int maxHealth;
 	protected int currentHealth;
-	protected Thread attackCooldown;
 	protected int sightSize;
 	protected Item lootItem;
 
@@ -36,16 +35,6 @@ public abstract class Enemy extends Entity implements Damageable {
 		} else {
 			currentHealth = value;
 		}
-	}
-
-	protected void initAttackCooldown(int delay) {
-		attackCooldown = new Thread(() -> {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				System.out.println("enemy cooldown interrupted");
-			}
-		});
 	}
 
 	protected boolean isInSight(Player player) {

@@ -254,6 +254,10 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth <= 0) {
+			if (attackState != READY) {
+				Item currentItem = inventory[currentInventoryFocus];
+				((Weapon) currentItem).cancelAttack();
+			}
 			Platform.exit();
 		}
 	}
