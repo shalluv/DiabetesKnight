@@ -3,7 +3,7 @@ package utils;
 public class Constants {
 	public static final int FPS = 60;
 	public static final int UPS = 150;
-	public final static float SCALE = 1f;
+	public final static float SCALE = 1.5f;
 
 	public static class Resolution {
 		public static final int WIDTH = 1280;
@@ -30,7 +30,7 @@ public class Constants {
 	}
 
 	public static class BlockConstants {
-		public static final int DEFAULT_SIZE = 40;
+		public static final int DEFAULT_SIZE = 32;
 		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
 	}
 
@@ -51,15 +51,15 @@ public class Constants {
 	}
 
 	public static class PlayerConstants {
-		public static final int INITIAL_X = 50;
-		public static final int INITIAL_Y = 600;
+		public static final int INITIAL_X = (int) (50 * SCALE);
+		public static final int INITIAL_Y = (int) (600 * SCALE);
 		public static final int WIDTH = (int) (32 * SCALE);
 		public static final int HEIGHT = (int) (32 * SCALE);
 		public static final double MAX_Y_SPEED = 8;
 		public static final double BASE_X_SPEED = 3;
 		public static final double INITIAL_X_SPEED = 0;
 		public static final double INITIAL_Y_SPEED = 8;
-		public static final double WEIGHT = 0.2;
+		public static final double WEIGHT = 0.12;
 		public static final int HITBOX_WIDTH_REDUCER = 20;
 		public static final int MELEE_ATTACK_RANGE = 12;
 		public static final int MELEE_DAMAGE = 10;
@@ -85,10 +85,10 @@ public class Constants {
 	}
 
 	public static class EnemyConstants {
-		public static final int INITIAL_X = 1200;
-		public static final int INITIAL_Y = 600;
-		public static final int WIDTH = 40;
-		public static final int HEIGHT = 40;
+		public static final int INITIAL_X = (int) (800 * SCALE);
+		public static final int INITIAL_Y = (int) (300 * SCALE);
+		public static final int WIDTH = (int) (32 * SCALE);
+		public static final int HEIGHT = (int) (32 * SCALE);
 		public static final double MAX_Y_SPEED = 5;
 		public static final double BASE_X_SPEED = 1;
 		public static final double INITIAL_X_SPEED = 0;
@@ -105,8 +105,8 @@ public class Constants {
 	}
 
 	public static class BulletConstants {
-		public static final int WIDTH = 5;
-		public static final int HEIGHT = 5;
+		public static final int WIDTH = (int) (5 * SCALE);
+		public static final int HEIGHT = (int) (5 * SCALE);
 		public static final double SPEED = 10;
 		public static final int DAMAGE = 5;
 	}

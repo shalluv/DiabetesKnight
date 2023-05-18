@@ -43,8 +43,8 @@ public class GameOverlay {
 			}
 			gc.strokeRect((Resolution.WIDTH / 2)
 					+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP) - layoutX,
-					Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY, BlockConstants.SIZE,
-					BlockConstants.SIZE);
+					Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY, UI.GameOverlay.ITEM_SIZE,
+					UI.GameOverlay.ITEM_SIZE);
 
 			// Items
 			if (inventory[i] != null) {
@@ -55,7 +55,8 @@ public class GameOverlay {
 								- layoutX + UI.GameOverlay.INVENTORY_PADDING,
 						Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY
 								+ UI.GameOverlay.INVENTORY_PADDING,
-						UI.GameOverlay.ITEM_SIZE, UI.GameOverlay.ITEM_SIZE);
+						UI.GameOverlay.ITEM_SIZE - UI.GameOverlay.INVENTORY_PADDING * 2,
+						UI.GameOverlay.ITEM_SIZE - UI.GameOverlay.INVENTORY_PADDING * 2);
 			}
 
 			// Numbering

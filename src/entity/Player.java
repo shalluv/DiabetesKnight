@@ -112,7 +112,7 @@ public class Player extends Entity implements Damageable {
 				break;
 			}
 		}
-		
+
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
 			if (animationState != JUMPING)
@@ -374,8 +374,8 @@ public class Player extends Entity implements Damageable {
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
 		move();
-
-		if (hitbox.y + hitbox.height >= Resolution.HEIGHT) {
+		
+		if (hitbox.y + hitbox.height + 1 >= Main.mapManager.getMapHeight()) {
 			currentHealth = 0;
 		}
 
