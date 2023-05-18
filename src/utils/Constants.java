@@ -55,7 +55,7 @@ public class Constants {
 	public static class SpearConstants {
 		public static final int ATTACK_RANGE = (int) (12 * SCALE);
 		public static final int DAMAGE = 10;
-		public static final int ATTACK_SPEED = 3;
+		public static final int ATTACK_SPEED = (int) (3 * SCALE);
 		public static final int ATTACK_DELAY = 50;
 		public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
 	}
@@ -73,7 +73,7 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 4 * SCALE;
 		public static final double WEIGHT = 0.12 * SCALE;
 		public static final int INVENTORY_SIZE = 10;
-		public static final int INITIAL_MAX_HEALTH = 100;
+		public static final int INITIAL_MAX_HEALTH = 100000;
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {
@@ -98,7 +98,7 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 5 * SCALE;
 		public static final double WEIGHT = 1 * SCALE;
 		public static final int SIGHT_SIZE = (int) (400 * SCALE);
-		public static final int INITIAL_MAX_HEALTH = 100;
+		public static final int INITIAL_MAX_HEALTH = 30;
 	}
 
 	public static class RangedEnemyConstants {
@@ -110,7 +110,7 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 5 * SCALE;
 		public static final double WEIGHT = 1 * SCALE;
 		public static final int SIGHT_SIZE = (int) (1000 * SCALE);
-		public static final int INITIAL_MAX_HEALTH = 100;
+		public static final int INITIAL_MAX_HEALTH = 20;
 		public static final int ATTACK_RANGE = (int) (400 * SCALE);
 	}
 

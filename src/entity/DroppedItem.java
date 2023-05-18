@@ -1,5 +1,7 @@
 package entity;
 
+import java.awt.geom.Rectangle2D;
+
 import entity.base.Entity;
 import item.Item;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,14 +32,16 @@ public class DroppedItem extends Entity {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!screen.intersects(hitbox))
+			return;
 		gc.setFill(item.getColor());
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
 	@Override
 	public int getZ() {
-		return 2;
+		return 1;
 	}
 
 	@Override

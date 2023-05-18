@@ -25,7 +25,7 @@ public class RangedEnemy extends Enemy {
 	private Gun gun;
 
 	public RangedEnemy(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
 		attackState = READY;
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
@@ -34,7 +34,9 @@ public class RangedEnemy extends Enemy {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!hitbox.intersects(screen))
+			return;
 		gc.setFill(Color.RED);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		gc.setTextAlign(TextAlignment.LEFT);

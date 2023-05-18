@@ -18,6 +18,8 @@ import static utils.Constants.PlayerConstants.Animations.JUMPING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
 
+import java.awt.geom.Rectangle2D;
+
 import application.Main;
 import entity.base.Entity;
 import input.InputUtility;
@@ -74,7 +76,7 @@ public class Player extends Entity implements Damageable {
 		addItem(new Spear());
 		addItem(new Gun());
 		currentInventoryFocus = 0;
-		
+
 		isFacingLeft = false;
 	}
 
@@ -90,7 +92,9 @@ public class Player extends Entity implements Damageable {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!hitbox.intersects(screen))
+			return;
 		gc.setFill(Color.BLACK);
 		if (attackState != READY && currentWeapon != null) {
 			currentWeapon.draw(gc, this);

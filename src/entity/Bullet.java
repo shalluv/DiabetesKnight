@@ -25,7 +25,9 @@ public class Bullet extends Entity {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!hitbox.intersects(screen))
+			return;
 		gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}

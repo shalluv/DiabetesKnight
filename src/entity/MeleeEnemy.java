@@ -25,7 +25,7 @@ public class MeleeEnemy extends Enemy {
 	// private Image image;
 
 	public MeleeEnemy(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		attackState = READY;
@@ -35,7 +35,9 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!hitbox.intersects(screen))
+			return;
 //		 Hitbox Rect
 		gc.setFill(Color.RED);
 		if (attackState != READY) {

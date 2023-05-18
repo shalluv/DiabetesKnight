@@ -14,6 +14,7 @@ public class Map {
 	private int[][] mapData;
 
 	public Map(int[][] mapData) {
+		System.out.println(mapData.length + " " + mapData[0].length);
 		for (int i = 0; i < mapData.length; ++i) {
 			for (int j = 0; j < mapData[i].length; ++j) {
 				switch (mapData[i][j]) {

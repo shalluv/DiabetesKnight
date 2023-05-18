@@ -1,9 +1,13 @@
 package maps;
 
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
+
 import application.CSVParser;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import utils.Constants.BlockConstants;
+import utils.Constants.Resolution;
 import utils.Loader;
 
 public class MapManager {
@@ -23,7 +27,8 @@ public class MapManager {
 		}
 	}
 
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, double screenX, double screenY) {
+		int cnt = 0, sz = 0;
 		int width = getCurrentMap().getMapData()[0].length;
 		int height = getCurrentMap().getMapData().length;
 		for (int i = 0; i < height; ++i) {
@@ -32,8 +37,16 @@ public class MapManager {
 				if (index == 0) {
 					continue;
 				}
-				gc.drawImage(mapSprite[index], BlockConstants.SIZE * j, BlockConstants.SIZE * i, BlockConstants.SIZE,
-						BlockConstants.SIZE);
+				Rectangle2D.Double block = new Rectangle2D.Double(BlockConstants.SIZE * j, BlockConstants.SIZE * i,
+						BlockConstants.SIZE, BlockConstants.SIZE);
+				Rectangle2D.Double screen = new Rectangle2D.Double(screenX, screenY, Resolution.WIDTH,
+						Resolution.HEIGHT);
+				sz++;
+				if (block.intersects(screen)) {
+					gc.drawImage(mapSprite[index], BlockConstants.SIZE * j, BlockConstants.SIZE * i,
+							BlockConstants.SIZE, BlockConstants.SIZE);
+					++cnt;
+				}
 			}
 		}
 	}

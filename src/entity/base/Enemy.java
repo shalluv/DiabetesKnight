@@ -17,17 +17,17 @@ public abstract class Enemy extends Entity implements Damageable {
 	protected int sightSize;
 	protected Item lootItem;
 
-	public Enemy(double x, double y, int width, int height, int sightSize) {
+	public Enemy(double x, double y, int width, int height, int sightSize, int maxHealth) {
 		super(x, y, width, height);
-		this.maxHealth = 100;
-		this.currentHealth = 100;
+		this.maxHealth = maxHealth;
+		this.currentHealth = maxHealth;
 		this.sightSize = sightSize;
 		this.lootItem = new Sugar(10);
 	}
 
 	@Override
 	public int getZ() {
-		return 1;
+		return 2;
 	}
 
 	protected void setCurrentHealth(int value) {
@@ -41,8 +41,8 @@ public abstract class Enemy extends Entity implements Damageable {
 	}
 
 	protected boolean isInSight(Player player) {
-		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.x - sightSize, hitbox.y - sightSize,
-				hitbox.width + 2 * sightSize, hitbox.height + 2 * sightSize);
+		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.getCenterX() - sightSize,
+				hitbox.getCenterY() - sightSize, 2 * sightSize, 2 * sightSize);
 		return enemySight.intersects(player.getHitbox());
 	}
 

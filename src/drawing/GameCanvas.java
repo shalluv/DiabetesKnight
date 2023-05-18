@@ -1,5 +1,6 @@
 package drawing;
 
+import java.awt.geom.Rectangle2D;
 import application.Main;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
@@ -54,8 +55,8 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY, GameScreen gameScreen) {
 		GraphicsContext gc = getGraphicsContext2D();
+		Rectangle2D.Double screen = new Rectangle2D.Double(-layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
 		gc.setFont(new Font(UI.FONT_SIZE));
-
 		switch (Main.gameState) {
 		case GameState.MENU:
 			gameScreen.setLayoutX(0);
@@ -67,22 +68,22 @@ public class GameCanvas extends Canvas {
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
 			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
-			Main.mapManager.draw(gc);
+			Main.mapManager.draw(gc, -layoutX, -layoutY);
 			// draw entities
 			for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 				if (!entity.isDestroyed()) {
-					entity.draw(gc);
+					entity.draw(gc, screen);
 				}
 			}
 			GameOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PAUSE:
 			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
-			Main.mapManager.draw(gc);
+			Main.mapManager.draw(gc, -layoutX, -layoutY);
 			// draw entities
 			for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
 				if (!entity.isDestroyed()) {
-					entity.draw(gc);
+					entity.draw(gc, screen);
 				}
 			}
 
