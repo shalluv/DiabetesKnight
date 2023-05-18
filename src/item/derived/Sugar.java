@@ -14,7 +14,7 @@ public class Sugar extends Item implements Consumable {
 
 	@Override
 	public void consume() {
-		Player player = GameLogic.player;
+		Player player = GameLogic.getPlayer();
 		player.setCurrentPower(player.getCurrentPower() + power);
 	}
 }

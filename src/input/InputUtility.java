@@ -1,13 +1,12 @@
 package input;
 
-import static utils.Constants.InputConstatns.*;
-
 import java.util.ArrayList;
 
 import application.Main;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.robot.Robot;
+import utils.Constants.InputConstants;
 
 public class InputUtility {
 	private static ArrayList<KeyCode> keyPressed = new ArrayList<>();
@@ -75,8 +74,8 @@ public class InputUtility {
 			Robot robot = new Robot();
 			double mouseX = robot.getMouseX();
 			double mouseY = robot.getMouseY();
-			setMouseX(mouseX - Main.gameScreen.getLayoutX() - Main.gameStage.getX() - CURSOR_OFFSET_X);
-			setMouseY(mouseY - Main.gameScreen.getLayoutY() - Main.gameStage.getY() - CURSOR_OFFSET_Y);
+			setMouseX(mouseX - Main.gameScreen.getLayoutX() - Main.gameStage.getX() - InputConstants.CURSOR_OFFSET_X);
+			setMouseY(mouseY - Main.gameScreen.getLayoutY() - Main.gameStage.getY() - InputConstants.CURSOR_OFFSET_Y);
 		});
 	}
 }

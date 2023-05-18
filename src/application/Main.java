@@ -40,7 +40,7 @@ public class Main extends Application {
 			PauseOverlay.loadResources();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
-			stage.setTitle("OurGame");
+			stage.setTitle("Diabetes Knight");
 			stage.setScene(scene);
 			stage.setResizable(false);
 

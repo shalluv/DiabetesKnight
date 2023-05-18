@@ -24,7 +24,6 @@ import item.derived.Sugar;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import utils.Helper;
 
@@ -79,7 +78,6 @@ public class Enemy extends Entity implements Damageable {
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-		gc.setFont(new Font(20));
 //		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 

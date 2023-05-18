@@ -7,7 +7,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
@@ -38,7 +37,6 @@ public class MenuOverlay {
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.RED);
 		gc.fillText("Press SPACE to continue...", Resolution.WIDTH / 2, Resolution.HEIGHT / 2);
-		gc.setFont(new Font(20));
 
 	}
 }
