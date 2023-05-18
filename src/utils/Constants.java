@@ -3,7 +3,7 @@ package utils;
 public class Constants {
 	public static final int FPS = 60;
 	public static final int UPS = 150;
-	public final static float SCALE = 1.2f;
+	public final static float SCALE = 1f;
 
 	public static class Resolution {
 		public static final int WIDTH = 1280;
@@ -32,6 +32,22 @@ public class Constants {
 	public static class BlockConstants {
 		public static final int DEFAULT_SIZE = 40;
 		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
+	}
+
+	public static class Directions {
+		public static final int LEFT = 0;
+		public static final int UP = 1;
+		public static final int RIGHT = 2;
+		public static final int DOWN = 3;
+	}
+
+	public static class AttackState {
+		public static final int READY = 0;
+		public static final int MELEE_IN_PROGRESS = 1;
+		public static final int MELEE_ON_COOLDOWN = 2;
+		public static final int MELEE_HIT = 3;
+		public static final int RANGED_IN_PROGRESS = 4;
+		public static final int RANGED_ON_COOLDOWN = 5;
 	}
 
 	public static class PlayerConstants {
@@ -89,14 +105,19 @@ public class Constants {
 	}
 
 	public static class BulletConstants {
-		public static final int WIDTH = 10;
+		public static final int WIDTH = 5;
 		public static final int HEIGHT = 5;
-		public static final double X_SPEED = 5;
+		public static final double SPEED = 10;
 		public static final int DAMAGE = 5;
 	}
 
 	public static class DroppedItemConstants {
 		public static final int DEFAULT_SIZE = 32;
 		public static final int SIZE = (int) (32 * SCALE);
+	}
+
+	public static class InputConstatns {
+		public static final int CURSOR_OFFSET_X = 5;
+		public static final int CURSOR_OFFSET_Y = 25;
 	}
 }

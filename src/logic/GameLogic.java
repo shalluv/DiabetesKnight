@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import application.Main;
 import entity.DroppedItem;
-import entity.Enemy;
+import entity.MeleeEnemy;
 import entity.Player;
+import entity.base.Enemy;
 import entity.base.Entity;
 import input.InputUtility;
 import javafx.scene.input.KeyCode;
@@ -20,15 +21,13 @@ public class GameLogic {
 	private ArrayList<Entity> gameObjectContainer;
 
 	public static Player player;
-	private Enemy enemy;
 
 	public GameLogic() {
 		this.gameObjectContainer = new ArrayList<>();
 
 		player = new Player(PlayerConstants.INITIAL_X, PlayerConstants.INITIAL_Y);
-		enemy = new Enemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player);
 		addNewObject(player);
-		addNewObject(enemy);
+		addNewObject(new MeleeEnemy(EnemyConstants.INITIAL_X, EnemyConstants.INITIAL_Y, player));
 	}
 
 	public void addAllObject(ArrayList<Entity> entities) {
@@ -52,6 +51,7 @@ public class GameLogic {
 			return;
 		}
 		RenderableHolder.getInstance().update();
+		InputUtility.update();
 
 		for (int i = gameObjectContainer.size() - 1; i >= 0; --i) {
 			Entity entity = gameObjectContainer.get(i);
@@ -71,11 +71,13 @@ public class GameLogic {
 	private void updateScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
 		int mapHeight = Main.mapManager.getMapHeight();
-		if (player.getHitbox().x > Resolution.WIDTH / 2 && player.getHitbox().x + Resolution.WIDTH / 2 < mapWidth) {
-			Main.gameScreen.setX(-((int) player.getHitbox().x - Resolution.WIDTH / 2));
+		double x = player.getHitbox().x + player.getHitbox().width / 2;
+		double y = player.getHitbox().y + player.getHitbox().height / 2;
+		if (x >= Resolution.WIDTH / 2 && x + Resolution.WIDTH / 2 < mapWidth) {
+			Main.gameScreen.setX(-(x - Resolution.WIDTH / 2));
 		}
-		if (player.getHitbox().y > Resolution.HEIGHT / 2 && player.getHitbox().y + Resolution.HEIGHT / 2 < mapHeight) {
-			Main.gameScreen.setY(-((int) player.getHitbox().y - Resolution.HEIGHT / 2));
+		if (y >= Resolution.HEIGHT / 2 && y + Resolution.HEIGHT / 2 < mapHeight) {
+			Main.gameScreen.setY(-(y - Resolution.HEIGHT / 2));
 		}
 	}
 }
