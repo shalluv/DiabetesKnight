@@ -1,6 +1,6 @@
 package entity;
 
-import static utils.Constants.AttackState.READY;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
@@ -47,6 +47,8 @@ public class Player extends Entity implements Damageable {
 	private int attackState;
 	// private Image image;
 	private Item[] inventory;
+	private Item currentItem;
+	private Weapon currentWeapon;
 	private int currentInventoryFocus;
 	private int animationFrame;
 	private int animationState;
@@ -87,9 +89,8 @@ public class Player extends Entity implements Damageable {
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
-		Item currentItem = inventory[currentInventoryFocus];
-		if (attackState != READY && currentItem != null && currentItem instanceof Weapon) {
-			((Weapon) currentItem).draw(gc, this);
+		if (attackState != READY && currentWeapon != null) {
+			currentWeapon.draw(gc, this);
 		}
 
 		frameCount++;
@@ -197,7 +198,6 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void useItem() {
-		Item currentItem = inventory[currentInventoryFocus];
 		if (currentItem == null)
 			return;
 
@@ -208,13 +208,13 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
-	private void attackWithWeapon() {
-		Item currentItem = inventory[currentInventoryFocus];
+	private void attack() {
 		if (currentItem == null)
 			return;
 
 		if (currentItem instanceof Weapon) {
-			attackState = ((Weapon) currentItem).attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+			currentWeapon = ((Weapon) currentItem);
+			attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
 		}
 	}
 
@@ -232,12 +232,12 @@ public class Player extends Entity implements Damageable {
 		}
 
 		updateCurrentInventoryFocus();
-		if (attackState != READY) {
-			Item currentItem = inventory[currentInventoryFocus];
-			attackState = ((Weapon) currentItem).updateAttack(this);
+		currentItem = inventory[currentInventoryFocus];
+		if (attackState != READY && currentWeapon != null) {
+			attackState = currentWeapon.updateAttack(this);
 		}
-		if (InputUtility.isLeftDown() && Helper.IsEntityOnFloor(hitbox) && attackState == READY) {
-			attackWithWeapon();
+		if (InputUtility.isLeftDown() && attackState == READY) {
+			attack();
 		}
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			useItem();
@@ -254,9 +254,8 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth <= 0) {
-			if (attackState != READY) {
-				Item currentItem = inventory[currentInventoryFocus];
-				((Weapon) currentItem).cancelAttack();
+			if (attackState != READY && currentWeapon != null) {
+				((Weapon) currentWeapon).cancelAttack();
 			}
 			Platform.exit();
 		}
@@ -302,7 +301,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	public void updateCurrentInventoryFocus() {
-		if (attackState != READY)
+		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == RANGED_IN_PROGRESS)
 			return;
 		if (InputUtility.getKeyPressed(KeyCode.DIGIT0)) {
 			currentInventoryFocus = 9;
