@@ -117,7 +117,7 @@ public class Constants {
 	public static class BulletConstants {
 		public static final int WIDTH = (int) (5 * SCALE);
 		public static final int HEIGHT = (int) (5 * SCALE);
-		public static final double SPEED = 10 * SCALE;
+		public static final double SPEED = 5 * SCALE;
 		public static final int DAMAGE = 5;
 	}
 
