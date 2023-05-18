@@ -52,6 +52,7 @@ public class GameCanvas extends Canvas {
 
 	public void drawComponent(double layoutX, double layoutY, GameScreen gameScreen) {
 		GraphicsContext gc = getGraphicsContext2D();
+		gc.clearRect(0, 0, getWidth(), getHeight());
 
 		switch (Main.gameState) {
 		case GameState.MENU:

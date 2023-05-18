@@ -1,15 +1,14 @@
 package drawing;
 
 import application.Main;
-import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import utils.Constants.Resolution;
 
-public class GameScreen extends StackPane {
+public class GameScreen extends Pane {
 
 	private GameCanvas gameCanvas;
-	private int x;
-	private int y;
+	private double x;
+	private double y;
 
 	public GameScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
@@ -17,7 +16,6 @@ public class GameScreen extends StackPane {
 
 		x = 0;
 		y = Resolution.HEIGHT - mapHeight;
-		setAlignment(Pos.TOP_LEFT);
 		setLayoutY(y);
 
 		gameCanvas = new GameCanvas(mapWidth, mapHeight);
@@ -32,11 +30,11 @@ public class GameScreen extends StackPane {
 		return gameCanvas;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 }
