@@ -63,3 +63,5 @@ local.properties
 *.pdf
 *.doc
 .DS_Store
+
+build.fxbuild
