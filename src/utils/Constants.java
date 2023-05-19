@@ -62,6 +62,17 @@ public class Constants {
 			public static final double SPEED_MULTIPLIER = 0.82;
 		}
 
+		public static class SwordConstants {
+			public static final int ATTACK_RANGE = (int) (8 * SCALE);
+			public static final int DAMAGE = 5;
+			public static final int MAXIMUM_SWING = 180;
+			public static final int SWING_SPEED = 30;
+			public static final int ATTACK_DELAY = 30;
+			public static final int ATTACK_BOX_HEIGHT = (int) (4 * SCALE);
+			public static final double SPEED_MULTIPLIER = 1;
+			public static final int AFTER_ATTACK_DELAY = 100;
+		}
+
 		public static class GunConstants {
 			public static final int ATTACK_DELAY = 300;
 			public static final int MAX_AMMO = 6;

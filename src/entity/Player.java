@@ -32,6 +32,7 @@ import item.Item;
 import item.Weapon;
 import item.derived.Gun;
 import item.derived.Spear;
+import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -77,6 +78,7 @@ public class Player extends Entity implements Damageable {
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Spear());
 		addItem(new Gun());
+		addItem(new Sword());
 		currentInventoryFocus = 0;
 
 		isFacingLeft = false;

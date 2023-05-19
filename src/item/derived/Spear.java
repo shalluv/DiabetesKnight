@@ -16,7 +16,6 @@ import static utils.Constants.Weapon.SpearConstants.SPEED_MULTIPLIER;
 
 import java.awt.geom.Rectangle2D;
 
-import entity.Player;
 import entity.base.Entity;
 import item.MeleeWeapon;
 import javafx.scene.canvas.GraphicsContext;
@@ -80,8 +79,6 @@ public class Spear extends MeleeWeapon {
 			attackProgress += ATTACK_SPEED;
 		}
 		updateAttackBox(attacker);
-		if (attacker instanceof Player) {
-		}
 		if (isAttackingWall()) {
 			attackProgress -= ATTACK_SPEED;
 			attackState = ON_COOLDOWN;

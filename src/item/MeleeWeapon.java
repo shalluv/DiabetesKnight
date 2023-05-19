@@ -4,7 +4,9 @@ import static utils.Constants.AttackState.IN_PROGRESS;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 
 import entity.Player;
 import entity.base.Enemy;
@@ -19,11 +21,11 @@ public abstract class MeleeWeapon extends Weapon {
 	protected int attackProgress;
 	protected int attackRange;
 	protected int damage;
-	protected Rectangle2D.Double attackBox;
+	protected Shape attackBox;
 	protected boolean hit;
 
-	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedReducer) {
-		super(name, image, speedReducer);
+	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedMultiplier) {
+		super(name, image, speedMultiplier);
 		this.attackRange = attackRange;
 		this.damage = damage;
 	}
@@ -54,19 +56,20 @@ public abstract class MeleeWeapon extends Weapon {
 		return attackState;
 	}
 
-	protected boolean isAttackingWall() {
-		if (attackDirection == LEFT
-				&& !Helper.CanMoveHere(attackBox.getMinX(), attackBox.getMaxY(), attackBox.width, attackBox.height))
-			return true;
-		if (attackDirection == RIGHT
-				&& !Helper.CanMoveHere(attackBox.getMaxX(), attackBox.getMaxY(), attackBox.width, attackBox.height))
+	protected boolean isEnemy(Entity entity, Entity attacker) {
+		if ((entity instanceof Enemy && attacker instanceof Player)
+				|| (entity instanceof Player && attacker instanceof Enemy))
 			return true;
 		return false;
 	}
 
-	protected boolean isEnemy(Entity entity, Entity attacker) {
-		if ((entity instanceof Enemy && attacker instanceof Player)
-				|| (entity instanceof Player && attacker instanceof Enemy))
+	protected boolean isAttackingWall() {
+		Rectangle2D.Double rectangleAttackBox = (Double) attackBox.getBounds2D();
+		if (attackDirection == LEFT
+				&& !Helper.CanMoveHere(rectangleAttackBox.getMinX(), rectangleAttackBox.getMaxY(), 1, 1))
+			return true;
+		if (attackDirection == RIGHT
+				&& !Helper.CanMoveHere(rectangleAttackBox.getMaxX(), rectangleAttackBox.getMaxY(), 1, 1))
 			return true;
 		return false;
 	}
