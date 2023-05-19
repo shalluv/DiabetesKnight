@@ -119,7 +119,7 @@ public class Constants {
 	}
 
 	public static class EnemyConstants {
-		public static class MeleeConstants {
+		public static class SwordmenConstants {
 			public static final int WIDTH = (int) (32 * SCALE);
 			public static final int HEIGHT = (int) (32 * SCALE);
 			public static final double MAX_Y_SPEED = 5 * SCALE;
@@ -128,7 +128,29 @@ public class Constants {
 			public static final double INITIAL_Y_SPEED = 5 * SCALE;
 			public static final double WEIGHT = 1 * SCALE;
 			public static final int SIGHT_SIZE = (int) (400 * SCALE);
-			public static final int INITIAL_MAX_HEALTH = 30;
+			public static final int INITIAL_MAX_HEALTH = 25;
+
+			public static class Animations {
+				public static final int ANIMATION_STATE_COUNT = 1;
+				public static final int SPRITE_SIZE = 32;
+				public static final int ANIMATION_SPEED = 6;
+
+				public static final int IDLE = 0;
+
+				public static final int IDLE_FRAMES_COUNT = 4;
+			}
+		}
+
+		public static class SpearmenConstants {
+			public static final int WIDTH = (int) (32 * SCALE);
+			public static final int HEIGHT = (int) (32 * SCALE);
+			public static final double MAX_Y_SPEED = 5 * SCALE;
+			public static final double BASE_X_SPEED = 1 * SCALE;
+			public static final double INITIAL_X_SPEED = 0 * SCALE;
+			public static final double INITIAL_Y_SPEED = 5 * SCALE;
+			public static final double WEIGHT = 1 * SCALE;
+			public static final int SIGHT_SIZE = (int) (400 * SCALE);
+			public static final int INITIAL_MAX_HEALTH = 50;
 
 			public static class Animations {
 				public static final int ANIMATION_STATE_COUNT = 1;

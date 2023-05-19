@@ -2,8 +2,9 @@ package maps;
 
 import entity.Door;
 import entity.DroppedItem;
-import entity.MeleeEnemy;
-import entity.RangedEnemy;
+import entity.Spearmen;
+import entity.Swordmen;
+import entity.base.RangedEnemy;
 import item.derived.Gun;
 import item.derived.HealthPotion;
 import item.derived.Spear;
@@ -14,12 +15,13 @@ import utils.Constants.DroppedItemConstants;
 public class Map {
 
 	public static final int PLAYER_SPAWN_CODE = 3000;
-	public static final int MELEE_ENEMY_SPAWN_CODE = 3001;
-	public static final int RANGED_ENEMY_SPAWN_CODE = 3002;
-	public static final int HEALTH_POTION_SPAWN_CODE = 3003;
-	public static final int DOOR_SPAWN_CODE = 3004;
-	public static final int SPEAR_SPAWN_CODE = 3005;
-	public static final int GUN_SPAWN_CODE = 3006;
+	public static final int SWORDMEN_SPAWN_CODE = 3001;
+	public static final int SPEARMEN_SPAWN_CODE = 3002;
+	public static final int RANGED_ENEMY_SPAWN_CODE = 3003;
+	public static final int HEALTH_POTION_SPAWN_CODE = 3004;
+	public static final int DOOR_SPAWN_CODE = 3005;
+	public static final int SPEAR_SPAWN_CODE = 3006;
+	public static final int GUN_SPAWN_CODE = 3007;
 
 	private int[][] mapData;
 
@@ -34,9 +36,13 @@ public class Map {
 					else
 						GameLogic.tpPlayer(j * BlockConstants.SIZE, i * BlockConstants.SIZE);
 					break;
-				case MELEE_ENEMY_SPAWN_CODE:
+				case SWORDMEN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new MeleeEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					GameLogic.addNewObject(new Swordmen(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					break;
+				case SPEARMEN_SPAWN_CODE:
+					mapData[i][j] = 0;
+					GameLogic.addNewObject(new Spearmen(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case RANGED_ENEMY_SPAWN_CODE:
 					mapData[i][j] = 0;

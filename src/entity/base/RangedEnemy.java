@@ -1,4 +1,4 @@
-package entity;
+package entity.base;
 
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
@@ -23,7 +23,7 @@ import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_S
 
 import java.awt.geom.Rectangle2D;
 
-import entity.base.Enemy;
+import entity.Bullet;
 import item.RangedWeapon;
 import item.derived.Gun;
 import javafx.geometry.VPos;
