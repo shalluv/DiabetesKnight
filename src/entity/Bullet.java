@@ -6,31 +6,50 @@ import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.transform.Rotate;
 import logic.GameLogic;
 import utils.Constants.Weapon.BulletConstants;
 import utils.Helper;
+import utils.Loader;
 
 public class Bullet extends Entity {
 
 	private double xspeed;
 	private double yspeed;
 	private Entity owner;
+	private Image image;
 
 	public Bullet(double x, double y, double targetX, double targetY, Entity owner) {
 		super(x, y, BulletConstants.WIDTH, BulletConstants.HEIGHT);
 		initHitbox(x, y, width, height);
+		loadResources();
 		this.owner = owner;
 		calculateSpeed(x, y, targetX, targetY);
 		GameLogic.addNewObject(this);
+	}
+
+	private void loadResources() {
+		image = Loader.GetSpriteAtlas(Loader.BULLET_ATLAS);
 	}
 
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-		gc.setFill(Color.GREEN);
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		double angle = Math.toDegrees(Math.atan((y - hitbox.y) / (x - hitbox.x)));
+		Rotate rotate = new Rotate(angle, hitbox.x, hitbox.y);
+
+		double drawX = hitbox.x + ((hitbox.x - x) < 0 ? 0 : width);
+		double drawY = hitbox.y;
+		double drawW = width * ((hitbox.x - x) < 0 ? 1 : -1);
+		double drawH = height;
+
+		gc.save();
+		gc.setTransform(rotate.getMxx(), rotate.getMyx(), rotate.getMxy(), rotate.getMyy(), rotate.getTx(),
+				rotate.getTy());
+		gc.drawImage(image, drawX, drawY, drawW, drawH);
+		gc.restore();
 	}
 
 	@Override
