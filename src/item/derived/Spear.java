@@ -12,7 +12,7 @@ import static utils.Constants.Weapon.SpearConstants.ATTACK_DELAY;
 import static utils.Constants.Weapon.SpearConstants.ATTACK_RANGE;
 import static utils.Constants.Weapon.SpearConstants.ATTACK_SPEED;
 import static utils.Constants.Weapon.SpearConstants.DAMAGE;
-import static utils.Constants.Weapon.SpearConstants.SPEED_REDUCER;
+import static utils.Constants.Weapon.SpearConstants.SPEED_MULTIPLIER;
 
 import java.awt.geom.Rectangle2D;
 
@@ -27,7 +27,7 @@ public class Spear extends MeleeWeapon {
 	private int attackProgress;
 
 	public Spear() {
-		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_REDUCER);
+		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER);
 		this.attackRange = ATTACK_RANGE;
 	}
 

@@ -24,6 +24,7 @@ import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_S
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
+import item.RangedWeapon;
 import item.derived.Gun;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -39,7 +40,7 @@ public class RangedEnemy extends Enemy {
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
-	private Gun gun;
+	private RangedWeapon weapon;
 	private int animationFrame;
 	private int animationState;
 	private int frameCount;
@@ -53,7 +54,7 @@ public class RangedEnemy extends Enemy {
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
-		gun = new Gun();
+		weapon = new Gun();
 	}
 
 	private void loadResources() {
@@ -110,21 +111,22 @@ public class RangedEnemy extends Enemy {
 				isFacingLeft = true;
 			}
 		}
+		xspeed *= weapon.getSpeedMultiplier();
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		move();
 		if (attackState != READY) {
 			animationState = ATTACK_COOLDOWN;
-			attackState = gun.updateAttack(this);
+			attackState = weapon.updateAttack(this);
 		} else {
 			animationState = IDLE;
 		}
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
-			attackState = gun.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
+			attackState = weapon.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
 		if (currentHealth <= 0) {
 			isDestroy = true;
 			if (attackState != READY)
-				gun.cancelAttack();
+				weapon.cancelAttack();
 		}
 	}
 

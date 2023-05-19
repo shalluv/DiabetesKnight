@@ -19,7 +19,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 	private Image image;
 
 	public Gun() {
-		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS));
+		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), SPEED_MULTIPLIER);
 		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
 		this.currentAmmo = MAX_AMMO;
 		this.maxAmmo = MAX_AMMO;

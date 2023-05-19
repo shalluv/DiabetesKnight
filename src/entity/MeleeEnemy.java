@@ -147,7 +147,7 @@ public class MeleeEnemy extends Enemy {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
 		}
-		xspeed /= weapon.getSpeedReducer();
+		xspeed *= weapon.getSpeedMultiplier();
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		move();
 

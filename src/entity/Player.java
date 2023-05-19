@@ -263,8 +263,6 @@ public class Player extends Entity implements Damageable {
 
 		updateCurrentInventoryFocus();
 		currentItem = inventory[currentInventoryFocus];
-		if (currentItem instanceof Weapon)
-			xspeed /= ((Weapon) currentItem).getSpeedReducer();
 		if (attackState != READY && currentWeapon != null) {
 			if (attackState == ON_RELOAD && !(currentItem instanceof Reloadable)
 					&& currentWeapon instanceof Reloadable) {
@@ -301,6 +299,8 @@ public class Player extends Entity implements Damageable {
 		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
+		if (currentItem instanceof Weapon)
+			xspeed *= ((Weapon) currentItem).getSpeedMultiplier();
 
 		move();
 

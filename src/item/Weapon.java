@@ -10,22 +10,16 @@ public abstract class Weapon extends Item {
 
 	protected int attackState;
 	protected Thread cooldown;
-	protected double speedReducer;
+	protected double speedMultiplier;
 
-	public Weapon(String name, Image image) {
+	public Weapon(String name, Image image, double speedMultiplier) {
 		super(name, image);
 		this.attackState = READY;
-		this.speedReducer = 1;
+		this.speedMultiplier = speedMultiplier;
 	}
 
-	public Weapon(String name, Image image, double weight) {
-		super(name, image);
-		this.attackState = READY;
-		this.speedReducer = weight;
-	}
-
-	public double getSpeedReducer() {
-		return speedReducer;
+	public double getSpeedMultiplier() {
+		return speedMultiplier;
 	}
 
 	protected void initCooldown(int delay) {

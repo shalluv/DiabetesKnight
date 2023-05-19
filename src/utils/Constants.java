@@ -59,13 +59,14 @@ public class Constants {
 			public static final int ATTACK_SPEED = (int) (2 * SCALE);
 			public static final int ATTACK_DELAY = 50;
 			public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
-			public static final double SPEED_REDUCER = (1.05 * SCALE);
+			public static final double SPEED_MULTIPLIER = 0.82;
 		}
 
 		public static class GunConstants {
 			public static final int ATTACK_DELAY = 300;
 			public static final int MAX_AMMO = 6;
 			public static final int RELOAD_DELAY = 1000;
+			public static final int SPEED_MULTIPLIER = 1;
 		}
 
 		public static class BulletConstants {
