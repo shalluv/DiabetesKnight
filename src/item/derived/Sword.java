@@ -22,7 +22,7 @@ public class Sword extends MeleeWeapon {
 	private boolean startedCooldown;
 
 	public Sword() {
-		super("sword", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER);
+		super("sword", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, false);
 		this.attackProgress = 0;
 		this.startedCooldown = false;
 	}

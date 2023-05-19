@@ -23,11 +23,14 @@ public abstract class MeleeWeapon extends Weapon {
 	protected int damage;
 	protected Shape attackBox;
 	protected boolean hit;
+	protected boolean canMultipleHit;
 
-	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedMultiplier) {
+	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedMultiplier,
+			boolean canMultipleHit) {
 		super(name, image, speedMultiplier);
 		this.attackRange = attackRange;
 		this.damage = damage;
+		this.canMultipleHit = canMultipleHit;
 	}
 
 	protected abstract int updateProgress(Entity attacker);
@@ -83,8 +86,10 @@ public abstract class MeleeWeapon extends Weapon {
 			if (!entity.isDestroyed() && entity instanceof Damageable && isEnemy(entity, attacker)) {
 				if (attackBox.intersects(entity.getHitbox())) {
 					((Damageable) entity).receiveDamage(damage);
-					hit = true;
-					return;
+					if (!canMultipleHit) {
+						hit = true;
+						return;
+					}
 				}
 			}
 		}

@@ -26,7 +26,7 @@ public class Spear extends MeleeWeapon {
 	private int attackProgress;
 
 	public Spear() {
-		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER);
+		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, true);
 		this.attackRange = ATTACK_RANGE;
 	}
 
