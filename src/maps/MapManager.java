@@ -1,6 +1,7 @@
 package maps;
 
 import java.awt.geom.Rectangle2D;
+
 import application.CSVParser;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

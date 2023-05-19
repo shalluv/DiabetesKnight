@@ -1,8 +1,17 @@
 package entity;
 
 import static utils.Constants.AttackState.READY;
-import static utils.Constants.MeleeEnemyConstants.*;
-import static utils.Constants.Directions.*;
+import static utils.Constants.Directions.LEFT;
+import static utils.Constants.Directions.RIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.MeleeConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.WIDTH;
 
 import java.awt.geom.Rectangle2D;
 

@@ -1,13 +1,14 @@
 package entity;
 
 import java.awt.geom.Rectangle2D;
+
 import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import logic.GameLogic;
-import utils.Constants.BulletConstants;
+import utils.Constants.Weapon.BulletConstants;
 import utils.Helper;
 
 public class Bullet extends Entity {
