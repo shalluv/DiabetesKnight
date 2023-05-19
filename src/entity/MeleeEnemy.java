@@ -17,12 +17,13 @@ import static utils.Constants.EnemyConstants.MeleeConstants.Animations.ANIMATION
 import static utils.Constants.EnemyConstants.MeleeConstants.Animations.IDLE;
 import static utils.Constants.EnemyConstants.MeleeConstants.Animations.IDLE_FRAMES_COUNT;
 import static utils.Constants.EnemyConstants.MeleeConstants.Animations.SPRITE_SIZE;
+import static utils.Constants.AttackState.IN_PROGRESS;
 
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
 import item.MeleeWeapon;
-import item.derived.Spear;
+import item.derived.Sword;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -51,7 +52,7 @@ public class MeleeEnemy extends Enemy {
 		loadResources();
 		attackState = READY;
 		initHitbox(x, y, width, height);
-		weapon = new Spear();
+		weapon = new Sword();
 	}
 
 	private void loadResources() {
@@ -88,6 +89,8 @@ public class MeleeEnemy extends Enemy {
 
 		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
 				drawW, drawH);
+		if (attackState == IN_PROGRESS)
+			weapon.draw(gc, hitbox.x, hitbox.y, 32, 32, isFacingLeft);
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);

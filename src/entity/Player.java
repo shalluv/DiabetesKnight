@@ -30,8 +30,6 @@ import interfaces.Damageable;
 import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
-import item.derived.Gun;
-import item.derived.Spear;
 import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -76,8 +74,6 @@ public class Player extends Entity implements Damageable {
 		attackState = READY;
 
 		inventory = new Item[INVENTORY_SIZE];
-		addItem(new Spear());
-		addItem(new Gun());
 		addItem(new Sword());
 		currentInventoryFocus = 0;
 

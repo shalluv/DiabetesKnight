@@ -5,6 +5,7 @@ import entity.DroppedItem;
 import entity.MeleeEnemy;
 import entity.RangedEnemy;
 import item.derived.HealthPotion;
+import item.derived.Spear;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
 import utils.Constants.DroppedItemConstants;
@@ -16,6 +17,8 @@ public class Map {
 	public static final int RANGED_ENEMY_SPAWN_CODE = 3002;
 	public static final int HEALTH_POTION_SPAWN_CODE = 3003;
 	public static final int DOOR_SPAWN_CODE = 3004;
+	public static final int SPEAR_SPAWN_CODE = 3005;
+	public static final int GUN_SPAWN_CODE = 3006;
 
 	private int[][] mapData;
 
@@ -47,6 +50,10 @@ public class Map {
 					mapData[i][j] = 0;
 					GameLogic.addNewObject(new Door(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
+				case SPEAR_SPAWN_CODE:
+					mapData[i][j] = 0;
+					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
+							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new Spear()));
 				default:
 					break;
 				}
