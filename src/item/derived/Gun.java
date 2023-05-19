@@ -40,7 +40,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 	public int updateAttack(Entity attacker) {
 		if (attackState == IN_PROGRESS) {
 			inProgressUpdate(attacker);
-			currentAmmo -= 1;
+			setAmmo(currentAmmo - 1);
 			initCooldown(ATTACK_DELAY);
 			cooldown.start();
 			attackState = ON_COOLDOWN;
@@ -71,9 +71,14 @@ public class Gun extends RangedWeapon implements Reloadable {
 		return attackState;
 	}
 
+	private void setAmmo(int value) {
+		value = Math.max(0, Math.min(value, maxAmmo));
+		currentAmmo = value;
+	}
+
 	@Override
 	public void reload() {
-		currentAmmo += 1;
+		setAmmo(currentAmmo + 1);
 		attackState = ON_RELOAD;
 		if (currentAmmo == maxAmmo) {
 			attackState = READY;
@@ -86,5 +91,13 @@ public class Gun extends RangedWeapon implements Reloadable {
 	@Override
 	public int getAmmo() {
 		return currentAmmo;
+	}
+
+	@Override
+	public void cancelReload() {
+		if (cooldown != null)
+			cooldown.interrupt();
+		if (attackState == ON_RELOAD)
+			attackState = READY;
 	}
 }

@@ -1,7 +1,6 @@
 package entity;
 
-import static utils.Constants.AttackState.IN_PROGRESS;
-import static utils.Constants.AttackState.READY;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
@@ -28,6 +27,7 @@ import entity.base.Entity;
 import input.InputUtility;
 import interfaces.Consumable;
 import interfaces.Damageable;
+import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
 import item.derived.Gun;
@@ -239,7 +239,12 @@ public class Player extends Entity implements Damageable {
 
 		if (currentItem instanceof Weapon) {
 			currentWeapon = ((Weapon) currentItem);
-			attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+			if (attackState == ON_RELOAD && currentItem instanceof Reloadable
+					&& ((Reloadable) currentItem).getAmmo() > 0) {
+				((Reloadable) currentWeapon).cancelReload();
+				attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+			} else if (attackState == READY)
+				attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
 		}
 	}
 
@@ -261,7 +266,12 @@ public class Player extends Entity implements Damageable {
 		if (currentItem instanceof Weapon)
 			xspeed /= ((Weapon) currentItem).getSpeedReducer();
 		if (attackState != READY && currentWeapon != null) {
-			attackState = currentWeapon.updateAttack(this);
+			if (attackState == ON_RELOAD && !(currentItem instanceof Reloadable)
+					&& currentWeapon instanceof Reloadable) {
+				attackState = READY;
+				((Reloadable) currentWeapon).cancelReload();
+			} else
+				attackState = currentWeapon.updateAttack(this);
 		}
 		if (attackState == READY && currentItem == null)
 			currentWeapon = null;
@@ -271,7 +281,7 @@ public class Player extends Entity implements Damageable {
 			isFacingLeft = true;
 		}
 		if (InputUtility.isLeftDown()) {
-			if (attackState == READY) {
+			if (attackState == READY || attackState == ON_RELOAD) {
 				attack();
 			}
 			if (InputUtility.getMouseX() > hitbox.x + width) {
@@ -283,6 +293,10 @@ public class Player extends Entity implements Damageable {
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			if (!isPlayerOnDoor())
 				useItem();
+		}
+		if (InputUtility.getKeyPressed(KeyCode.R) && attackState == READY && currentWeapon instanceof Reloadable) {
+			attackState = ON_RELOAD;
+			((Reloadable) currentWeapon).reload();
 		}
 		pickUpItems();
 
