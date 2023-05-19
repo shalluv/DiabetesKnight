@@ -3,6 +3,8 @@ package item.derived;
 import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
 import static utils.Constants.AttackState.RANGED_ON_COOLDOWN;
 import static utils.Constants.AttackState.READY;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
 import static utils.Constants.Weapon.GunConstants.ATTACK_DELAY;
 
 import java.awt.geom.Rectangle2D;
@@ -29,13 +31,13 @@ public class Gun extends Weapon {
 
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
-		if(isFacingLeft) {
+		if (isFacingLeft) {
 			width = -width;
-			x -= width;
+			x += WEAPON_OFFSET_X;
 		} else {
-			x += width / 2;
+			x += WEAPON_OFFSET_X;
 		}
-		gc.drawImage(image, x, y + 16, width, height);
+		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
 
 	@Override

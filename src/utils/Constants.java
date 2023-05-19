@@ -28,6 +28,7 @@ public class Constants {
 			public static final int ITEM_SIZE = (int) Math.min(36 * SCALE, 54);
 			public static final int INVENTORY_GAP = (int) Math.min(50 * SCALE, 75);
 			public static final int INVENTORY_PADDING = (int) Math.min(2 * SCALE, 3);
+			public static final int CURRENT_ITEM_NAME_OFFSET_Y = OFFSET_INVENTORY_Y + ITEM_SIZE + INVENTORY_PADDING * 2;
 		}
 	}
 
@@ -86,6 +87,9 @@ public class Constants {
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {
+			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);
+			public static final int WEAPON_OFFSET_Y = (int) (12 * SCALE);
+
 			public static final int ANIMATION_STATE_COUNT = 3;
 			public static final int SPRITE_SIZE = 32;
 			public static final int ANIMATION_SPEED = 6;
