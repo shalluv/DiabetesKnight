@@ -138,8 +138,8 @@ public class Constants {
 	}
 
 	public static class DroppedItemConstants {
-		public static final int DEFAULT_SIZE = 32;
-		public static final int SIZE = (int) (32 * SCALE);
+		public static final int DEFAULT_SIZE = 24;
+		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
 	}
 
 	public static class InputConstants {
