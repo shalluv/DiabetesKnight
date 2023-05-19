@@ -258,6 +258,8 @@ public class Player extends Entity implements Damageable {
 
 		updateCurrentInventoryFocus();
 		currentItem = inventory[currentInventoryFocus];
+		if (currentItem instanceof Weapon)
+			xspeed /= ((Weapon) currentItem).getSpeedReducer();
 		if (attackState != READY && currentWeapon != null) {
 			attackState = currentWeapon.updateAttack(this);
 		}

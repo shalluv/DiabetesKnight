@@ -22,8 +22,8 @@ public abstract class MeleeWeapon extends Weapon {
 	protected Rectangle2D.Double attackBox;
 	protected boolean hit;
 
-	public MeleeWeapon(String name, Image image, int attackRange, int damage) {
-		super(name, image);
+	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedReducer) {
+		super(name, image, speedReducer);
 		this.attackRange = attackRange;
 		this.damage = damage;
 	}
@@ -72,6 +72,8 @@ public abstract class MeleeWeapon extends Weapon {
 	}
 
 	protected void checkAttackHit(Entity attacker) {
+		if (attackBox == null)
+			return;
 		if (attacker instanceof Damageable && ((Damageable) attacker).getHealth() < 0)
 			return;
 		for (Entity entity : GameLogic.getGameObjectContainer()) {

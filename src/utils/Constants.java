@@ -53,11 +53,12 @@ public class Constants {
 
 	public static class Weapon {
 		public static class SpearConstants {
-			public static final int ATTACK_RANGE = (int) (12 * SCALE);
-			public static final int DAMAGE = 10;
-			public static final int ATTACK_SPEED = (int) (3 * SCALE);
+			public static final int ATTACK_RANGE = (int) (14 * SCALE);
+			public static final int DAMAGE = 30;
+			public static final int ATTACK_SPEED = (int) (2 * SCALE);
 			public static final int ATTACK_DELAY = 50;
 			public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
+			public static final double SPEED_REDUCER = (1.05 * SCALE);
 		}
 
 		public static class GunConstants {
