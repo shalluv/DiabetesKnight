@@ -3,6 +3,13 @@ package entity;
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_SIZE;
 import static utils.Constants.EnemyConstants.RangedConstants.ATTACK_RANGE;
 import static utils.Constants.EnemyConstants.RangedConstants.BASE_X_SPEED;
 import static utils.Constants.EnemyConstants.RangedConstants.HEIGHT;
@@ -20,10 +27,12 @@ import entity.base.Enemy;
 import item.derived.Gun;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Helper;
+import utils.Loader;
 
 public class RangedEnemy extends Enemy {
 
@@ -31,22 +40,59 @@ public class RangedEnemy extends Enemy {
 	private double yspeed;
 	private int attackState;
 	private Gun gun;
+	private int animationFrame;
+	private int animationState;
+	private int frameCount;
+	private Image[] animation;
+	private boolean isFacingLeft;
 
 	public RangedEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
 		attackState = READY;
+		loadResources();
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
 		gun = new Gun();
 	}
 
+	private void loadResources() {
+		isFacingLeft = false;
+		animation = new Image[ANIMATION_STATE_COUNT + 1];
+		animationFrame = 0;
+		frameCount = 0;
+		animationState = IDLE;
+		animation[0] = Loader.GetSpriteAtlas(Loader.RANGE_IDLE_ATLAS);
+		animation[1] = Loader.GetSpriteAtlas(Loader.RANGE_ATTACK_COOLDOWN_ATLAS);
+	}
+
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-		gc.setFill(Color.RED);
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+
+		frameCount++;
+		if (frameCount > ANIMATION_SPEED) {
+			frameCount -= ANIMATION_SPEED; 
+			animationFrame++;
+			switch (animationState) {
+			case IDLE:
+				animationFrame %= IDLE_FRAMES_COUNT;
+				break;
+			case ATTACK_COOLDOWN:
+				animationFrame %= ATTACK_COOLDOWN_FRAMES_COUNT;
+			default:
+				break;
+			}
+		}
+
+		double drawX = hitbox.x + (isFacingLeft ? 0 : width);
+		double drawY = hitbox.y;
+		double drawW = width * (isFacingLeft ? 1 : -1);
+		double drawH = height;
+
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY, drawW, drawH);
+
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
@@ -57,11 +103,20 @@ public class RangedEnemy extends Enemy {
 	public void update() {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
+			if(GameLogic.getPlayer().getHitbox().getMinX() > hitbox.getMaxX()) {
+				isFacingLeft = false;
+			} else if(GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getMinX()) {
+				isFacingLeft = true;
+			}
 		}
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		move();
-		if (attackState != READY)
+		if (attackState != READY) {
+			animationState = ATTACK_COOLDOWN;
 			attackState = gun.updateAttack(this);
+		} else {
+			animationState = IDLE;
+		}
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
 			attackState = gun.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);

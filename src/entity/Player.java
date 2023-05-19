@@ -139,15 +139,15 @@ public class Player extends Entity implements Damageable {
 			}
 		}
 
-		double x = hitbox.x + (isFacingLeft ? width : 0);
-		double y = hitbox.y;
-		double w = width * (isFacingLeft ? -1 : 1);
-		double h = height;
+		double drawX = hitbox.x + (isFacingLeft ? width : 0);
+		double drawY = hitbox.y;
+		double drawW = width * (isFacingLeft ? -1 : 1);
+		double drawH = height;
 		double offsetDust = 4 * (isFacingLeft ? 1 : -1);
 
-		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x, y, w, h);
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY, drawW, drawH);
 		if (animationState == RUNNING) {
-			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x + offsetDust, y, w, h);
+			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX + offsetDust, drawY, drawW, drawH);
 		}
 	}
 
