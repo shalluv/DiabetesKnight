@@ -1,7 +1,9 @@
 package item.derived;
 
-import static utils.Constants.AttackState.*;
-import static utils.Constants.GunConstants.ATTACK_DELAY;
+import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
+import static utils.Constants.AttackState.RANGED_ON_COOLDOWN;
+import static utils.Constants.AttackState.READY;
+import static utils.Constants.Weapon.GunConstants.ATTACK_DELAY;
 
 import java.awt.geom.Rectangle2D;
 
@@ -11,7 +13,7 @@ import entity.base.Entity;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import utils.Constants.BulletConstants;
+import utils.Constants.Weapon.BulletConstants;
 
 public class Gun extends Weapon {
 

@@ -1,6 +1,9 @@
 package entity;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.MELEE_HIT;
+import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
+import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
@@ -12,11 +15,13 @@ import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
 import static utils.Constants.PlayerConstants.WEIGHT;
 import static utils.Constants.PlayerConstants.WIDTH;
 import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.PlayerConstants.Animations.ANIMATION_STATE_COUNT;
 import static utils.Constants.PlayerConstants.Animations.IDLE;
 import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
 import static utils.Constants.PlayerConstants.Animations.JUMPING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING;
 import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D;
 
@@ -47,7 +52,6 @@ public class Player extends Entity implements Damageable {
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
-	// private Image image;
 	private Item[] inventory;
 	private Item currentItem;
 	private Weapon currentWeapon;
@@ -81,7 +85,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	private void loadResources() {
-		animation = new Image[3];
+		animation = new Image[ANIMATION_STATE_COUNT + 1];
 		animationFrame = 0;
 		frameCount = 0;
 		animationState = IDLE;
@@ -99,8 +103,6 @@ public class Player extends Entity implements Damageable {
 		if (attackState != READY && currentWeapon != null) {
 			currentWeapon.draw(gc, this);
 		}
-		gc.setFill(Color.RED);
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
@@ -124,14 +126,14 @@ public class Player extends Entity implements Damageable {
 				animationFrame %= IDLE_FRAMES_COUNT;
 				break;
 			case RUNNING:
+			case JUMPING:
 				animationFrame %= RUNNING_FRAMES_COUNT;
 				break;
-			case JUMPING:
-				if (yspeed > 0) {
-					animationFrame = Math.min(6, animationFrame);
-				} else {
-					animationFrame = Math.min(3, animationFrame);
-				}
+//				if (yspeed > 0) {
+//					animationFrame = Math.min(6, animationFrame);
+//				} else {
+//					animationFrame = Math.min(3, animationFrame);
+//				}
 			default:
 				break;
 			}
@@ -143,9 +145,9 @@ public class Player extends Entity implements Damageable {
 		double h = height;
 		double offsetDust = 4 * (isFacingLeft ? 1 : -1);
 
-		gc.drawImage(animation[animationState], animationFrame * 32, 0, 32, 32, x, y, w, h);
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x, y, w, h);
 		if (animationState == RUNNING) {
-			gc.drawImage(dustAnimation, animationFrame * 32, 0, 32, 32, x + offsetDust, y, w, h);
+			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x + offsetDust, y, w, h);
 		}
 	}
 
@@ -258,18 +260,25 @@ public class Player extends Entity implements Damageable {
 		if (attackState != READY && currentWeapon != null) {
 			attackState = currentWeapon.updateAttack(this);
 		}
-		if (InputUtility.isLeftDown() && attackState == READY) {
-			attack();
-		}
-		if (InputUtility.getKeyPressed(KeyCode.E)) {
-			useItem();
-		}
-		pickUpItems();
 		if (xspeed > 0) {
 			isFacingLeft = false;
 		} else if (xspeed < 0) {
 			isFacingLeft = true;
 		}
+		if (InputUtility.isLeftDown()) {
+			if (attackState == READY) {
+				attack();
+			}
+			if (InputUtility.getMouseX() > hitbox.x + width) {
+				isFacingLeft = false;
+			} else if (InputUtility.getMouseX() < hitbox.x) {
+				isFacingLeft = true;
+			}
+		}
+		if (InputUtility.getKeyPressed(KeyCode.E)) {
+			useItem();
+		}
+		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 

@@ -1,13 +1,16 @@
 package item.derived;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.MELEE_HIT;
+import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
+import static utils.Constants.AttackState.MELEE_ON_COOLDOWN;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
-import static utils.Constants.SpearConstants.ATTACK_BOX_HEIGHT;
-import static utils.Constants.SpearConstants.ATTACK_DELAY;
-import static utils.Constants.SpearConstants.ATTACK_RANGE;
-import static utils.Constants.SpearConstants.ATTACK_SPEED;
-import static utils.Constants.SpearConstants.DAMAGE;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_DELAY;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_RANGE;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_SPEED;
+import static utils.Constants.Weapon.SpearConstants.DAMAGE;
 
 import java.awt.geom.Rectangle2D;
 

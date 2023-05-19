@@ -1,8 +1,22 @@
 package entity;
 
 import static utils.Constants.AttackState.READY;
-import static utils.Constants.MeleeEnemyConstants.*;
-import static utils.Constants.Directions.*;
+import static utils.Constants.Directions.LEFT;
+import static utils.Constants.Directions.RIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.MeleeConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.MeleeConstants.WIDTH;
+import static utils.Constants.EnemyConstants.MeleeConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.MeleeConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.MeleeConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.MeleeConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.MeleeConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D;
 
@@ -11,10 +25,12 @@ import item.Weapon;
 import item.derived.Spear;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Helper;
+import utils.Loader;
 
 public class MeleeEnemy extends Enemy {
 
@@ -22,35 +38,65 @@ public class MeleeEnemy extends Enemy {
 	private double yspeed;
 	private int attackState;
 	private Spear spear;
-	// private Image image;
+	private int animationFrame;
+	private int animationState;
+	private int frameCount;
+	private Image[] animation;
+	private boolean isFacingLeft;
 
 	public MeleeEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
+		loadResources();
 		attackState = READY;
 		initHitbox(x, y, width, height);
 		spear = new Spear();
-		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
+	}
+
+	private void loadResources() {
+		animation = new Image[ANIMATION_STATE_COUNT + 1];
+		animationFrame = 0;
+		frameCount = 0;
+		animationState = IDLE;
+		animation[0] = Loader.GetSpriteAtlas(Loader.MELEE_IDLE_ATLAS);
 	}
 
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-//		 Hitbox Rect
+
 		gc.setFill(Color.RED);
 		if (attackState != READY) {
 			((Weapon) spear).draw(gc, this);
 		}
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+
+		frameCount++;
+		if (frameCount > ANIMATION_SPEED) {
+			frameCount -= ANIMATION_SPEED;
+			animationFrame++;
+			switch (animationState) {
+			case IDLE:
+				animationFrame %= IDLE_FRAMES_COUNT;
+				break;
+			default:
+				break;
+			}
+		}
+
+		double x = hitbox.x + (isFacingLeft ? 0 : width);
+		double y = hitbox.y;
+		double w = width * (isFacingLeft ? 1 : -1);
+		double h = height;
+
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x, y, w, h);
 
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-//		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {
@@ -107,11 +153,25 @@ public class MeleeEnemy extends Enemy {
 		}
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		move();
-		if (attackState != READY)
+
+		if (attackState != READY) {
 			attackState = spear.updateAttack(this);
-		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
+		}
+		if (xspeed > 0) {
+			isFacingLeft = false;
+		} else if (xspeed < 0) {
+			isFacingLeft = true;
+		}
+		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY) {
 			attackState = spear.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
+			if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getMinX()) {
+				isFacingLeft = true;
+			} else if (GameLogic.getPlayer().getHitbox().getMinX() > hitbox.getMaxX()) {
+				isFacingLeft = false;
+			}
+		}
+
 		if (currentHealth <= 0) {
 			isDestroy = true;
 			if (attackState != READY)
