@@ -258,18 +258,25 @@ public class Player extends Entity implements Damageable {
 		if (attackState != READY && currentWeapon != null) {
 			attackState = currentWeapon.updateAttack(this);
 		}
-		if (InputUtility.isLeftDown() && attackState == READY) {
-			attack();
-		}
-		if (InputUtility.getKeyPressed(KeyCode.E)) {
-			useItem();
-		}
-		pickUpItems();
 		if (xspeed > 0) {
 			isFacingLeft = false;
 		} else if (xspeed < 0) {
 			isFacingLeft = true;
 		}
+		if (InputUtility.isLeftDown()) {
+			if (attackState == READY) {
+				attack();
+			}
+			if (InputUtility.getMouseX() > hitbox.x + width) {
+				isFacingLeft = false;
+			} else if (InputUtility.getMouseX() < hitbox.x) {
+				isFacingLeft = true;
+			}
+		}
+		if (InputUtility.getKeyPressed(KeyCode.E)) {
+			useItem();
+		}
+		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 
