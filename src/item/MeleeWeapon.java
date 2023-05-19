@@ -7,6 +7,7 @@ import static utils.Constants.Directions.RIGHT;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
+import java.util.ArrayList;
 
 import entity.Player;
 import entity.base.Enemy;
@@ -24,6 +25,7 @@ public abstract class MeleeWeapon extends Weapon {
 	protected Shape attackBox;
 	protected boolean hit;
 	protected boolean canMultipleHit;
+	protected ArrayList<Entity> alreadyHit;
 
 	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedMultiplier,
 			boolean canMultipleHit) {
@@ -53,6 +55,7 @@ public abstract class MeleeWeapon extends Weapon {
 	@Override
 	public int attack(double targetX, double targetY, Entity attacker) {
 		this.hit = false;
+		this.alreadyHit = new ArrayList<Entity>();
 		this.attackState = IN_PROGRESS;
 		updateAttackDirection(targetX, attacker);
 		updateAttackBox(attacker);
@@ -84,8 +87,9 @@ public abstract class MeleeWeapon extends Weapon {
 			return;
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof Damageable && isEnemy(entity, attacker)) {
-				if (attackBox.intersects(entity.getHitbox())) {
+				if (attackBox.intersects(entity.getHitbox()) && !alreadyHit.contains(entity)) {
 					((Damageable) entity).receiveDamage(damage);
+					alreadyHit.add(entity);
 					if (!canMultipleHit) {
 						hit = true;
 						return;
