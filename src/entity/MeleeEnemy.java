@@ -87,7 +87,6 @@ public class MeleeEnemy extends Enemy {
 
 		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
 				drawW, drawH);
-
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);

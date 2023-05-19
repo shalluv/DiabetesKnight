@@ -1,8 +1,6 @@
 package entity;
 
-import static utils.Constants.AttackState.MELEE_HIT;
-import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
-import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
+import static utils.Constants.AttackState.IN_PROGRESS;
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
@@ -343,7 +341,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	public void updateCurrentInventoryFocus() {
-		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == RANGED_IN_PROGRESS)
+		if (attackState == IN_PROGRESS)
 			return;
 		if (InputUtility.getScrollDeltaY() != 0) {
 			if (InputUtility.getScrollDeltaY() > 0)

@@ -47,11 +47,8 @@ public class Constants {
 
 	public static class AttackState {
 		public static final int READY = 0;
-		public static final int MELEE_IN_PROGRESS = 1;
-		public static final int MELEE_ON_COOLDOWN = 2;
-		public static final int MELEE_HIT = 3;
-		public static final int RANGED_IN_PROGRESS = 4;
-		public static final int RANGED_ON_COOLDOWN = 5;
+		public static final int IN_PROGRESS = 4;
+		public static final int ON_COOLDOWN = 5;
 	}
 
 	public static class Weapon {
@@ -84,7 +81,7 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 4 * SCALE;
 		public static final double WEIGHT = 0.12 * SCALE;
 		public static final int INVENTORY_SIZE = 10;
-		public static final int INITIAL_MAX_HEALTH = 200;
+		public static final int INITIAL_MAX_HEALTH = 999999;
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {
