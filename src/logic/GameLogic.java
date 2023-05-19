@@ -11,14 +11,17 @@ import input.InputUtility;
 import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
 import utils.Constants.DroppedItemConstants;
+import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
 public class GameLogic {
 
 	private static ArrayList<Entity> gameObjectContainer = new ArrayList<Entity>();
 	private static Player player;
+	private boolean isChangingLevel;
 
 	public GameLogic() {
+		isChangingLevel = false;
 	}
 
 	public static void addAllObject(ArrayList<Entity> entities) {
@@ -37,8 +40,19 @@ public class GameLogic {
 	}
 
 	public void update() {
+		if (Main.gameState == GameState.CHANGING_LEVEL) {
+			if (isChangingLevel)
+				return;
+			isChangingLevel = true;
+			gameObjectContainer.removeAll(gameObjectContainer);
+			RenderableHolder.getInstance().clearAll();
+			Main.mapManager.nextLevel();
+			Main.gameState = GameState.PLAYING;
+			isChangingLevel = false;
+			return;
+		}
 		if (InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
-			Main.gameState = 2;
+			Main.gameState = GameState.PAUSE;
 			return;
 		}
 		RenderableHolder.getInstance().update();
@@ -74,15 +88,24 @@ public class GameLogic {
 
 		if (x >= Resolution.WIDTH / 2 && x + Resolution.WIDTH / 2 < mapWidth) {
 			Main.gameScreen.setX(-(x - Resolution.WIDTH / 2));
+		} else if (x < Resolution.WIDTH / 2) {
+			Main.gameScreen.setX(0);
 		}
 		if (y >= Resolution.HEIGHT / 2 && y + Resolution.HEIGHT / 2 < mapHeight) {
 			Main.gameScreen.setY(-(y - Resolution.HEIGHT / 2));
+		} else if (y < Resolution.HEIGHT / 2) {
+			Main.gameScreen.setY(0);
 		}
 	}
 
 	public static void spawnPlayer(int x, int y) {
 		player = new Player(x, y);
 		addNewObject(player);
+	}
+
+	public static void tpPlayer(double x, double y) {
+		player.getHitbox().x = x;
+		player.getHitbox().y = y;
 	}
 
 	public static Player getPlayer() {

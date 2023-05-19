@@ -108,6 +108,9 @@ public class Main extends Application {
 		case GameState.PLAYING:
 			gameLogic.update();
 			break;
+		case GameState.CHANGING_LEVEL:
+			gameLogic.update();
+			break;
 		case GameState.PAUSE:
 			PauseOverlay.update();
 		default:
