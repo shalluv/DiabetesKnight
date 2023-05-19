@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.geom.Rectangle2D;
 import entity.base.Enemy;
 import entity.base.Entity;
 import interfaces.Damageable;
@@ -24,7 +25,9 @@ public class Bullet extends Entity {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		if (!hitbox.intersects(screen))
+			return;
 		gc.setFill(Color.GREEN);
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
@@ -68,6 +71,33 @@ public class Bullet extends Entity {
 		double vectorSize = Math.sqrt(dx * dx + dy * dy);
 		xspeed = BulletConstants.SPEED * dx / vectorSize;
 		yspeed = BulletConstants.SPEED * dy / vectorSize;
+	}
+
+	public static boolean canBulletHit(Rectangle2D.Double targetHitbox, Rectangle2D.Double sourceHitbox,
+			Rectangle2D.Double attackBox) {
+		double sx = sourceHitbox.getCenterX() - BulletConstants.WIDTH / 2;
+		double sy = sourceHitbox.getCenterY() - BulletConstants.HEIGHT / 2;
+		if (targetHitbox.getCenterX() > sx)
+			sx = sourceHitbox.getMaxX();
+		else if (targetHitbox.getCenterX() < sx)
+			sx = sourceHitbox.x;
+		double dx = targetHitbox.getCenterX() - sx;
+		double dy = targetHitbox.getCenterY() - sy;
+		double vectorSize = Math.sqrt(dx * dx + dy * dy);
+		double vx = BulletConstants.SPEED * dx / vectorSize;
+		double vy = BulletConstants.SPEED * dy / vectorSize;
+		Rectangle2D.Double bullet = new Rectangle2D.Double(sx, sy, BulletConstants.WIDTH, BulletConstants.HEIGHT);
+		while (attackBox.contains(bullet)) {
+			if (Helper.CanMoveHere(bullet.x + vx, bullet.y + vy, bullet.width, bullet.height)) {
+				bullet.x += vx;
+				bullet.y += vy;
+				if (bullet.intersects(targetHitbox))
+					return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 
 }

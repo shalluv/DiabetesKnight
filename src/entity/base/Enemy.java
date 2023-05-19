@@ -1,11 +1,14 @@
 package entity.base;
 
+import static utils.Constants.Directions.LEFT;
+
 import java.awt.geom.Rectangle2D;
 
 import entity.Player;
 import interfaces.Damageable;
 import item.Item;
 import item.derived.Sugar;
+import utils.Helper;
 
 public abstract class Enemy extends Entity implements Damageable {
 
@@ -14,17 +17,17 @@ public abstract class Enemy extends Entity implements Damageable {
 	protected int sightSize;
 	protected Item lootItem;
 
-	public Enemy(double x, double y, int width, int height, int sightSize) {
+	public Enemy(double x, double y, int width, int height, int sightSize, int maxHealth) {
 		super(x, y, width, height);
-		this.maxHealth = 100;
-		this.currentHealth = 100;
+		this.maxHealth = maxHealth;
+		this.currentHealth = maxHealth;
 		this.sightSize = sightSize;
 		this.lootItem = new Sugar(10);
 	}
 
 	@Override
 	public int getZ() {
-		return 1;
+		return 2;
 	}
 
 	protected void setCurrentHealth(int value) {
@@ -38,8 +41,8 @@ public abstract class Enemy extends Entity implements Damageable {
 	}
 
 	protected boolean isInSight(Player player) {
-		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.x - sightSize, hitbox.y - sightSize,
-				hitbox.width + 2 * sightSize, hitbox.height + 2 * sightSize);
+		Rectangle2D.Double enemySight = new Rectangle2D.Double(hitbox.getCenterX() - sightSize,
+				hitbox.getCenterY() - sightSize, 2 * sightSize, 2 * sightSize);
 		return enemySight.intersects(player.getHitbox());
 	}
 
@@ -53,4 +56,22 @@ public abstract class Enemy extends Entity implements Damageable {
 		return lootItem;
 	}
 
+	public int getHealth() {
+		return currentHealth;
+	}
+
+	protected boolean moveToFalling(int direction) {
+		for (int i = 0; i < 6; ++i) {
+			Rectangle2D.Double checkBox;
+			if (direction == LEFT)
+				checkBox = new Rectangle2D.Double(hitbox.x - hitbox.width, hitbox.y + i * hitbox.height, hitbox.width,
+						hitbox.height);
+			else
+				checkBox = new Rectangle2D.Double(hitbox.getMaxX(), hitbox.y + i * hitbox.height, hitbox.width,
+						hitbox.height);
+			if (Helper.IsEntityOnFloor(checkBox))
+				return false;
+		}
+		return true;
+	}
 }

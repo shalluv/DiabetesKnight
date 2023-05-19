@@ -1,6 +1,9 @@
 package maps;
 
+import entity.DroppedItem;
 import entity.MeleeEnemy;
+import entity.RangedEnemy;
+import item.derived.Cake;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
 
@@ -8,6 +11,8 @@ public class Map {
 
 	public static final int PLAYER_SPAWN_CODE = 3000;
 	public static final int MELEE_ENEMY_SPAWN_CODE = 3001;
+	public static final int RANGED_ENEMY_SPAWN_CODE = 3002;
+	public static final int CAKE_SPAWN_CODE = 3003;
 
 	private int[][] mapData;
 
@@ -23,6 +28,15 @@ public class Map {
 					mapData[i][j] = 0;
 					GameLogic.addNewObject(new MeleeEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
+				case RANGED_ENEMY_SPAWN_CODE:
+					mapData[i][j] = 0;
+					GameLogic.addNewObject(new RangedEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					break;
+				case CAKE_SPAWN_CODE:
+					mapData[i][j] = 0;
+					Cake cake = new Cake();
+					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
+							BlockConstants.SIZE, BlockConstants.SIZE, cake));
 				default:
 					break;
 				}

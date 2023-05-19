@@ -1,14 +1,15 @@
 package entity;
 
 import static utils.Constants.AttackState.READY;
-import static utils.Constants.MeleeEnemyConstants.*;
+import static utils.Constants.MeleeEnemyConstants.HEIGHT;
+import static utils.Constants.MeleeEnemyConstants.WIDTH;
+import static utils.Constants.RangedEnemyConstants.*;
 import static utils.Constants.Directions.*;
 
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
-import item.Weapon;
-import item.derived.Spear;
+import item.derived.Gun;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -16,45 +17,51 @@ import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Helper;
 
-public class MeleeEnemy extends Enemy {
+public class RangedEnemy extends Enemy {
 
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
-	private Spear spear;
-	// private Image image;
+	private Gun gun;
 
-	public MeleeEnemy(double x, double y) {
+	public RangedEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
+		attackState = READY;
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		attackState = READY;
 		initHitbox(x, y, width, height);
-		spear = new Spear();
-		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
+		gun = new Gun();
 	}
 
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-//		 Hitbox Rect
 		gc.setFill(Color.RED);
-		if (attackState != READY) {
-			((Weapon) spear).draw(gc, this);
-		}
 		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-
-		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-//		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
-	private void jump() {
-		yspeed = -MAX_Y_SPEED;
+	@Override
+	public void update() {
+		if (GameLogic.getPlayer() != null) {
+			updateXSpeed();
+		}
+		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
+		move();
+		if (attackState != READY)
+			attackState = gun.updateAttack(this);
+		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
+			attackState = gun.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
+					GameLogic.getPlayer().getHitbox().getCenterY(), this);
+		if (currentHealth <= 0) {
+			isDestroy = true;
+			if (attackState != READY)
+				gun.cancelAttack();
+		}
 	}
 
 	private void move() {
@@ -65,7 +72,6 @@ public class MeleeEnemy extends Enemy {
 			if (attackState == READY)
 				jump();
 		}
-
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
 			hitbox.y += yspeed;
 			yspeed += WEIGHT;
@@ -78,19 +84,17 @@ public class MeleeEnemy extends Enemy {
 		}
 	}
 
-	private boolean canAttack() {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - spear.getAttackRange(), hitbox.y,
-				WIDTH + 2 * spear.getAttackRange(), HEIGHT);
-		return canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox);
+	private void jump() {
+		yspeed = -MAX_Y_SPEED;
 	}
 
 	private void updateXSpeed() {
-		if (isInSight(GameLogic.getPlayer())) {
-			if (GameLogic.getPlayer().getHitbox().getMaxX() + spear.getAttackRange() / 2 < hitbox.x
-					&& !moveToFalling(LEFT)) {
+		if (canAttack()) {
+			xspeed = INITIAL_X_SPEED;
+		} else if (isInSight(GameLogic.getPlayer())) {
+			if (GameLogic.getPlayer().getHitbox().getCenterX() < hitbox.x && !moveToFalling(LEFT)) {
 				xspeed = -BASE_X_SPEED;
-			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + spear.getAttackRange() / 2
-					&& !moveToFalling(RIGHT)) {
+			} else if (GameLogic.getPlayer().getHitbox().getCenterX() > hitbox.getMaxX() && !moveToFalling(RIGHT)) {
 				xspeed = BASE_X_SPEED;
 			} else {
 				xspeed = INITIAL_X_SPEED;
@@ -100,23 +104,12 @@ public class MeleeEnemy extends Enemy {
 		}
 	}
 
-	@Override
-	public void update() {
-		if (GameLogic.getPlayer() != null) {
-			updateXSpeed();
+	private boolean canAttack() {
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.getCenterX() - ATTACK_RANGE,
+				hitbox.getCenterY() - ATTACK_RANGE, 2 * ATTACK_RANGE, 2 * ATTACK_RANGE);
+		if (canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox)) {
+			return Bullet.canBulletHit(GameLogic.getPlayer().getHitbox(), hitbox, canAttackBox);
 		}
-		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-		move();
-		if (attackState != READY)
-			attackState = spear.updateAttack(this);
-		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
-			attackState = spear.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
-					GameLogic.getPlayer().getHitbox().getCenterY(), this);
-		if (currentHealth <= 0) {
-			isDestroy = true;
-			if (attackState != READY)
-				spear.cancelAttack();
-		}
+		return false;
 	}
-
 }
