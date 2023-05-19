@@ -16,6 +16,9 @@ public class Loader {
 	public static final String MELEE_IDLE_ATLAS = "res/enemy/pudrior/idle_4.png";
 	public static final String DUST_ATLAS = "res/player/dust_6.png";
 	public static final String BACKGROUND_ATLAS = "res/2_Background/Day/Background.png";
+	public static final String SUGAR_ATLAS = "res/item/sugar.png";
+	public static final String INSULIN_ATLAS = "res/item/insulin.png";
+	public static final String HEALTH_POTION_ATLAS = "res/item/health_potion.png";
 
 	public static Image GetSpriteAtlas(String filename) {
 		Image img = null;

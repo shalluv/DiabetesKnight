@@ -3,15 +3,18 @@ package entity.base;
 import static utils.Constants.Directions.LEFT;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 import entity.Player;
 import interfaces.Damageable;
 import item.Item;
+import item.derived.Insulin;
 import item.derived.Sugar;
 import utils.Helper;
 
 public abstract class Enemy extends Entity implements Damageable {
 
+	private Item[] lootTable = {new Sugar(), new Insulin()};
 	protected int maxHealth;
 	protected int currentHealth;
 	protected int sightSize;
@@ -22,7 +25,7 @@ public abstract class Enemy extends Entity implements Damageable {
 		this.maxHealth = maxHealth;
 		this.currentHealth = maxHealth;
 		this.sightSize = sightSize;
-		this.lootItem = new Sugar(10);
+		this.lootItem = lootTable[new Random().nextInt(lootTable.length)];
 	}
 
 	@Override

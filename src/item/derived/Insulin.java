@@ -6,18 +6,18 @@ import item.Item;
 import logic.GameLogic;
 import utils.Loader;
 
-public class Sugar extends Item implements Consumable {
+public class Insulin extends Item implements Consumable {
 
 	private int power;
 
-	public Sugar() {
-		super("Sugar", Loader.GetSpriteAtlas(Loader.SUGAR_ATLAS));
-		power = 10;
+	public Insulin() {
+		super("Insulin", Loader.GetSpriteAtlas(Loader.INSULIN_ATLAS));
+		power = 30;
 	}
 
 	@Override
 	public void consume() {
 		Player player = GameLogic.getPlayer();
-		player.setCurrentPower(player.getCurrentPower() + power);
+		player.setCurrentPower(player.getCurrentPower() - power);
 	}
 }

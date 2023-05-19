@@ -35,8 +35,7 @@ public class DroppedItem extends Entity {
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!screen.intersects(hitbox))
 			return;
-		gc.setFill(item.getColor());
-		gc.fillRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		gc.drawImage(item.getImage(), hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 	}
 
 	@Override

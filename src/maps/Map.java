@@ -3,7 +3,7 @@ package maps;
 import entity.DroppedItem;
 import entity.MeleeEnemy;
 import entity.RangedEnemy;
-import item.derived.Cake;
+import item.derived.HealthPotion;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
 
@@ -34,7 +34,7 @@ public class Map {
 					break;
 				case CAKE_SPAWN_CODE:
 					mapData[i][j] = 0;
-					Cake cake = new Cake();
+					HealthPotion cake = new HealthPotion();
 					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
 							BlockConstants.SIZE, BlockConstants.SIZE, cake));
 				default:

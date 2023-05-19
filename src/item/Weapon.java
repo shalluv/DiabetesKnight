@@ -5,6 +5,7 @@ import static utils.Constants.AttackState.READY;
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import utils.Loader;
 
 public abstract class Weapon extends Item {
 
@@ -12,7 +13,7 @@ public abstract class Weapon extends Item {
 	protected Thread cooldown;
 
 	public Weapon(String name, Color color) {
-		super(name, color);
+		super(name, Loader.GetSpriteAtlas(Loader.SUGAR_ATLAS));
 		this.attackState = READY;
 	}
 

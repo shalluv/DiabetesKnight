@@ -46,8 +46,7 @@ public class GameOverlay {
 
 			// Items
 			if (inventory[i] != null) {
-				gc.setFill(inventory[i].getColor());
-				gc.fillRect(
+				gc.drawImage(inventory[i].getImage(),
 						(Resolution.WIDTH / 2)
 								+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
 								- layoutX + UI.GameOverlay.INVENTORY_PADDING,
