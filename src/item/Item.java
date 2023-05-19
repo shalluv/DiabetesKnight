@@ -11,7 +11,7 @@ public abstract class Item {
 		this.name = name;
 		this.image = image;
 	}
-	
+
 	public Image getImage() {
 		return image;
 	}

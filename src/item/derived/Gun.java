@@ -13,8 +13,8 @@ import entity.base.Entity;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utils.Loader;
 import utils.Constants.Weapon.BulletConstants;
+import utils.Loader;
 
 public class Gun extends Weapon {
 

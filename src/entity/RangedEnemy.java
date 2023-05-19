@@ -3,13 +3,6 @@ package entity;
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_STATE_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN_FRAMES_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE_FRAMES_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_SIZE;
 import static utils.Constants.EnemyConstants.RangedConstants.ATTACK_RANGE;
 import static utils.Constants.EnemyConstants.RangedConstants.BASE_X_SPEED;
 import static utils.Constants.EnemyConstants.RangedConstants.HEIGHT;
@@ -20,6 +13,13 @@ import static utils.Constants.EnemyConstants.RangedConstants.MAX_Y_SPEED;
 import static utils.Constants.EnemyConstants.RangedConstants.SIGHT_SIZE;
 import static utils.Constants.EnemyConstants.RangedConstants.WEIGHT;
 import static utils.Constants.EnemyConstants.RangedConstants.WIDTH;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D;
 
@@ -73,7 +73,7 @@ public class RangedEnemy extends Enemy {
 
 		frameCount++;
 		if (frameCount > ANIMATION_SPEED) {
-			frameCount -= ANIMATION_SPEED; 
+			frameCount -= ANIMATION_SPEED;
 			animationFrame++;
 			switch (animationState) {
 			case IDLE:
@@ -91,7 +91,8 @@ public class RangedEnemy extends Enemy {
 		double drawW = width * (isFacingLeft ? 1 : -1);
 		double drawH = height;
 
-		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY, drawW, drawH);
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
+				drawW, drawH);
 
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
@@ -103,9 +104,9 @@ public class RangedEnemy extends Enemy {
 	public void update() {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
-			if(GameLogic.getPlayer().getHitbox().getMinX() > hitbox.getMaxX()) {
+			if (GameLogic.getPlayer().getHitbox().getMinX() > hitbox.getMaxX()) {
 				isFacingLeft = false;
-			} else if(GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getMinX()) {
+			} else if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getMinX()) {
 				isFacingLeft = true;
 			}
 		}
