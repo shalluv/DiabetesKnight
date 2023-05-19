@@ -21,7 +21,6 @@ import static utils.Constants.EnemyConstants.MeleeConstants.Animations.SPRITE_SI
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
-import item.Weapon;
 import item.derived.Spear;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -67,11 +66,6 @@ public class MeleeEnemy extends Enemy {
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-
-		gc.setFill(Color.RED);
-		if (attackState != READY) {
-			((Weapon) spear).draw(gc, this);
-		}
 
 		frameCount++;
 		if (frameCount > ANIMATION_SPEED) {

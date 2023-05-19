@@ -99,10 +99,6 @@ public class Player extends Entity implements Damageable {
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-		gc.setFill(Color.BLACK);
-		if (attackState != READY && currentWeapon != null) {
-			currentWeapon.draw(gc, this);
-		}
 
 		frameCount++;
 		if (!Helper.IsEntityOnFloor(hitbox)) {
@@ -145,10 +141,18 @@ public class Player extends Entity implements Damageable {
 		double drawH = height;
 		double offsetDust = 4 * (isFacingLeft ? 1 : -1);
 
-		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY, drawW, drawH);
-		if (animationState == RUNNING) {
-			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX + offsetDust, drawY, drawW, drawH);
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
+				drawW, drawH);
+		gc.setFill(Color.BLACK);
+		if (currentWeapon != null) {
+			currentWeapon.draw(gc, hitbox.x + (isFacingLeft ? 24 : 8), hitbox.y + 16,
+					isFacingLeft ? -32 : 32, 32);
 		}
+		if (animationState == RUNNING) {
+			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX + offsetDust,
+					drawY, drawW, drawH);
+		}
+
 	}
 
 	private void setCurrentHealth(int value) {
@@ -366,6 +370,10 @@ public class Player extends Entity implements Damageable {
 			currentInventoryFocus = 7;
 		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT9)) {
 			currentInventoryFocus = 8;
+		}
+
+		if (inventory[currentInventoryFocus] instanceof Weapon) {
+			currentWeapon = (Weapon) inventory[currentInventoryFocus];
 		}
 	}
 

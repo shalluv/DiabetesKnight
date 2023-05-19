@@ -12,21 +12,24 @@ import entity.base.Enemy;
 import entity.base.Entity;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import utils.Loader;
 import utils.Constants.Weapon.BulletConstants;
 
 public class Gun extends Weapon {
 
 	private double targetX;
 	private double targetY;
+	private Image image;
 
 	public Gun() {
-		super("Gun", Color.BLUE);
+		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS));
+		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Entity attacker) {
-		return;
+	public void draw(GraphicsContext gc, double x, double y, double width, double height) {
+		gc.drawImage(image, x, y, width, height);
 	}
 
 	@Override
