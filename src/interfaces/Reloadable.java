@@ -6,4 +6,6 @@ public interface Reloadable {
 	public int getAmmo();
 
 	public void cancelReload();
+
+	public int getMaxAmmo();
 }

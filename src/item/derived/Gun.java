@@ -100,4 +100,9 @@ public class Gun extends RangedWeapon implements Reloadable {
 		if (attackState == ON_RELOAD)
 			attackState = READY;
 	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
 }
