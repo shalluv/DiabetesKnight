@@ -22,7 +22,6 @@ public class MeleeEnemy extends Enemy {
 	private double yspeed;
 	private int attackState;
 	private Spear spear;
-	// private Image image;
 
 	public MeleeEnemy(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
@@ -31,7 +30,6 @@ public class MeleeEnemy extends Enemy {
 		attackState = READY;
 		initHitbox(x, y, width, height);
 		spear = new Spear();
-		// image = new Image("file:res/Slime/stand_and_maybe_jump/slime2-1.png");
 	}
 
 	@Override
@@ -50,7 +48,6 @@ public class MeleeEnemy extends Enemy {
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-//		 gc.drawImage(image, hitbox.x, hitbox.y, width, height);
 	}
 
 	private void jump() {

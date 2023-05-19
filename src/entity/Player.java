@@ -47,7 +47,6 @@ public class Player extends Entity implements Damageable {
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
-	// private Image image;
 	private Item[] inventory;
 	private Item currentItem;
 	private Weapon currentWeapon;
