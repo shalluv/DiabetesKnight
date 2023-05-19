@@ -32,27 +32,21 @@ public class Spear extends Weapon {
 	private Rectangle2D.Double attackBox;
 
 	public Spear() {
-		super("Spear", Loader.GetSpriteAtlas(Loader.HEALTH_POTION_ATLAS));
+		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS));
 		this.attackRange = ATTACK_RANGE;
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, double x, double y, double width, double height) {
-//		Rectangle2D.Double hitbox = attacker.getHitbox();
-//		if (attackState != READY && attackProgress > 0) {
-//			switch (attackDirection) {
-//			case LEFT:
-//				gc.fillRect(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-//						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-//				break;
-//			case RIGHT:
-//				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-//						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-//				break;
-//			default:
-//				break;
-//			}
-//		}
+	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
+		if(isFacingLeft) {
+			width = -width;
+			x -= attackProgress;
+			x -= width;
+		} else {
+			x += width / 2;
+			x += attackProgress;
+		}
+		gc.drawImage(image, x, y + 16, width, height);
 	}
 
 	@Override

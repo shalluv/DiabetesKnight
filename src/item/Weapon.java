@@ -26,7 +26,7 @@ public abstract class Weapon extends Item {
 		});
 	}
 
-	public abstract void draw(GraphicsContext gc, double x, double y, double width, double height);
+	public abstract void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft);
 
 	public abstract int updateAttack(Entity attacker);
 

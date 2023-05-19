@@ -28,8 +28,14 @@ public class Gun extends Weapon {
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, double x, double y, double width, double height) {
-		gc.drawImage(image, x, y, width, height);
+	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
+		if(isFacingLeft) {
+			width = -width;
+			x -= width;
+		} else {
+			x += width / 2;
+		}
+		gc.drawImage(image, x, y + 16, width, height);
 	}
 
 	@Override

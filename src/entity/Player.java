@@ -145,7 +145,7 @@ public class Player extends Entity implements Damageable {
 				drawW, drawH);
 		gc.setFill(Color.BLACK);
 		if (currentWeapon != null) {
-			currentWeapon.draw(gc, hitbox.x + (isFacingLeft ? 24 : 8), hitbox.y + 16, isFacingLeft ? -32 : 32, 32);
+			currentWeapon.draw(gc, hitbox.x, hitbox.y, 32, 32, isFacingLeft);
 		}
 		if (animationState == RUNNING) {
 			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX + offsetDust,

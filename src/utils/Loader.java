@@ -19,8 +19,9 @@ public class Loader {
 	public static final String RANGE_IDLE_ATLAS = "res/enemy/icecher/idle_1.png";
 	public static final String RANGE_ATTACK_COOLDOWN_ATLAS = "res/enemy/icecher/attack_cooldown_1.png";
 
-	public static final String GUN_ATLAS = "res/item/gun.png";
-	public static final String BULLET_ATLAS = "res/item/bullet.png";
+	public static final String SPEAR_ATLAS = "res/weapon/spear.png";
+	public static final String GUN_ATLAS = "res/weapon/gun.png";
+	public static final String BULLET_ATLAS = "res/weapon/bullet.png";
 
 	public static final String SUGAR_ATLAS = "res/item/sugar.png";
 	public static final String INSULIN_ATLAS = "res/item/insulin.png";
