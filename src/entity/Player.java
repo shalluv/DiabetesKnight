@@ -330,6 +330,13 @@ public class Player extends Entity implements Damageable {
 	public void updateCurrentInventoryFocus() {
 		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == RANGED_IN_PROGRESS)
 			return;
+		if (InputUtility.getScrollDeltaY() != 0) {
+			if (InputUtility.getScrollDeltaY() > 0)
+				currentInventoryFocus = (currentInventoryFocus + 9) % 10;
+			else if (InputUtility.getScrollDeltaY() < 0)
+				currentInventoryFocus = (currentInventoryFocus + 11) % 10;
+			InputUtility.setScrollDeltaY(0);
+		}
 		if (InputUtility.getKeyPressed(KeyCode.DIGIT0)) {
 			currentInventoryFocus = 9;
 		} else if (InputUtility.getKeyPressed(KeyCode.DIGIT1)) {

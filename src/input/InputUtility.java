@@ -14,6 +14,7 @@ public class InputUtility {
 	private static boolean isRightDown = false;
 	private static double mouseX;
 	private static double mouseY;
+	private static double scrollDeltaY;
 
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
@@ -67,6 +68,14 @@ public class InputUtility {
 
 	public static double getMouseY() {
 		return mouseY;
+	}
+
+	public static void setScrollDeltaY(double deltaY) {
+		scrollDeltaY = deltaY;
+	}
+
+	public static double getScrollDeltaY() {
+		return scrollDeltaY;
 	}
 
 	public static void update() {

@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Font;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
@@ -50,6 +51,9 @@ public class GameCanvas extends Canvas {
 				InputUtility.mouseLeftUp();
 			else if (event.getButton() == MouseButton.SECONDARY)
 				InputUtility.mouseRightUp();
+		});
+		setOnScroll((ScrollEvent event) -> {
+			InputUtility.setScrollDeltaY(event.getDeltaY());
 		});
 	}
 
