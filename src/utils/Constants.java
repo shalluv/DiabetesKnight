@@ -47,8 +47,9 @@ public class Constants {
 
 	public static class AttackState {
 		public static final int READY = 0;
-		public static final int IN_PROGRESS = 4;
-		public static final int ON_COOLDOWN = 5;
+		public static final int IN_PROGRESS = 1;
+		public static final int ON_COOLDOWN = 2;
+		public static final int ON_RELOAD = 3;
 	}
 
 	public static class Weapon {
@@ -62,7 +63,9 @@ public class Constants {
 		}
 
 		public static class GunConstants {
-			public static final int ATTACK_DELAY = 1000;
+			public static final int ATTACK_DELAY = 300;
+			public static final int MAX_AMMO = 6;
+			public static final int RELOAD_DELAY = 1000;
 		}
 
 		public static class BulletConstants {
@@ -82,7 +85,7 @@ public class Constants {
 		public static final double INITIAL_Y_SPEED = 4 * SCALE;
 		public static final double WEIGHT = 0.12 * SCALE;
 		public static final int INVENTORY_SIZE = 10;
-		public static final int INITIAL_MAX_HEALTH = 999999;
+		public static final int INITIAL_MAX_HEALTH = 10;
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {

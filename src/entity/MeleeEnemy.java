@@ -21,6 +21,7 @@ import static utils.Constants.EnemyConstants.MeleeConstants.Animations.SPRITE_SI
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
+import item.MeleeWeapon;
 import item.derived.Spear;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -36,7 +37,7 @@ public class MeleeEnemy extends Enemy {
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
-	private Spear spear;
+	private MeleeWeapon weapon;
 	private int animationFrame;
 	private int animationState;
 	private int frameCount;
@@ -50,7 +51,7 @@ public class MeleeEnemy extends Enemy {
 		loadResources();
 		attackState = READY;
 		initHitbox(x, y, width, height);
-		spear = new Spear();
+		weapon = new Spear();
 	}
 
 	private void loadResources() {
@@ -120,17 +121,17 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private boolean canAttack() {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - spear.getAttackRange(), hitbox.y,
-				WIDTH + 2 * spear.getAttackRange(), HEIGHT);
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - weapon.getAttackRange(), hitbox.y,
+				WIDTH + 2 * weapon.getAttackRange(), HEIGHT);
 		return canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
 	private void updateXSpeed() {
 		if (isInSight(GameLogic.getPlayer())) {
-			if (GameLogic.getPlayer().getHitbox().getMaxX() + spear.getAttackRange() / 2 < hitbox.x
+			if (GameLogic.getPlayer().getHitbox().getMaxX() + weapon.getAttackRange() / 2 < hitbox.x
 					&& !moveToFalling(LEFT)) {
 				xspeed = -BASE_X_SPEED;
-			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + spear.getAttackRange() / 2
+			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() + weapon.getAttackRange() / 2
 					&& !moveToFalling(RIGHT)) {
 				xspeed = BASE_X_SPEED;
 			} else {
@@ -146,11 +147,12 @@ public class MeleeEnemy extends Enemy {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
 		}
+		xspeed /= weapon.getSpeedReducer();
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		move();
 
 		if (attackState != READY) {
-			attackState = spear.updateAttack(this);
+			attackState = weapon.updateAttack(this);
 		}
 		if (xspeed > 0) {
 			isFacingLeft = false;
@@ -158,7 +160,7 @@ public class MeleeEnemy extends Enemy {
 			isFacingLeft = true;
 		}
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY) {
-			attackState = spear.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
+			attackState = weapon.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
 			if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getMinX()) {
 				isFacingLeft = true;
@@ -170,7 +172,7 @@ public class MeleeEnemy extends Enemy {
 		if (currentHealth <= 0) {
 			isDestroy = true;
 			if (attackState != READY)
-				spear.cancelAttack();
+				weapon.cancelAttack();
 		}
 	}
 

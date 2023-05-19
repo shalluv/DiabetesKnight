@@ -1,5 +1,6 @@
 package ui;
 
+import interfaces.Reloadable;
 import item.Item;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -62,6 +63,18 @@ public class GameOverlay {
 						UI.GameOverlay.ITEM_SIZE - UI.GameOverlay.INVENTORY_PADDING * 2);
 			}
 
+			// Ammo
+			gc.setFill(Color.BLACK);
+			if (inventory[i] instanceof Reloadable) {
+				gc.setTextAlign(TextAlignment.CENTER);
+				gc.setTextBaseline(VPos.CENTER);
+				gc.fillText(Integer.toString(((Reloadable) inventory[i]).getAmmo()),
+						(Resolution.WIDTH / 2)
+								+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
+								- layoutX + UI.GameOverlay.ITEM_SIZE / 2,
+						Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY + UI.GameOverlay.ITEM_SIZE / 2);
+			}
+			
 			// Numbering
 			gc.setFill(Color.WHITE);
 			gc.setTextAlign(TextAlignment.RIGHT);

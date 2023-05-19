@@ -1,32 +1,28 @@
 package item.derived;
 
-import static utils.Constants.AttackState.IN_PROGRESS;
-import static utils.Constants.AttackState.ON_COOLDOWN;
-import static utils.Constants.AttackState.READY;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
-import static utils.Constants.Weapon.GunConstants.ATTACK_DELAY;
+import static utils.Constants.Weapon.GunConstants.*;
 
-import java.awt.geom.Rectangle2D;
-
-import entity.Bullet;
-import entity.base.Enemy;
 import entity.base.Entity;
-import item.Weapon;
+import interfaces.Reloadable;
+import item.RangedWeapon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import utils.Constants.Weapon.BulletConstants;
 import utils.Loader;
 
-public class Gun extends Weapon {
+public class Gun extends RangedWeapon implements Reloadable {
 
-	private double targetX;
-	private double targetY;
+	private int currentAmmo;
+	private int maxAmmo;
 	private Image image;
 
 	public Gun() {
 		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS));
 		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
+		this.currentAmmo = MAX_AMMO;
+		this.maxAmmo = MAX_AMMO;
 	}
 
 	@Override
@@ -42,33 +38,53 @@ public class Gun extends Weapon {
 
 	@Override
 	public int updateAttack(Entity attacker) {
-		Rectangle2D.Double hitbox = attacker.getHitbox();
 		if (attackState == IN_PROGRESS) {
-			double bulletX = hitbox.getCenterX() - BulletConstants.WIDTH / 2;
-			double bulletY = hitbox.getCenterY() - BulletConstants.HEIGHT / 2;
-			if (attacker instanceof Enemy) {
-				if (targetX > bulletX)
-					bulletX = hitbox.getMaxX();
-				else if (targetX < bulletX)
-					bulletX = hitbox.x;
-			}
-			new Bullet(bulletX, bulletY, targetX, targetY, attacker);
+			inProgressUpdate(attacker);
+			currentAmmo -= 1;
 			initCooldown(ATTACK_DELAY);
 			cooldown.start();
 			attackState = ON_COOLDOWN;
 		} else if (attackState == ON_COOLDOWN && !cooldown.isAlive()) {
-			cooldown = null;
-			attackState = READY;
+			onCooldownUpdate();
+			if (currentAmmo == 0) {
+				initCooldown(RELOAD_DELAY);
+				cooldown.start();
+				attackState = ON_RELOAD;
+			}
+		} else if (attackState == ON_RELOAD && !cooldown.isAlive()) {
+			reload();
 		}
 		return attackState;
 	}
 
 	@Override
 	public int attack(double targetX, double targetY, Entity attacker) {
+		if (currentAmmo == 0) {
+			initCooldown(RELOAD_DELAY);
+			cooldown.start();
+			attackState = ON_RELOAD;
+			return ON_RELOAD;
+		}
 		this.targetX = targetX;
 		this.targetY = targetY;
 		this.attackState = IN_PROGRESS;
 		return attackState;
 	}
 
+	@Override
+	public void reload() {
+		currentAmmo += 1;
+		attackState = ON_RELOAD;
+		if (currentAmmo == maxAmmo) {
+			attackState = READY;
+			return;
+		}
+		initCooldown(RELOAD_DELAY);
+		cooldown.start();
+	}
+
+	@Override
+	public int getAmmo() {
+		return currentAmmo;
+	}
 }
