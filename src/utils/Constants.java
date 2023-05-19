@@ -28,6 +28,7 @@ public class Constants {
 			public static final int ITEM_SIZE = (int) Math.min(36 * SCALE, 54);
 			public static final int INVENTORY_GAP = (int) Math.min(50 * SCALE, 75);
 			public static final int INVENTORY_PADDING = (int) Math.min(2 * SCALE, 3);
+			public static final int CURRENT_ITEM_NAME_OFFSET_Y = OFFSET_INVENTORY_Y + ITEM_SIZE + INVENTORY_PADDING * 2;
 		}
 	}
 
@@ -66,9 +67,9 @@ public class Constants {
 		}
 
 		public static class BulletConstants {
-			public static final int WIDTH = (int) (5 * SCALE);
-			public static final int HEIGHT = (int) (5 * SCALE);
-			public static final double SPEED = 5 * SCALE;
+			public static final int WIDTH = (int) (16 * SCALE);
+			public static final int HEIGHT = (int) (16 * SCALE);
+			public static final double SPEED = 3 * SCALE;
 			public static final int DAMAGE = 5;
 		}
 	}
@@ -86,6 +87,9 @@ public class Constants {
 		public static final int INITIAL_MAX_POWER = 100;
 
 		public static class Animations {
+			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);
+			public static final int WEAPON_OFFSET_Y = (int) (12 * SCALE);
+
 			public static final int ANIMATION_STATE_COUNT = 3;
 			public static final int SPRITE_SIZE = 32;
 			public static final int ANIMATION_SPEED = 6;
@@ -111,7 +115,7 @@ public class Constants {
 			public static final double WEIGHT = 1 * SCALE;
 			public static final int SIGHT_SIZE = (int) (400 * SCALE);
 			public static final int INITIAL_MAX_HEALTH = 30;
-			
+
 			public static class Animations {
 				public static final int ANIMATION_STATE_COUNT = 1;
 				public static final int SPRITE_SIZE = 32;
@@ -134,12 +138,24 @@ public class Constants {
 			public static final int SIGHT_SIZE = (int) (1000 * SCALE);
 			public static final int INITIAL_MAX_HEALTH = 20;
 			public static final int ATTACK_RANGE = (int) (400 * SCALE);
+
+			public static class Animations {
+				public static final int ANIMATION_STATE_COUNT = 2;
+				public static final int SPRITE_SIZE = 32;
+				public static final int ANIMATION_SPEED = 6;
+
+				public static final int IDLE = 0;
+				public static final int ATTACK_COOLDOWN = 1;
+
+				public static final int IDLE_FRAMES_COUNT = 1;
+				public static final int ATTACK_COOLDOWN_FRAMES_COUNT = 1;
+			}
 		}
 	}
 
 	public static class DroppedItemConstants {
-		public static final int DEFAULT_SIZE = 32;
-		public static final int SIZE = (int) (32 * SCALE);
+		public static final int DEFAULT_SIZE = 24;
+		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
 	}
 
 	public static class InputConstants {

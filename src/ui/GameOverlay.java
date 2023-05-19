@@ -32,6 +32,12 @@ public class GameOverlay {
 
 		Item[] inventory = GameLogic.getPlayer().getInventory();
 		int currentInventoryFocus = GameLogic.getPlayer().getCurrentInventoryFocus();
+		Item currentItem = inventory[currentInventoryFocus];
+		if (currentItem != null) {
+			gc.fillText(currentItem.getName(), Resolution.WIDTH / 2 - layoutX,
+					Resolution.HEIGHT - UI.GameOverlay.CURRENT_ITEM_NAME_OFFSET_Y - layoutY);
+		}
+
 		for (int i = 0; i < PlayerConstants.INVENTORY_SIZE; ++i) {
 			// Rect Stroke
 			if (currentInventoryFocus == i) {

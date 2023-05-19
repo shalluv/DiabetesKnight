@@ -21,7 +21,6 @@ import static utils.Constants.EnemyConstants.MeleeConstants.Animations.SPRITE_SI
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Enemy;
-import item.Weapon;
 import item.derived.Spear;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -55,6 +54,7 @@ public class MeleeEnemy extends Enemy {
 	}
 
 	private void loadResources() {
+		isFacingLeft = false;
 		animation = new Image[ANIMATION_STATE_COUNT + 1];
 		animationFrame = 0;
 		frameCount = 0;
@@ -66,11 +66,6 @@ public class MeleeEnemy extends Enemy {
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
-
-		gc.setFill(Color.RED);
-		if (attackState != READY) {
-			((Weapon) spear).draw(gc, this);
-		}
 
 		frameCount++;
 		if (frameCount > ANIMATION_SPEED) {
@@ -85,12 +80,13 @@ public class MeleeEnemy extends Enemy {
 			}
 		}
 
-		double x = hitbox.x + (isFacingLeft ? 0 : width);
-		double y = hitbox.y;
-		double w = width * (isFacingLeft ? 1 : -1);
-		double h = height;
+		double drawX = hitbox.x + (isFacingLeft ? 0 : width);
+		double drawY = hitbox.y;
+		double drawW = width * (isFacingLeft ? 1 : -1);
+		double drawH = height;
 
-		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, x, y, w, h);
+		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
+				drawW, drawH);
 
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);

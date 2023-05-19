@@ -6,6 +6,7 @@ import entity.RangedEnemy;
 import item.derived.HealthPotion;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
+import utils.Constants.DroppedItemConstants;
 
 public class Map {
 
@@ -34,9 +35,8 @@ public class Map {
 					break;
 				case CAKE_SPAWN_CODE:
 					mapData[i][j] = 0;
-					HealthPotion cake = new HealthPotion();
 					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
-							BlockConstants.SIZE, BlockConstants.SIZE, cake));
+							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new HealthPotion()));
 				default:
 					break;
 				}

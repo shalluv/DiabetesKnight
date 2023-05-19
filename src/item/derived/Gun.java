@@ -3,6 +3,8 @@ package item.derived;
 import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
 import static utils.Constants.AttackState.RANGED_ON_COOLDOWN;
 import static utils.Constants.AttackState.READY;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
 import static utils.Constants.Weapon.GunConstants.ATTACK_DELAY;
 
 import java.awt.geom.Rectangle2D;
@@ -12,21 +14,30 @@ import entity.base.Enemy;
 import entity.base.Entity;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 import utils.Constants.Weapon.BulletConstants;
+import utils.Loader;
 
 public class Gun extends Weapon {
 
 	private double targetX;
 	private double targetY;
+	private Image image;
 
 	public Gun() {
-		super("Gun", Color.BLUE);
+		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS));
+		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Entity attacker) {
-		return;
+	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
+		if (isFacingLeft) {
+			width = -width;
+			x += WEAPON_OFFSET_X;
+		} else {
+			x += WEAPON_OFFSET_X;
+		}
+		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
 
 	@Override

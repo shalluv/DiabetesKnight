@@ -6,6 +6,8 @@ import static utils.Constants.AttackState.MELEE_ON_COOLDOWN;
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
+import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
 import static utils.Constants.Weapon.SpearConstants.ATTACK_BOX_HEIGHT;
 import static utils.Constants.Weapon.SpearConstants.ATTACK_DELAY;
 import static utils.Constants.Weapon.SpearConstants.ATTACK_RANGE;
@@ -20,9 +22,9 @@ import entity.base.Entity;
 import interfaces.Damageable;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import logic.GameLogic;
 import utils.Helper;
+import utils.Loader;
 
 public class Spear extends Weapon {
 
@@ -32,27 +34,21 @@ public class Spear extends Weapon {
 	private Rectangle2D.Double attackBox;
 
 	public Spear() {
-		super("Spear", Color.RED);
+		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS));
 		this.attackRange = ATTACK_RANGE;
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Entity attacker) {
-		Rectangle2D.Double hitbox = attacker.getHitbox();
-		if (attackState != READY && attackProgress > 0) {
-			switch (attackDirection) {
-			case LEFT:
-				gc.fillRect(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			case RIGHT:
-				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			default:
-				break;
-			}
+	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
+		if (isFacingLeft) {
+			width = -width;
+			x -= attackProgress;
+			x += WEAPON_OFFSET_X * 2;
+		} else {
+			x += WEAPON_OFFSET_X;
+			x += attackProgress;
 		}
+		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
 
 	@Override
