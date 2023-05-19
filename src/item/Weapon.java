@@ -4,16 +4,15 @@ import static utils.Constants.AttackState.READY;
 
 import entity.base.Entity;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import utils.Loader;
+import javafx.scene.image.Image;
 
 public abstract class Weapon extends Item {
 
 	protected int attackState;
 	protected Thread cooldown;
 
-	public Weapon(String name, Color color) {
-		super(name, Loader.GetSpriteAtlas(Loader.SUGAR_ATLAS));
+	public Weapon(String name, Image image) {
+		super(name, image);
 		this.attackState = READY;
 	}
 
@@ -27,7 +26,7 @@ public abstract class Weapon extends Item {
 		});
 	}
 
-	public abstract void draw(GraphicsContext gc, Entity attacker);
+	public abstract void draw(GraphicsContext gc, double x, double y, double width, double height);
 
 	public abstract int updateAttack(Entity attacker);
 

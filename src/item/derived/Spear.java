@@ -20,9 +20,9 @@ import entity.base.Entity;
 import interfaces.Damageable;
 import item.Weapon;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import logic.GameLogic;
 import utils.Helper;
+import utils.Loader;
 
 public class Spear extends Weapon {
 
@@ -32,27 +32,27 @@ public class Spear extends Weapon {
 	private Rectangle2D.Double attackBox;
 
 	public Spear() {
-		super("Spear", Color.RED);
+		super("Spear", Loader.GetSpriteAtlas(Loader.HEALTH_POTION_ATLAS));
 		this.attackRange = ATTACK_RANGE;
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Entity attacker) {
-		Rectangle2D.Double hitbox = attacker.getHitbox();
-		if (attackState != READY && attackProgress > 0) {
-			switch (attackDirection) {
-			case LEFT:
-				gc.fillRect(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			case RIGHT:
-				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
-						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
-				break;
-			default:
-				break;
-			}
-		}
+	public void draw(GraphicsContext gc, double x, double y, double width, double height) {
+//		Rectangle2D.Double hitbox = attacker.getHitbox();
+//		if (attackState != READY && attackProgress > 0) {
+//			switch (attackDirection) {
+//			case LEFT:
+//				gc.fillRect(hitbox.x - attackProgress, hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
+//						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
+//				break;
+//			case RIGHT:
+//				gc.fillRect(hitbox.getCenterX(), hitbox.getCenterY() - ATTACK_BOX_HEIGHT / 2,
+//						attackProgress + hitbox.width / 2, ATTACK_BOX_HEIGHT);
+//				break;
+//			default:
+//				break;
+//			}
+//		}
 	}
 
 	@Override
