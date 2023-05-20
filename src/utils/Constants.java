@@ -241,6 +241,16 @@ public class Constants {
 		}
 	}
 
+	public static class SugarConstants {
+		public static final int SUGAR_AMOUNT = 10;
+		public static final int POWER_AMOUNT = 10;
+	}
+
+	public static class InsulinConstants {
+		public static final int SUGAR_AMOUNT = -15;
+		public static final int POWER_AMOUNT = -5;
+	}
+
 	public static class DroppedItemConstants {
 		public static final int DEFAULT_SIZE = 24;
 		public static final int SIZE = (int) (DEFAULT_SIZE * SCALE);
