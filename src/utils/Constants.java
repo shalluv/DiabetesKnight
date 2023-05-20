@@ -163,7 +163,7 @@ public class Constants {
 			}
 		}
 
-		public static class RangedConstants {
+		public static class GunnerConstants {
 			public static final int WIDTH = (int) (32 * SCALE);
 			public static final int HEIGHT = (int) (32 * SCALE);
 			public static final double MAX_Y_SPEED = 5 * SCALE;

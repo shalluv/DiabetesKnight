@@ -1,6 +1,6 @@
 package entity.base;
 
-import static utils.Constants.AttackState.READY;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 
@@ -68,9 +68,9 @@ public abstract class MeleeEnemy extends Enemy {
 
 	private void updateXSpeed() {
 		if (isInSight(GameLogic.getPlayer())) {
-			if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.x && !moveToFalling(LEFT)) {
+			if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getCenterX() && !moveToFalling(LEFT)) {
 				xspeed = -baseXSpeed;
-			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getMaxX() && !moveToFalling(RIGHT)) {
+			} else if (GameLogic.getPlayer().getHitbox().x > hitbox.getCenterX() && !moveToFalling(RIGHT)) {
 				xspeed = baseXSpeed;
 			} else {
 				xspeed = initialXSpeed;
@@ -87,7 +87,8 @@ public abstract class MeleeEnemy extends Enemy {
 		}
 		xspeed *= weapon.getSpeedMultiplier();
 		yspeed = Math.max(-maxYSpeed, Math.min(yspeed, maxYSpeed));
-		move();
+		if (attackState != IN_PROGRESS)
+			move();
 
 		if (attackState != READY) {
 			attackState = weapon.updateAttack(this);

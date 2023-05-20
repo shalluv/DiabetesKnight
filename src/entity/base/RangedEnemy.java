@@ -3,103 +3,39 @@ package entity.base;
 import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
-import static utils.Constants.EnemyConstants.RangedConstants.ATTACK_RANGE;
-import static utils.Constants.EnemyConstants.RangedConstants.BASE_X_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.HEIGHT;
-import static utils.Constants.EnemyConstants.RangedConstants.INITIAL_MAX_HEALTH;
-import static utils.Constants.EnemyConstants.RangedConstants.INITIAL_X_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.INITIAL_Y_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.MAX_Y_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.SIGHT_SIZE;
-import static utils.Constants.EnemyConstants.RangedConstants.WEIGHT;
-import static utils.Constants.EnemyConstants.RangedConstants.WIDTH;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_SPEED;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ANIMATION_STATE_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.ATTACK_COOLDOWN_FRAMES_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.IDLE_FRAMES_COUNT;
-import static utils.Constants.EnemyConstants.RangedConstants.Animations.SPRITE_SIZE;
 
-import java.awt.geom.Rectangle2D;
-
-import entity.Bullet;
 import item.RangedWeapon;
-import item.derived.Gun;
-import javafx.geometry.VPos;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Helper;
-import utils.Loader;
 
-public class RangedEnemy extends Enemy {
+public abstract class RangedEnemy extends Enemy {
 
-	private double xspeed;
-	private double yspeed;
-	private int attackState;
-	private RangedWeapon weapon;
-	private int animationFrame;
-	private int animationState;
-	private int frameCount;
-	private Image[] animation;
-	private boolean isFacingLeft;
+	protected double xspeed;
+	protected double yspeed;
+	protected int attackState;
+	protected RangedWeapon weapon;
+	protected int animationFrame;
+	protected int animationState;
+	protected int frameCount;
+	protected Image[] animation;
+	protected boolean isFacingLeft;
+	protected double maxYSpeed;
+	protected double weight;
+	protected double initialXSpeed;
+	protected double baseXSpeed;
+	protected int animationAttackCooldown;
+	protected int animationIDLE;
 
-	public RangedEnemy(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
+	public RangedEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth) {
+		super(x, y, width, height, sightSize, initialMaxHealth);
 		attackState = READY;
-		loadResources();
-		xspeed = INITIAL_X_SPEED;
-		yspeed = INITIAL_Y_SPEED;
 		initHitbox(x, y, width, height);
-		weapon = new Gun();
 	}
 
-	private void loadResources() {
-		isFacingLeft = false;
-		animation = new Image[ANIMATION_STATE_COUNT + 1];
-		animationFrame = 0;
-		frameCount = 0;
-		animationState = IDLE;
-		animation[0] = Loader.GetSpriteAtlas(Loader.RANGE_IDLE_ATLAS);
-		animation[1] = Loader.GetSpriteAtlas(Loader.RANGE_ATTACK_COOLDOWN_ATLAS);
-	}
+	protected abstract void loadResources();
 
-	@Override
-	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
-		if (!hitbox.intersects(screen))
-			return;
-
-		frameCount++;
-		if (frameCount > ANIMATION_SPEED) {
-			frameCount -= ANIMATION_SPEED;
-			animationFrame++;
-			switch (animationState) {
-			case IDLE:
-				animationFrame %= IDLE_FRAMES_COUNT;
-				break;
-			case ATTACK_COOLDOWN:
-				animationFrame %= ATTACK_COOLDOWN_FRAMES_COUNT;
-			default:
-				break;
-			}
-		}
-
-		double drawX = hitbox.x + (isFacingLeft ? 0 : width);
-		double drawY = hitbox.y;
-		double drawW = width * (isFacingLeft ? 1 : -1);
-		double drawH = height;
-
-		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
-				drawW, drawH);
-
-		gc.setTextAlign(TextAlignment.LEFT);
-		gc.setTextBaseline(VPos.BOTTOM);
-		gc.setFill(Color.RED);
-		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-	}
+	protected abstract boolean canAttack();
 
 	@Override
 	public void update() {
@@ -112,13 +48,13 @@ public class RangedEnemy extends Enemy {
 			}
 		}
 		xspeed *= weapon.getSpeedMultiplier();
-		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
+		yspeed = Math.max(-maxYSpeed, Math.min(yspeed, maxYSpeed));
 		move();
 		if (attackState != READY) {
-			animationState = ATTACK_COOLDOWN;
+			animationState = animationAttackCooldown;
 			attackState = weapon.updateAttack(this);
 		} else {
-			animationState = IDLE;
+			animationState = animationIDLE;
 		}
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
 			attackState = weapon.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
@@ -140,42 +76,33 @@ public class RangedEnemy extends Enemy {
 		}
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + yspeed, hitbox.width, hitbox.height)) {
 			hitbox.y += yspeed;
-			yspeed += WEIGHT;
+			yspeed += weight;
 		} else {
 			hitbox.y = Helper.GetEntityYPosUnderRoofOrAboveFloor(hitbox, yspeed);
 			if (yspeed < 0) {
 				yspeed = 0;
-				yspeed += WEIGHT;
+				yspeed += weight;
 			}
 		}
 	}
 
 	private void jump() {
-		yspeed = -MAX_Y_SPEED;
+		yspeed = -maxYSpeed;
 	}
 
 	private void updateXSpeed() {
 		if (canAttack()) {
-			xspeed = INITIAL_X_SPEED;
+			xspeed = initialXSpeed;
 		} else if (isInSight(GameLogic.getPlayer())) {
 			if (GameLogic.getPlayer().getHitbox().getCenterX() < hitbox.x && !moveToFalling(LEFT)) {
-				xspeed = -BASE_X_SPEED;
+				xspeed = -baseXSpeed;
 			} else if (GameLogic.getPlayer().getHitbox().getCenterX() > hitbox.getMaxX() && !moveToFalling(RIGHT)) {
-				xspeed = BASE_X_SPEED;
+				xspeed = baseXSpeed;
 			} else {
-				xspeed = INITIAL_X_SPEED;
+				xspeed = initialXSpeed;
 			}
 		} else {
-			xspeed = INITIAL_X_SPEED;
+			xspeed = initialXSpeed;
 		}
-	}
-
-	private boolean canAttack() {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.getCenterX() - ATTACK_RANGE,
-				hitbox.getCenterY() - ATTACK_RANGE, 2 * ATTACK_RANGE, 2 * ATTACK_RANGE);
-		if (canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox)) {
-			return Bullet.canBulletHit(GameLogic.getPlayer().getHitbox(), hitbox, canAttackBox);
-		}
-		return false;
 	}
 }
