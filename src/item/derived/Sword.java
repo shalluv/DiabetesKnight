@@ -81,10 +81,10 @@ public class Sword extends MeleeWeapon {
 		gc.drawImage(image, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, centerX - ATTACK_BOX_HEIGHT / 2,
 				centerY - ATTACK_RANGE - scaledHeight / 2 - ANIMATION_OFFSET_Y, width,
 				height + ANIMATION_HEIGHT_OFFSET);
-		if (Math.abs(attackProgress) >= MAXIMUM_SWING / 5 && Math.abs(attackProgress) <= 4 * MAXIMUM_SWING / 5
+		if (Math.abs(attackProgress) >= MAXIMUM_SWING / 5 && Math.abs(attackProgress) <= MAXIMUM_SWING / 2
 				&& animationFrame != SWING_ANIMATION)
 			animationFrame += 1;
-		else if (Math.abs(attackProgress) > 4 * MAXIMUM_SWING && animationFrame != SWING_DONE)
+		else if (Math.abs(attackProgress) > MAXIMUM_SWING / 2 && animationFrame != SWING_DONE)
 			animationFrame += 1;
 	}
 
