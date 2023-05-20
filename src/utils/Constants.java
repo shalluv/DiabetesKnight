@@ -137,7 +137,7 @@ public class Constants {
 		public static final int INITIAL_MAX_HEALTH = 200;
 		public static final int INITIAL_POWER = 0;
 		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 30;
-		public static final int INITIAL_SUGAR_LEVEL = 20;
+		public static final int INITIAL_SUGAR_LEVEL = 55;
 		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
 		public static final int HIT_SUGAR_DECREASED_AMOUNT = 2;
 		public static final int HYPERGLYCEMIA_DELAY = 1000;
