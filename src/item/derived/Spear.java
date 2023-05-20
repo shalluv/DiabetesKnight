@@ -7,7 +7,22 @@ import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
-import static utils.Constants.Weapon.SpearConstants.*;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.Weapon.SpearConstants.ATTACK_DELAY;
+import static utils.Constants.Weapon.SpearConstants.BASE_ATTACK_RANGE;
+import static utils.Constants.Weapon.SpearConstants.BASE_ATTACK_SPEED;
+import static utils.Constants.Weapon.SpearConstants.BASE_DAMAGE;
+import static utils.Constants.Weapon.SpearConstants.BASE_X_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SpearConstants.BASE_Y_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_ANIMATION_LEFT_X_OFFSET;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_ANIMATION_RIGHT_X_OFFSET;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_ATTACK_RANGE;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_ATTACK_SPEED;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_COST;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_DAMAGE;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_DURATION;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_X_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SpearConstants.ULTIMATE_Y_SPEED_MULTIPLIER;
 
 import java.awt.geom.Rectangle2D;
 

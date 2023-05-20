@@ -1,9 +1,21 @@
 package item.derived;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.IN_PROGRESS;
+import static utils.Constants.AttackState.ON_COOLDOWN;
+import static utils.Constants.AttackState.ON_RELOAD;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
-import static utils.Constants.Weapon.GunConstants.*;
+import static utils.Constants.Weapon.GunConstants.BASE_ATTACK_DELAY;
+import static utils.Constants.Weapon.GunConstants.BASE_MAX_AMMO;
+import static utils.Constants.Weapon.GunConstants.BASE_RELOAD_DELAY;
+import static utils.Constants.Weapon.GunConstants.BASE_X_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.GunConstants.BASE_Y_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.GunConstants.ULTIMATE_ATTACK_DELAY;
+import static utils.Constants.Weapon.GunConstants.ULTIMATE_COST;
+import static utils.Constants.Weapon.GunConstants.ULTIMATE_DURATION;
+import static utils.Constants.Weapon.GunConstants.ULTIMATE_MAX_AMMO;
+import static utils.Constants.Weapon.GunConstants.ULTIMATE_RELOAD_DELAY;
 
 import entity.base.Entity;
 import interfaces.Reloadable;

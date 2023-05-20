@@ -1,9 +1,37 @@
 package entity;
 
-import static utils.Constants.AttackState.*;
-import static utils.Constants.PlayerConstants.*;
-import static utils.Constants.PlayerConstants.Animations.*;
-import static utils.Constants.PlayerConstants.HealthState.*;
+import static utils.Constants.AttackState.IN_PROGRESS;
+import static utils.Constants.AttackState.ON_RELOAD;
+import static utils.Constants.AttackState.READY;
+import static utils.Constants.PlayerConstants.BASE_X_SPEED;
+import static utils.Constants.PlayerConstants.HEIGHT;
+import static utils.Constants.PlayerConstants.HIT_SUGAR_DECREASED_AMOUNT;
+import static utils.Constants.PlayerConstants.HYPERGLYCEMIA_DAMAGE;
+import static utils.Constants.PlayerConstants.HYPERGLYCEMIA_DELAY;
+import static utils.Constants.PlayerConstants.HYPERGLYCEMIA_SUGAR_LEVEL;
+import static utils.Constants.PlayerConstants.HYPOGLYCEMIA_SUGAR_LEVEL;
+import static utils.Constants.PlayerConstants.HYPOGLYCEMIA_X_SPEED_MULTIPLIER;
+import static utils.Constants.PlayerConstants.HYPOGLYCEMIA_Y_SPEED_MULTIPLIER;
+import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.PlayerConstants.INITIAL_POWER;
+import static utils.Constants.PlayerConstants.INITIAL_SUGAR_LEVEL;
+import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
+import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
+import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
+import static utils.Constants.PlayerConstants.WEIGHT;
+import static utils.Constants.PlayerConstants.WIDTH;
+import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.PlayerConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.PlayerConstants.Animations.IDLE;
+import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.JUMPING;
+import static utils.Constants.PlayerConstants.Animations.RUNNING;
+import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
+import static utils.Constants.PlayerConstants.Animations.SPRITE_SIZE;
+import static utils.Constants.PlayerConstants.HealthState.HEALTHY;
+import static utils.Constants.PlayerConstants.HealthState.HYPERGLYCEMIA;
+import static utils.Constants.PlayerConstants.HealthState.HYPOGLYCEMIA;
 
 import java.awt.geom.Rectangle2D;
 

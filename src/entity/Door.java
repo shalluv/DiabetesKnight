@@ -1,7 +1,10 @@
 package entity;
 
-import static utils.Constants.DoorConstants.*;
-import static utils.Constants.DoorConstants.Animations.*;
+import static utils.Constants.DoorConstants.HEIGHT;
+import static utils.Constants.DoorConstants.WIDTH;
+import static utils.Constants.DoorConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.DoorConstants.Animations.FRAMES_COUNT;
+import static utils.Constants.DoorConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D.Double;
 

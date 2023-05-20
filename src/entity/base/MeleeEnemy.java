@@ -1,6 +1,7 @@
 package entity.base;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.IN_PROGRESS;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 

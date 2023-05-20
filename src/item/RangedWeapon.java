@@ -1,6 +1,7 @@
 package item;
 
 import static utils.Constants.AttackState.READY;
+
 import java.awt.geom.Rectangle2D;
 
 import entity.Bullet;

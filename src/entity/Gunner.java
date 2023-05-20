@@ -1,7 +1,22 @@
 package entity;
 
-import static utils.Constants.EnemyConstants.GunnerConstants.*;
-import static utils.Constants.EnemyConstants.GunnerConstants.Animations.*;
+import static utils.Constants.EnemyConstants.GunnerConstants.ATTACK_RANGE;
+import static utils.Constants.EnemyConstants.GunnerConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.GunnerConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.GunnerConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.EnemyConstants.GunnerConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.GunnerConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.GunnerConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.GunnerConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.GunnerConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.GunnerConstants.WIDTH;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.ATTACK_COOLDOWN;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.ATTACK_COOLDOWN_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.GunnerConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D;
 

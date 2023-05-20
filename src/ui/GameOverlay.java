@@ -5,7 +5,6 @@ import item.Item;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
@@ -75,12 +74,11 @@ public class GameOverlay {
 			}
 
 			// Ammo
-			gc.setFill(Color.BLACK);
+			gc.setFill(Color.WHITE);
 			gc.save();
 			if (inventory[i] instanceof Reloadable) {
 				gc.setTextAlign(TextAlignment.CENTER);
 				gc.setTextBaseline(VPos.CENTER);
-				gc.setFont(new Font(20));
 				gc.fillText(
 						Integer.toString(((Reloadable) inventory[i]).getAmmo()) + "/"
 								+ Integer.toString(((Reloadable) inventory[i]).getMaxAmmo()),

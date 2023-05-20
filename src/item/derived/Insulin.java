@@ -1,6 +1,7 @@
 package item.derived;
 
-import static utils.Constants.InsulinConstants.*;
+import static utils.Constants.InsulinConstants.POWER_AMOUNT;
+import static utils.Constants.InsulinConstants.SUGAR_AMOUNT;
 
 import entity.Player;
 import interfaces.Consumable;

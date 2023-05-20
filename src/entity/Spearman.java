@@ -1,8 +1,20 @@
 package entity;
 
 import static utils.Constants.AttackState.IN_PROGRESS;
-import static utils.Constants.EnemyConstants.SpearmenConstants.*;
-import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.*;
+import static utils.Constants.EnemyConstants.SpearmenConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.SpearmenConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.SpearmenConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.EnemyConstants.SpearmenConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.SpearmenConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.SpearmenConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.SpearmenConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.SpearmenConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.SpearmenConstants.WIDTH;
+import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D.Double;
 

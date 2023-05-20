@@ -4,13 +4,13 @@ import static utils.Constants.FPS;
 import static utils.Constants.UPS;
 
 import drawing.GameScreen;
+import entity.base.Enemy;
 import entity.base.Entity;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import logic.GameLogic;
 import maps.MapManager;
-import entity.base.Enemy;
 import ui.MenuOverlay;
 import ui.PauseOverlay;
 import utils.Constants.GameState;
@@ -37,9 +37,6 @@ public class Main extends Application {
 			gameLogic = new GameLogic();
 			gameScreen = new GameScreen();
 			gameStage = stage;
-
-			MenuOverlay.loadResources();
-			PauseOverlay.loadResources();
 
 			Scene scene = new Scene(gameScreen, Resolution.WIDTH, Resolution.HEIGHT);
 			stage.setTitle("Diabetes Knight");
