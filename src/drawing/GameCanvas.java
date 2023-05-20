@@ -79,15 +79,6 @@ public class GameCanvas extends Canvas {
 			GameOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PAUSE:
-
-			Main.mapManager.draw(gc, -layoutX, -layoutY);
-			// draw entities
-			for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
-				if (!entity.isDestroyed()) {
-					entity.draw(gc, screen);
-				}
-			}
-
 			PauseOverlay.draw(gc, layoutX, layoutY);
 			break;
 		default:

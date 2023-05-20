@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
+import utils.Constants.UI;
 
 public class PauseOverlay {
 
@@ -22,6 +23,7 @@ public class PauseOverlay {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
+		gc.fillText("Pausing...", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY - UI.FONT_SIZE * 1.2);
 		gc.fillText("Press SPACE to continue...", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY);
 
 	}
