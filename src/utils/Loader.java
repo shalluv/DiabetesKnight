@@ -30,7 +30,7 @@ public class Loader {
 
 	public static final String DOOR_ATLAS = "res/door/door_sprite.png";
 
-	public static final String BACKGROUND_ATLAS = "res/2_Background/Day/Background.png";
+	public static final String BACKGROUND_ATLAS = "res/background/";
 
 	public static Image GetSpriteAtlas(String filename) {
 		Image img = null;

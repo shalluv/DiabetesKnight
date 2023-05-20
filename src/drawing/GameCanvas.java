@@ -24,13 +24,15 @@ import utils.Loader;
 
 public class GameCanvas extends Canvas {
 
-	private Image background;
+	private Image[] backgroundImage = new Image[5];
 
 	public GameCanvas(double width, double height) {
 		super(width, height);
 		setVisible(true);
 		addListener();
-		background = Loader.GetSpriteAtlas(Loader.BACKGROUND_ATLAS);
+		for (int i = 1; i <= 5; ++i) {
+			backgroundImage[i - 1] = Loader.GetSpriteAtlas(Loader.BACKGROUND_ATLAS + String.format("%d.png", i));
+		}
 	}
 
 	public void addListener() {
@@ -58,6 +60,11 @@ public class GameCanvas extends Canvas {
 		});
 	}
 
+	public void drawBackground(GraphicsContext gc, double layoutX, double layoutY) {
+		for (int i = 0; i < 5; ++i)
+			gc.drawImage(backgroundImage[i], layoutX, layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+	}
+
 	public void drawComponent(double layoutX, double layoutY, GameScreen gameScreen) {
 		GraphicsContext gc = getGraphicsContext2D();
 		Rectangle2D.Double screen = new Rectangle2D.Double(-layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
@@ -67,12 +74,16 @@ public class GameCanvas extends Canvas {
 			gameScreen.setLayoutX(0);
 			gameScreen.setLayoutY(0);
 
+			drawBackground(gc, 0, 0);
+
 			MenuOverlay.draw(gc);
 			break;
 		case GameState.PLAYING:
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
-			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+
+			drawBackground(gc, -layoutX, -layoutY);
+
 			Main.mapManager.draw(gc, -layoutX, -layoutY);
 			// draw entities
 			for (Renderable entity : RenderableHolder.getInstance().getEntities()) {
@@ -83,7 +94,9 @@ public class GameCanvas extends Canvas {
 			GameOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PAUSE:
-			gc.drawImage(background, -layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+
+			drawBackground(gc, -layoutX, -layoutY);
+
 			Main.mapManager.draw(gc, -layoutX, -layoutY);
 			// draw entities
 			for (Renderable entity : RenderableHolder.getInstance().getEntities()) {

@@ -1,8 +1,20 @@
 package entity;
 
 import static utils.Constants.AttackState.IN_PROGRESS;
-import static utils.Constants.EnemyConstants.SwordmenConstants.*;
-import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.*;
+import static utils.Constants.EnemyConstants.SwordmenConstants.BASE_X_SPEED;
+import static utils.Constants.EnemyConstants.SwordmenConstants.HEIGHT;
+import static utils.Constants.EnemyConstants.SwordmenConstants.INITIAL_MAX_HEALTH;
+import static utils.Constants.EnemyConstants.SwordmenConstants.INITIAL_X_SPEED;
+import static utils.Constants.EnemyConstants.SwordmenConstants.INITIAL_Y_SPEED;
+import static utils.Constants.EnemyConstants.SwordmenConstants.MAX_Y_SPEED;
+import static utils.Constants.EnemyConstants.SwordmenConstants.SIGHT_SIZE;
+import static utils.Constants.EnemyConstants.SwordmenConstants.WEIGHT;
+import static utils.Constants.EnemyConstants.SwordmenConstants.WIDTH;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.ANIMATION_SPEED;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.ANIMATION_STATE_COUNT;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.IDLE;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.IDLE_FRAMES_COUNT;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.SPRITE_SIZE;
 
 import java.awt.geom.Rectangle2D;
 

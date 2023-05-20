@@ -1,6 +1,8 @@
 package entity;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.IN_PROGRESS;
+import static utils.Constants.AttackState.ON_RELOAD;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;

@@ -1,9 +1,15 @@
 package item.derived;
 
-import static utils.Constants.AttackState.*;
+import static utils.Constants.AttackState.IN_PROGRESS;
+import static utils.Constants.AttackState.ON_COOLDOWN;
+import static utils.Constants.AttackState.ON_RELOAD;
+import static utils.Constants.AttackState.READY;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
-import static utils.Constants.Weapon.GunConstants.*;
+import static utils.Constants.Weapon.GunConstants.ATTACK_DELAY;
+import static utils.Constants.Weapon.GunConstants.MAX_AMMO;
+import static utils.Constants.Weapon.GunConstants.RELOAD_DELAY;
+import static utils.Constants.Weapon.GunConstants.SPEED_MULTIPLIER;
 
 import entity.base.Entity;
 import interfaces.Reloadable;

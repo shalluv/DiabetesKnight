@@ -1,16 +1,26 @@
 package item.derived;
 
-import static utils.Constants.Weapon.SwordConstants.*;
-import static utils.Constants.Weapon.SwordConstants.Animations.*;
-
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-
+import static utils.Constants.SCALE;
 import static utils.Constants.AttackState.IN_PROGRESS;
 import static utils.Constants.AttackState.ON_COOLDOWN;
 import static utils.Constants.AttackState.READY;
-import static utils.Constants.Directions.*;
-import static utils.Constants.SCALE;
+import static utils.Constants.Directions.LEFT;
+import static utils.Constants.Weapon.SwordConstants.AFTER_ATTACK_DELAY;
+import static utils.Constants.Weapon.SwordConstants.ATTACK_BOX_HEIGHT;
+import static utils.Constants.Weapon.SwordConstants.ATTACK_DELAY;
+import static utils.Constants.Weapon.SwordConstants.ATTACK_RANGE;
+import static utils.Constants.Weapon.SwordConstants.DAMAGE;
+import static utils.Constants.Weapon.SwordConstants.MAXIMUM_SWING;
+import static utils.Constants.Weapon.SwordConstants.SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SwordConstants.SWING_SPEED;
+import static utils.Constants.Weapon.SwordConstants.Animations.ANIMATION_HEIGHT_OFFSET;
+import static utils.Constants.Weapon.SwordConstants.Animations.ANIMATION_OFFSET_Y;
+import static utils.Constants.Weapon.SwordConstants.Animations.SPRITE_SIZE;
+import static utils.Constants.Weapon.SwordConstants.Animations.SWING_ANIMATION;
+import static utils.Constants.Weapon.SwordConstants.Animations.SWING_DONE;
+
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import item.MeleeWeapon;
