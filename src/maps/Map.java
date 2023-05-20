@@ -3,8 +3,8 @@ package maps;
 import entity.Door;
 import entity.DroppedItem;
 import entity.Gunner;
-import entity.Spearmen;
-import entity.Swordmen;
+import entity.Spearman;
+import entity.Swordman;
 import item.derived.Gun;
 import item.derived.HealthPotion;
 import item.derived.Spear;
@@ -38,11 +38,11 @@ public class Map {
 					break;
 				case SWORDMEN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new Swordmen(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					GameLogic.addNewObject(new Swordman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case SPEARMEN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new Spearmen(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					GameLogic.addNewObject(new Spearman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case GUNNER_SPAWN_CODE:
 					mapData[i][j] = 0;

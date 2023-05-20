@@ -1,13 +1,13 @@
 package entity;
 
 import static utils.Constants.AttackState.IN_PROGRESS;
-import static utils.Constants.EnemyConstants.SpearmenConstants.*;
-import static utils.Constants.EnemyConstants.SpearmenConstants.Animations.*;
+import static utils.Constants.EnemyConstants.SwordmenConstants.*;
+import static utils.Constants.EnemyConstants.SwordmenConstants.Animations.*;
 
-import java.awt.geom.Rectangle2D.Double;
+import java.awt.geom.Rectangle2D;
 
 import entity.base.MeleeEnemy;
-import item.derived.Spear;
+import item.derived.Sword;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,9 +15,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import utils.Loader;
 
-public class Spearmen extends MeleeEnemy {
+public class Swordman extends MeleeEnemy {
 
-	public Spearmen(double x, double y) {
+	public Swordman(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
 		loadResources();
 		xspeed = INITIAL_X_SPEED;
@@ -26,11 +26,21 @@ public class Spearmen extends MeleeEnemy {
 		baseXSpeed = BASE_X_SPEED;
 		initialXSpeed = INITIAL_X_SPEED;
 		weight = WEIGHT;
-		weapon = new Spear();
+		weapon = new Sword();
 	}
 
 	@Override
-	public void draw(GraphicsContext gc, Double screen) {
+	protected void loadResources() {
+		isFacingLeft = false;
+		animation = new Image[ANIMATION_STATE_COUNT + 1];
+		animationFrame = 0;
+		frameCount = 0;
+		animationState = IDLE;
+		animation[0] = Loader.GetSpriteAtlas(Loader.MELEE_IDLE_ATLAS);
+	}
+
+	@Override
+	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
 			return;
 
@@ -61,16 +71,6 @@ public class Spearmen extends MeleeEnemy {
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
-	}
-
-	@Override
-	protected void loadResources() {
-		isFacingLeft = false;
-		animation = new Image[ANIMATION_STATE_COUNT + 1];
-		animationFrame = 0;
-		frameCount = 0;
-		animationState = IDLE;
-		animation[0] = Loader.GetSpriteAtlas(Loader.MELEE_IDLE_ATLAS);
 	}
 
 }
