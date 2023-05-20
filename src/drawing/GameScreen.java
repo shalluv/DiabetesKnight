@@ -1,8 +1,11 @@
 package drawing;
 
 import application.Main;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import utils.Constants.Resolution;
+import utils.Loader;
 
 public class GameScreen extends Pane {
 
@@ -16,9 +19,16 @@ public class GameScreen extends Pane {
 
 		x = 0;
 		y = Resolution.HEIGHT - mapHeight;
+		setLayoutX(x);
 		setLayoutY(y);
 
 		gameCanvas = new GameCanvas(mapWidth, mapHeight);
+		ImageView[] imageViews = new ImageView[5];
+		for (int i = 0; i < 5; ++i) {
+			imageViews[i] = new ImageView(
+					Loader.GetSpriteAtlas(Loader.BACKGROUND_ATLAS + String.format("%d.png", i + 1)));
+			getChildren().add(imageViews[i]);
+		}
 		getChildren().add(gameCanvas);
 	}
 
