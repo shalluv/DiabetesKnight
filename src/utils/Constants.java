@@ -2,7 +2,7 @@ package utils;
 
 public class Constants {
 	public static final int FPS = 60;
-	public static final int UPS = 200;
+	public static final int UPS = 150;
 	public final static float SCALE = 1.5f;
 
 	public static class Resolution {
