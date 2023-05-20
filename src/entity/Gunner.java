@@ -34,7 +34,7 @@ import utils.Loader;
 public class Gunner extends RangedEnemy {
 
 	public Gunner(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Gun());
 		loadResources();
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
@@ -44,7 +44,6 @@ public class Gunner extends RangedEnemy {
 		weight = WEIGHT;
 		animationAttackCooldown = ATTACK_COOLDOWN;
 		animationIDLE = IDLE;
-		weapon = new Gun();
 	}
 
 	@Override

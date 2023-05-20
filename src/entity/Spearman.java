@@ -30,7 +30,7 @@ import utils.Loader;
 public class Spearman extends MeleeEnemy {
 
 	public Spearman(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Spear());
 		loadResources();
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;

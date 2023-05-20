@@ -10,16 +10,25 @@ public abstract class Weapon extends Item {
 
 	protected int attackState;
 	protected Thread cooldown;
-	protected double speedMultiplier;
+	protected Thread onUltimate;
+	protected boolean isOnUltimate;
+	protected double XSpeedMultiplier;
+	protected double YSpeedMultiplier;
 
-	public Weapon(String name, Image image, double speedMultiplier) {
+	public Weapon(String name, Image image, double XSpeedMultiplier, double YSpeedMultiplier) {
 		super(name, image);
 		this.attackState = READY;
-		this.speedMultiplier = speedMultiplier;
+		this.XSpeedMultiplier = XSpeedMultiplier;
+		this.YSpeedMultiplier = YSpeedMultiplier;
+		this.isOnUltimate = false;
 	}
 
-	public double getSpeedMultiplier() {
-		return speedMultiplier;
+	public double getXSpeedMultiplier() {
+		return XSpeedMultiplier;
+	}
+
+	public double getYSpeedMultiplier() {
+		return YSpeedMultiplier;
 	}
 
 	protected void initCooldown(int delay) {
@@ -32,6 +41,17 @@ public abstract class Weapon extends Item {
 		});
 	}
 
+	protected void initOnUltimate(int delay) {
+		onUltimate = new Thread(() -> {
+			try {
+				Thread.sleep(delay);
+				resetStatus();
+			} catch (InterruptedException e) {
+				System.out.println("ultimate cooldown interrupted");
+			}
+		});
+	}
+
 	public abstract void draw(GraphicsContext gc, double x, double y, double width, double height,
 			boolean isFacingLeft);
 
@@ -39,11 +59,28 @@ public abstract class Weapon extends Item {
 
 	public abstract int attack(double targetX, double targetY, Entity attacker);
 
+	public abstract void useUlitmate();
+
+	public abstract void resetStatus();
+
 	public void cancelAttack() {
 		this.attackState = READY;
 		if (cooldown != null)
 			cooldown.interrupt();
 		cooldown = null;
+	}
+
+	public void cancelUltimate() {
+		if (onUltimate != null)
+			onUltimate.interrupt();
+		isOnUltimate = false;
+	}
+
+	public void clearThread() {
+		if (cooldown != null)
+			cooldown.interrupt();
+		if (onUltimate != null)
+			onUltimate.interrupt();
 	}
 
 }

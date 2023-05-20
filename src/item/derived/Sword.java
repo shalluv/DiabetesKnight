@@ -8,11 +8,18 @@ import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Weapon.SwordConstants.AFTER_ATTACK_DELAY;
 import static utils.Constants.Weapon.SwordConstants.ATTACK_BOX_HEIGHT;
 import static utils.Constants.Weapon.SwordConstants.ATTACK_DELAY;
-import static utils.Constants.Weapon.SwordConstants.ATTACK_RANGE;
-import static utils.Constants.Weapon.SwordConstants.DAMAGE;
+import static utils.Constants.Weapon.SwordConstants.BASE_ATTACK_RANGE;
+import static utils.Constants.Weapon.SwordConstants.BASE_DAMAGE;
+import static utils.Constants.Weapon.SwordConstants.BASE_X_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SwordConstants.BASE_Y_SPEED_MULTIPLIER;
 import static utils.Constants.Weapon.SwordConstants.MAXIMUM_SWING;
-import static utils.Constants.Weapon.SwordConstants.SPEED_MULTIPLIER;
 import static utils.Constants.Weapon.SwordConstants.SWING_SPEED;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_ATTACK_RANGE;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_COST;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_DAMAGE;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_DURATION;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_X_SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SwordConstants.ULTIMATE_Y_SPEED_MULTIPLIER;
 import static utils.Constants.Weapon.SwordConstants.Animations.ANIMATION_HEIGHT_OFFSET;
 import static utils.Constants.Weapon.SwordConstants.Animations.ANIMATION_OFFSET_Y;
 import static utils.Constants.Weapon.SwordConstants.Animations.SPRITE_SIZE;
@@ -28,6 +35,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import logic.GameLogic;
 import utils.Loader;
 
 public class Sword extends MeleeWeapon {
@@ -37,7 +45,8 @@ public class Sword extends MeleeWeapon {
 	private int animationFrame;
 
 	public Sword() {
-		super("sword", getIdleImage(), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, false);
+		super("sword", getIdleImage(), BASE_ATTACK_RANGE, BASE_DAMAGE, BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER,
+				false);
 		loadResources();
 		this.attackProgress = 0;
 		this.startedCooldown = false;
@@ -70,8 +79,8 @@ public class Sword extends MeleeWeapon {
 	protected void updateAttackBox(Entity attacker) {
 		Rectangle2D.Double hitbox = attacker.getHitbox();
 		Rectangle2D.Double baseAttackBox = new Rectangle2D.Double(hitbox.getCenterX() - ATTACK_BOX_HEIGHT / 2,
-				hitbox.getCenterY() - ATTACK_RANGE - hitbox.height / 2, ATTACK_BOX_HEIGHT,
-				ATTACK_RANGE + hitbox.height / 2);
+				hitbox.getCenterY() - attackRange - hitbox.height / 2, ATTACK_BOX_HEIGHT,
+				attackRange + hitbox.height / 2);
 		double swingAngle = Math.toRadians(attackProgress);
 		AffineTransform transform = new AffineTransform();
 		transform.rotate(swingAngle, hitbox.getCenterX(), hitbox.getCenterY());
@@ -87,10 +96,11 @@ public class Sword extends MeleeWeapon {
 		double centerX = x + scaledWidth;
 		double centerY = y + scaledHeight;
 		if (isFacingLeft)
-			width = -width;
+			width = -width - attackRange;
+		else
+			width = width + attackRange;
 		gc.drawImage(image, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, centerX - ATTACK_BOX_HEIGHT / 2,
-				centerY - ATTACK_RANGE - scaledHeight / 2 - ANIMATION_OFFSET_Y, width,
-				height + ANIMATION_HEIGHT_OFFSET);
+				centerY - attackRange - scaledHeight / 2 - ANIMATION_OFFSET_Y, width, height + ANIMATION_HEIGHT_OFFSET);
 		if (Math.abs(attackProgress) >= MAXIMUM_SWING / 5 && Math.abs(attackProgress) <= MAXIMUM_SWING / 2
 				&& animationFrame != SWING_ANIMATION)
 			animationFrame += 1;
@@ -127,6 +137,34 @@ public class Sword extends MeleeWeapon {
 			startedCooldown = false;
 			animationFrame = 0;
 		}
+	}
+
+	@Override
+	public void useUlitmate() {
+		if (isOnUltimate)
+			return;
+		int currentPower = GameLogic.getPlayer().getCurrentPower();
+		if (currentPower >= ULTIMATE_COST) {
+			GameLogic.getPlayer().setCurrentPower(currentPower - ULTIMATE_COST);
+			XSpeedMultiplier = ULTIMATE_X_SPEED_MULTIPLIER;
+			YSpeedMultiplier = ULTIMATE_Y_SPEED_MULTIPLIER;
+			damage = ULTIMATE_DAMAGE;
+			attackRange = ULTIMATE_ATTACK_RANGE;
+			canMultipleHit = true;
+			isOnUltimate = true;
+			initOnUltimate(ULTIMATE_DURATION);
+			onUltimate.start();
+		}
+	}
+
+	@Override
+	public void resetStatus() {
+		isOnUltimate = false;
+		XSpeedMultiplier = BASE_X_SPEED_MULTIPLIER;
+		YSpeedMultiplier = ULTIMATE_Y_SPEED_MULTIPLIER;
+		attackRange = BASE_ATTACK_RANGE;
+		canMultipleHit = false;
+		damage = BASE_DAMAGE;
 	}
 
 }

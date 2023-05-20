@@ -1,5 +1,8 @@
 package item.derived;
 
+import static utils.Constants.InsulinConstants.POWER_AMOUNT;
+import static utils.Constants.InsulinConstants.SUGAR_AMOUNT;
+
 import entity.Player;
 import interfaces.Consumable;
 import item.Item;
@@ -8,16 +11,14 @@ import utils.Loader;
 
 public class Insulin extends Item implements Consumable {
 
-	private int power;
-
 	public Insulin() {
 		super("Insulin", Loader.GetSpriteAtlas(Loader.INSULIN_ATLAS));
-		power = 30;
 	}
 
 	@Override
 	public void consume() {
 		Player player = GameLogic.getPlayer();
-		player.setCurrentPower(player.getCurrentPower() - power);
+		player.setCurrentPower(player.getCurrentPower() + POWER_AMOUNT);
+		player.setSugarLevel(player.getSugarLevel() + SUGAR_AMOUNT);
 	}
 }

@@ -17,7 +17,6 @@ public abstract class MeleeEnemy extends Enemy {
 	protected double xspeed;
 	protected double yspeed;
 	protected int attackState;
-	protected MeleeWeapon weapon;
 	protected int animationFrame;
 	protected int animationState;
 	protected int frameCount;
@@ -28,8 +27,9 @@ public abstract class MeleeEnemy extends Enemy {
 	protected double initialXSpeed;
 	protected double baseXSpeed;
 
-	public MeleeEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth) {
-		super(x, y, width, height, sightSize, initialMaxHealth);
+	public MeleeEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth,
+			MeleeWeapon weapon) {
+		super(x, y, width, height, sightSize, initialMaxHealth, weapon);
 		attackState = READY;
 		initHitbox(x, y, this.width, this.height);
 	}
@@ -62,8 +62,8 @@ public abstract class MeleeEnemy extends Enemy {
 	}
 
 	private boolean canAttack() {
-		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - weapon.getAttackRange(), hitbox.y,
-				width + 2 * weapon.getAttackRange(), height);
+		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - ((MeleeWeapon) weapon).getAttackRange(),
+				hitbox.y, width + 2 * ((MeleeWeapon) weapon).getAttackRange(), height);
 		return canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
@@ -86,8 +86,9 @@ public abstract class MeleeEnemy extends Enemy {
 		if (GameLogic.getPlayer() != null) {
 			updateXSpeed();
 		}
-		xspeed *= weapon.getSpeedMultiplier();
+		xspeed *= weapon.getXSpeedMultiplier();
 		yspeed = Math.max(-maxYSpeed, Math.min(yspeed, maxYSpeed));
+		yspeed *= weapon.getYSpeedMultiplier();
 		if (attackState != IN_PROGRESS)
 			move();
 
@@ -111,8 +112,7 @@ public abstract class MeleeEnemy extends Enemy {
 
 		if (currentHealth <= 0) {
 			isDestroy = true;
-			if (attackState != READY)
-				weapon.cancelAttack();
+			weapon.cancelAttack();
 		}
 	}
 

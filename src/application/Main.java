@@ -4,6 +4,8 @@ import static utils.Constants.FPS;
 import static utils.Constants.UPS;
 
 import drawing.GameScreen;
+import entity.base.Enemy;
+import entity.base.Entity;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -117,6 +119,12 @@ public class Main extends Application {
 
 	@Override
 	public void stop() throws Exception {
+		if (GameLogic.getPlayer().getCurrentWeapon() != null)
+			GameLogic.getPlayer().getCurrentWeapon().clearThread();
+		GameLogic.getPlayer().clearHyperglycemiaThread();
+		for (Entity entity : GameLogic.getGameObjectContainer())
+			if (entity instanceof Enemy)
+				((Enemy) entity).getWeapon().clearThread();
 		gameThread.interrupt();
 	}
 }
