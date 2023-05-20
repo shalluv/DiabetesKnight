@@ -51,7 +51,7 @@ public abstract class Enemy extends Entity implements Damageable {
 	@Override
 	public void receiveDamage(int damage) {
 		setCurrentHealth(currentHealth - damage);
-		System.out.println("Enemy is now " + currentHealth + " hp");
+		//System.out.println("Enemy is now " + currentHealth + " hp");
 	}
 
 	public Item getLootItem() {

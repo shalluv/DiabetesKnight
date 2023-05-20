@@ -1,5 +1,6 @@
 package maps;
 
+import entity.Door;
 import entity.DroppedItem;
 import entity.MeleeEnemy;
 import entity.RangedEnemy;
@@ -13,7 +14,8 @@ public class Map {
 	public static final int PLAYER_SPAWN_CODE = 3000;
 	public static final int MELEE_ENEMY_SPAWN_CODE = 3001;
 	public static final int RANGED_ENEMY_SPAWN_CODE = 3002;
-	public static final int CAKE_SPAWN_CODE = 3003;
+	public static final int HEALTH_POTION_SPAWN_CODE = 3003;
+	public static final int DOOR_SPAWN_CODE = 3004;
 
 	private int[][] mapData;
 
@@ -23,7 +25,10 @@ public class Map {
 				switch (mapData[i][j]) {
 				case PLAYER_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.spawnPlayer(j * BlockConstants.SIZE, i * BlockConstants.SIZE);
+					if (GameLogic.getPlayer() == null)
+						GameLogic.spawnPlayer(j * BlockConstants.SIZE, i * BlockConstants.SIZE);
+					else
+						GameLogic.tpPlayer(j * BlockConstants.SIZE, i * BlockConstants.SIZE);
 					break;
 				case MELEE_ENEMY_SPAWN_CODE:
 					mapData[i][j] = 0;
@@ -33,10 +38,15 @@ public class Map {
 					mapData[i][j] = 0;
 					GameLogic.addNewObject(new RangedEnemy(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
-				case CAKE_SPAWN_CODE:
+				case HEALTH_POTION_SPAWN_CODE:
 					mapData[i][j] = 0;
 					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
 							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new HealthPotion()));
+					break;
+				case DOOR_SPAWN_CODE:
+					mapData[i][j] = 0;
+					GameLogic.addNewObject(new Door(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+					break;
 				default:
 					break;
 				}

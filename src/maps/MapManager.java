@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 import application.CSVParser;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import logic.GameLogic;
 import utils.Constants.BlockConstants;
 import utils.Constants.Resolution;
 import utils.Loader;
@@ -12,11 +13,13 @@ import utils.Loader;
 public class MapManager {
 
 	private Image[] mapSprite;
-	private Map mapOne;
+	private Map map;
+	private int level;
 
 	public MapManager() {
 		importImages();
-		mapOne = new Map(CSVParser.readCSV("res/csv/Level_1.csv"));
+		level = 1;
+		map = new Map(CSVParser.readCSV("res/csv/Level_1.csv"));
 	}
 
 	public void importImages() {
@@ -47,14 +50,20 @@ public class MapManager {
 	}
 
 	public Map getCurrentMap() {
-		return mapOne;
+		return map;
 	}
 
 	public int getMapWidth() {
-		return mapOne.getMapData()[0].length * BlockConstants.SIZE;
+		return map.getMapData()[0].length * BlockConstants.SIZE;
 	}
 
 	public int getMapHeight() {
-		return mapOne.getMapData().length * BlockConstants.SIZE;
+		return map.getMapData().length * BlockConstants.SIZE;
+	}
+
+	public void nextLevel() {
+		level += 1;
+		map = new Map(CSVParser.readCSV("res/csv/Level_" + level + ".csv"));
+		GameLogic.addNewObject(GameLogic.getPlayer());
 	}
 }

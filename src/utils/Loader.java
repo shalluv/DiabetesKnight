@@ -26,6 +26,7 @@ public class Loader {
 	public static final String SUGAR_ATLAS = "res/item/sugar.png";
 	public static final String INSULIN_ATLAS = "res/item/insulin.png";
 	public static final String HEALTH_POTION_ATLAS = "res/item/health_potion.png";
+	public static final String DOOR_ATLAS = "res/door/door_sprite.png";
 
 	public static final String BACKGROUND_ATLAS = "res/2_Background/Day/Background.png";
 

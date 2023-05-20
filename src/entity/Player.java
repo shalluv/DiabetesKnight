@@ -175,7 +175,7 @@ public class Player extends Entity implements Damageable {
 		if (damage < 0)
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
-		System.out.println("player is now " + currentHealth + " hp");
+		// System.out.println("player is now " + currentHealth + " hp");
 	}
 
 	private void jump() {
@@ -263,6 +263,8 @@ public class Player extends Entity implements Damageable {
 		if (attackState != READY && currentWeapon != null) {
 			attackState = currentWeapon.updateAttack(this);
 		}
+		if (attackState == READY && currentItem == null)
+			currentWeapon = null;
 		if (xspeed > 0) {
 			isFacingLeft = false;
 		} else if (xspeed < 0) {
@@ -279,7 +281,8 @@ public class Player extends Entity implements Damageable {
 			}
 		}
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
-			useItem();
+			if (!isPlayerOnDoor())
+				useItem();
 		}
 		pickUpItems();
 
@@ -374,6 +377,16 @@ public class Player extends Entity implements Damageable {
 		if (inventory[currentInventoryFocus] instanceof Weapon) {
 			currentWeapon = (Weapon) inventory[currentInventoryFocus];
 		}
+	}
+
+	private boolean isPlayerOnDoor() {
+		for (Entity entity : GameLogic.getGameObjectContainer()) {
+			if (entity instanceof Door && entity.getHitbox().intersects(hitbox)) {
+				((Door) entity).interact();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

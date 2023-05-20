@@ -13,7 +13,8 @@ public class Constants {
 	public static class GameState {
 		public static final int MENU = 0;
 		public static final int PLAYING = 1;
-		public static final int PAUSE = 2;
+		public static final int CHANGING_LEVEL = 2;
+		public static final int PAUSE = 3;
 	}
 
 	public static class UI {
@@ -150,6 +151,18 @@ public class Constants {
 				public static final int IDLE_FRAMES_COUNT = 1;
 				public static final int ATTACK_COOLDOWN_FRAMES_COUNT = 1;
 			}
+		}
+	}
+
+	public static class DoorConstants {
+		public static final int WIDTH = (int) (32 * SCALE);
+		public static final int HEIGHT = (int) (32 * SCALE);
+
+		public static class Animations {
+			public static final int ANIMATION_STATE_COUNT = 2;
+			public static final int SPRITE_SIZE = 32;
+			public static final int ANIMATION_SPEED = 7;
+			public static final int FRAMES_COUNT = 3;
 		}
 	}
 
