@@ -139,6 +139,7 @@ public class Constants {
 		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 30;
 		public static final int INITIAL_SUGAR_LEVEL = 20;
 		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
+		public static final int HIT_SUGAR_DECREASED_AMOUNT = 2;
 
 		public static class Animations {
 			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);

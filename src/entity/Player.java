@@ -158,6 +158,7 @@ public class Player extends Entity implements Damageable {
 		if (damage < 0)
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
+		setSugarLevel(sugarLevel - HIT_SUGAR_DECREASED_AMOUNT);
 		// System.out.println("player is now " + currentHealth + " hp");
 	}
 
