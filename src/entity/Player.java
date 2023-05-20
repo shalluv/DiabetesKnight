@@ -1,9 +1,6 @@
 package entity;
 
-import static utils.Constants.AttackState.MELEE_HIT;
-import static utils.Constants.AttackState.MELEE_IN_PROGRESS;
-import static utils.Constants.AttackState.RANGED_IN_PROGRESS;
-import static utils.Constants.AttackState.READY;
+import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.BASE_X_SPEED;
 import static utils.Constants.PlayerConstants.HEIGHT;
 import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
@@ -30,10 +27,10 @@ import entity.base.Entity;
 import input.InputUtility;
 import interfaces.Consumable;
 import interfaces.Damageable;
+import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
-import item.derived.Gun;
-import item.derived.Spear;
+import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -77,8 +74,7 @@ public class Player extends Entity implements Damageable {
 		attackState = READY;
 
 		inventory = new Item[INVENTORY_SIZE];
-		addItem(new Spear());
-		addItem(new Gun());
+		addItem(new Sword());
 		currentInventoryFocus = 0;
 
 		isFacingLeft = false;
@@ -241,7 +237,12 @@ public class Player extends Entity implements Damageable {
 
 		if (currentItem instanceof Weapon) {
 			currentWeapon = ((Weapon) currentItem);
-			attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+			if (attackState == ON_RELOAD && currentItem instanceof Reloadable
+					&& ((Reloadable) currentItem).getAmmo() > 0) {
+				((Reloadable) currentWeapon).cancelReload();
+				attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
+			} else if (attackState == READY)
+				attackState = currentWeapon.attack(InputUtility.getMouseX(), InputUtility.getMouseY(), this);
 		}
 	}
 
@@ -261,7 +262,12 @@ public class Player extends Entity implements Damageable {
 		updateCurrentInventoryFocus();
 		currentItem = inventory[currentInventoryFocus];
 		if (attackState != READY && currentWeapon != null) {
-			attackState = currentWeapon.updateAttack(this);
+			if (attackState == ON_RELOAD && !(currentItem instanceof Reloadable)
+					&& currentWeapon instanceof Reloadable) {
+				attackState = READY;
+				((Reloadable) currentWeapon).cancelReload();
+			} else
+				attackState = currentWeapon.updateAttack(this);
 		}
 		if (attackState == READY && currentItem == null)
 			currentWeapon = null;
@@ -271,7 +277,7 @@ public class Player extends Entity implements Damageable {
 			isFacingLeft = true;
 		}
 		if (InputUtility.isLeftDown()) {
-			if (attackState == READY) {
+			if (attackState == READY || attackState == ON_RELOAD) {
 				attack();
 			}
 			if (InputUtility.getMouseX() > hitbox.x + width) {
@@ -284,9 +290,15 @@ public class Player extends Entity implements Damageable {
 			if (!isPlayerOnDoor())
 				useItem();
 		}
+		if (InputUtility.getKeyPressed(KeyCode.R) && attackState == READY && currentWeapon instanceof Reloadable) {
+			attackState = ON_RELOAD;
+			((Reloadable) currentWeapon).reload();
+		}
 		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
+		if (currentItem instanceof Weapon)
+			xspeed *= ((Weapon) currentItem).getSpeedMultiplier();
 
 		move();
 
@@ -343,7 +355,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	public void updateCurrentInventoryFocus() {
-		if (attackState == MELEE_IN_PROGRESS || attackState == MELEE_HIT || attackState == RANGED_IN_PROGRESS)
+		if (attackState == IN_PROGRESS)
 			return;
 		if (InputUtility.getScrollDeltaY() != 0) {
 			if (InputUtility.getScrollDeltaY() > 0)
