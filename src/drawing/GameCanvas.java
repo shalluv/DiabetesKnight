@@ -60,10 +60,7 @@ public class GameCanvas extends Canvas {
 		gc.setFont(new Font(UI.FONT_SIZE));
 		switch (Main.gameState) {
 		case GameState.MENU:
-			gameScreen.setLayoutX(0);
-			gameScreen.setLayoutY(0);
-
-			MenuOverlay.draw(gc);
+			MenuOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PLAYING:
 			gameScreen.setLayoutX(layoutX);

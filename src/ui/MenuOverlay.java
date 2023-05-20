@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
+import utils.Constants.UI;
 
 public class MenuOverlay {
 	public static void update() {
@@ -17,11 +18,13 @@ public class MenuOverlay {
 		}
 	}
 
-	public static void draw(GraphicsContext gc) {
+	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
-		gc.fillText("Press SPACE to start...", Resolution.WIDTH / 2, Resolution.HEIGHT / 2);
+		gc.fillText("Welcome...", Resolution.WIDTH / 2 - layoutX,
+				Resolution.HEIGHT / 2 - layoutY - UI.FONT_SIZE * 1.5);
+		gc.fillText("Press SPACE to start!", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY);
 
 	}
 }
