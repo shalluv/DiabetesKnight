@@ -1,24 +1,9 @@
 package entity;
 
 import static utils.Constants.AttackState.*;
-import static utils.Constants.PlayerConstants.BASE_X_SPEED;
-import static utils.Constants.PlayerConstants.HEIGHT;
-import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
-import static utils.Constants.PlayerConstants.INITIAL_MAX_POWER;
-import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
-import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
-import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
-import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
-import static utils.Constants.PlayerConstants.WEIGHT;
-import static utils.Constants.PlayerConstants.WIDTH;
-import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
-import static utils.Constants.PlayerConstants.Animations.ANIMATION_STATE_COUNT;
-import static utils.Constants.PlayerConstants.Animations.IDLE;
-import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
-import static utils.Constants.PlayerConstants.Animations.JUMPING;
-import static utils.Constants.PlayerConstants.Animations.RUNNING;
-import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
-import static utils.Constants.PlayerConstants.Animations.SPRITE_SIZE;
+import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.PlayerConstants.Animations.*;
+import static utils.Constants.PlayerConstants.HealthState.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -30,6 +15,8 @@ import interfaces.Damageable;
 import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
+import item.derived.Gun;
+import item.derived.Spear;
 import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -44,8 +31,8 @@ public class Player extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
-	private int maxPower;
 	private int currentPower;
+	private int sugarLevel;
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
@@ -59,6 +46,8 @@ public class Player extends Entity implements Damageable {
 	private Image[] animation;
 	private Image dustAnimation;
 	private boolean isFacingLeft;
+	private int healthState;
+	private Thread onHyperglycemia;
 
 	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -68,13 +57,15 @@ public class Player extends Entity implements Damageable {
 		loadResources();
 		maxHealth = INITIAL_MAX_HEALTH;
 		currentHealth = INITIAL_MAX_HEALTH;
-
-		maxPower = INITIAL_MAX_POWER;
-		currentPower = 0;
+		currentPower = INITIAL_POWER;
+		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
-
+		healthState = HEALTHY;
+		initOnHyperglycemia();
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
+		addItem(new Spear());
+		addItem(new Gun());
 		currentInventoryFocus = 0;
 
 		isFacingLeft = false;
@@ -171,6 +162,7 @@ public class Player extends Entity implements Damageable {
 		if (damage < 0)
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
+		setSugarLevel(sugarLevel - HIT_SUGAR_DECREASED_AMOUNT);
 		// System.out.println("player is now " + currentHealth + " hp");
 	}
 
@@ -294,11 +286,18 @@ public class Player extends Entity implements Damageable {
 			attackState = ON_RELOAD;
 			((Reloadable) currentWeapon).reload();
 		}
+		if (InputUtility.getKeyPressed(KeyCode.F) && attackState == READY && currentWeapon instanceof Weapon) {
+			((Weapon) currentWeapon).useUlitmate();
+		}
 		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-		if (currentItem instanceof Weapon)
-			xspeed *= ((Weapon) currentItem).getSpeedMultiplier();
+		if (currentItem instanceof Weapon) {
+			xspeed *= ((Weapon) currentItem).getXSpeedMultiplier();
+			yspeed *= ((Weapon) currentItem).getYSpeedMultiplier();
+		}
+
+		updateHealth();
 
 		move();
 
@@ -308,8 +307,9 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth <= 0) {
-			if (attackState != READY && currentWeapon != null) {
+			if (currentWeapon != null) {
 				((Weapon) currentWeapon).cancelAttack();
+				((Weapon) currentWeapon).cancelUltimate();
 			}
 			Platform.exit();
 		}
@@ -328,21 +328,27 @@ public class Player extends Entity implements Damageable {
 		return maxHealth;
 	}
 
-	public int getMaxPower() {
-		return maxPower;
-	}
-
 	public int getCurrentPower() {
 		return currentPower;
 	}
 
 	public void setCurrentPower(int power) {
-		if (power > maxPower) {
-			currentPower = maxPower;
-		} else if (power < 0) {
+		if (power < 0) {
 			currentPower = 0;
 		} else {
 			currentPower = power;
+		}
+	}
+
+	public int getSugarLevel() {
+		return sugarLevel;
+	}
+
+	public void setSugarLevel(int sugarLevel) {
+		if (sugarLevel < 0) {
+			this.sugarLevel = 0;
+		} else {
+			this.sugarLevel = sugarLevel;
 		}
 	}
 
@@ -391,6 +397,53 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	private void updateHealthState() {
+		if (sugarLevel > HYPERGLYCEMIA_SUGAR_LEVEL)
+			healthState = HYPERGLYCEMIA;
+		else if (sugarLevel < HYPOGLYCEMIA_SUGAR_LEVEL)
+			healthState = HYPOGLYCEMIA;
+		else
+			healthState = HEALTHY;
+	}
+
+	private void initOnHyperglycemia() {
+		if (onHyperglycemia != null && onHyperglycemia.isAlive())
+			return;
+		onHyperglycemia = new Thread(() -> {
+			try {
+				Thread.sleep(HYPERGLYCEMIA_DELAY);
+				setCurrentHealth(currentHealth - HYPERGLYCEMIA_DAMAGE);
+			} catch (InterruptedException e) {
+				System.out.println("hyperglycemia interrupted");
+			}
+		});
+		onHyperglycemia.start();
+	}
+
+	public void clearHyperglycemiaThread() {
+		if (onHyperglycemia != null)
+			onHyperglycemia.interrupt();
+	}
+
+	private void updateHealth() {
+		updateHealthState();
+		switch (healthState) {
+		case HYPERGLYCEMIA:
+			initOnHyperglycemia();
+			break;
+		case HYPOGLYCEMIA:
+			clearHyperglycemiaThread();
+			xspeed *= HYPOGLYCEMIA_X_SPEED_MULTIPLIER;
+			yspeed *= HYPOGLYCEMIA_Y_SPEED_MULTIPLIER;
+			break;
+		case HEALTHY:
+			clearHyperglycemiaThread();
+			break;
+		default:
+			break;
+		}
+	}
+
 	private boolean isPlayerOnDoor() {
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (entity instanceof Door && entity.getHitbox().intersects(hitbox)) {
@@ -404,5 +457,9 @@ public class Player extends Entity implements Damageable {
 	@Override
 	public int getHealth() {
 		return currentHealth;
+	}
+
+	public Weapon getCurrentWeapon() {
+		return currentWeapon;
 	}
 }

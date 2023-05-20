@@ -15,8 +15,8 @@ public abstract class RangedWeapon extends Weapon {
 	protected double targetY;
 	protected Image image;
 
-	public RangedWeapon(String name, Image image, double speedMultiplier) {
-		super(name, image, speedMultiplier);
+	public RangedWeapon(String name, Image image, double XSpeedMultiplier, double YSpeedMultiplier) {
+		super(name, image, XSpeedMultiplier, YSpeedMultiplier);
 	}
 
 	protected void inProgressUpdate(Entity attacker) {

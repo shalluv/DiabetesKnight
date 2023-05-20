@@ -22,15 +22,25 @@ public class GameOverlay {
 		int currentHealth = GameLogic.getPlayer().getCurrentHealth();
 		int maxHealth = GameLogic.getPlayer().getMaxHealth();
 		int currentPower = GameLogic.getPlayer().getCurrentPower();
-		int maxPower = GameLogic.getPlayer().getMaxPower();
+		int sugarLevel = GameLogic.getPlayer().getSugarLevel();
 
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
 		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth),
 				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
-		gc.fillText("Power : " + Integer.toString(currentPower) + " / " + Integer.toString(maxPower),
-				UI.GameOverlay.OFFSET_POWER_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
+		gc.fillText("Power : " + Integer.toString(currentPower), UI.GameOverlay.OFFSET_POWER_X - layoutX,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
+		gc.fillText("Sugar Level : ", UI.GameOverlay.OFFSET_SUGAR_X - layoutX,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
+		if (sugarLevel > PlayerConstants.HYPERGLYCEMIA_SUGAR_LEVEL)
+			gc.setFill(Color.RED);
+		else if (sugarLevel < PlayerConstants.HYPOGLYCEMIA_SUGAR_LEVEL)
+			gc.setFill(Color.YELLOW);
+		gc.fillText(Integer.toString(sugarLevel),
+				UI.GameOverlay.OFFSET_SUGAR_X - layoutX + UI.GameOverlay.OFFSET_SUGAR_AMOUNT_X,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
+		gc.setFill(Color.WHITE);
 
 		Item[] inventory = GameLogic.getPlayer().getInventory();
 		int currentInventoryFocus = GameLogic.getPlayer().getCurrentInventoryFocus();

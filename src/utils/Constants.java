@@ -25,6 +25,9 @@ public class Constants {
 			public static final int OFFSET_HP_Y = 80;
 			public static final int OFFSET_POWER_X = 30;
 			public static final int OFFSET_POWER_Y = 50;
+			public static final int OFFSET_SUGAR_X = 30;
+			public static final int OFFSET_SUGAR_Y = 20;
+			public static final int OFFSET_SUGAR_AMOUNT_X = 170;
 			public static final int OFFSET_INVENTORY_Y = 80;
 			public static final int ITEM_SIZE = (int) Math.min(36 * SCALE, 54);
 			public static final int INVENTORY_GAP = (int) Math.min(50 * SCALE, 75);
@@ -54,23 +57,40 @@ public class Constants {
 
 	public static class Weapon {
 		public static class SpearConstants {
-			public static final int ATTACK_RANGE = (int) (14 * SCALE);
-			public static final int DAMAGE = 20;
-			public static final int ATTACK_SPEED = (int) (2 * SCALE);
+			public static final int BASE_ATTACK_RANGE = (int) (14 * SCALE);
+			public static final int BASE_DAMAGE = 20;
+			public static final int BASE_ATTACK_SPEED = (int) (2 * SCALE);
 			public static final int ATTACK_DELAY = 50;
 			public static final int ATTACK_BOX_HEIGHT = (int) (5 * SCALE);
-			public static final double SPEED_MULTIPLIER = 0.82;
+			public static final double BASE_X_SPEED_MULTIPLIER = 0.82;
+			public static final double BASE_Y_SPEED_MULTIPLIER = 0.987;
+			public static final int ULTIMATE_ATTACK_RANGE = (int) (24 * SCALE);
+			public static final int ULTIMATE_DAMAGE = 35;
+			public static final double ULTIMATE_X_SPEED_MULTIPLIER = 1.1;
+			public static final double ULTIMATE_Y_SPEED_MULTIPLIER = 1;
+			public static final int ULTIMATE_ATTACK_SPEED = (int) (4 * SCALE);
+			public static final int ULTIMATE_DURATION = 20000;
+			public static final int ULTIMATE_COST = 50;
+			public static final int ULTIMATE_ANIMATION_LEFT_X_OFFSET = 5;
+			public static final int ULTIMATE_ANIMATION_RIGHT_X_OFFSET = 10;
 		}
 
 		public static class SwordConstants {
-			public static final int ATTACK_RANGE = (int) (8 * SCALE);
-			public static final int DAMAGE = 5;
+			public static final int BASE_ATTACK_RANGE = (int) (8 * SCALE);
+			public static final int BASE_DAMAGE = 5;
 			public static final int MAXIMUM_SWING = 180;
 			public static final int SWING_SPEED = 30;
 			public static final int ATTACK_DELAY = 30;
 			public static final int ATTACK_BOX_HEIGHT = (int) (4 * SCALE);
-			public static final double SPEED_MULTIPLIER = 1;
+			public static final double BASE_X_SPEED_MULTIPLIER = 1;
+			public static final double BASE_Y_SPEED_MULTIPLIER = 1;
+			public static final double ULTIMATE_X_SPEED_MULTIPLIER = 1.3;
+			public static final double ULTIMATE_Y_SPEED_MULTIPLIER = 1.005;
+			public static final int ULTIMATE_DAMAGE = 10;
+			public static final int ULTIMATE_ATTACK_RANGE = (int) (16 * SCALE);
 			public static final int AFTER_ATTACK_DELAY = 150;
+			public static final int ULTIMATE_DURATION = 15000;
+			public static final int ULTIMATE_COST = 30;
 
 			public static class Animations {
 				public static final int ANIMATION_STATE_COUNT = 3;
@@ -85,10 +105,16 @@ public class Constants {
 		}
 
 		public static class GunConstants {
-			public static final int ATTACK_DELAY = 300;
-			public static final int MAX_AMMO = 6;
-			public static final int RELOAD_DELAY = 1000;
-			public static final int SPEED_MULTIPLIER = 1;
+			public static final int BASE_ATTACK_DELAY = 300;
+			public static final int BASE_MAX_AMMO = 6;
+			public static final int BASE_RELOAD_DELAY = 1000;
+			public static final double BASE_X_SPEED_MULTIPLIER = 1;
+			public static final double BASE_Y_SPEED_MULTIPLIER = 1;
+			public static final int ULTIMATE_ATTACK_DELAY = 100;
+			public static final int ULTIMATE_RELOAD_DELAY = 400;
+			public static final int ULTIMATE_MAX_AMMO = 15;
+			public static final int ULTIMATE_DURATION = 10000;
+			public static final int ULTIMATE_COST = 40;
 		}
 
 		public static class BulletConstants {
@@ -109,7 +135,21 @@ public class Constants {
 		public static final double WEIGHT = 0.12 * SCALE;
 		public static final int INVENTORY_SIZE = 10;
 		public static final int INITIAL_MAX_HEALTH = 200;
-		public static final int INITIAL_MAX_POWER = 100;
+		public static final int INITIAL_POWER = 0;
+		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 30;
+		public static final int INITIAL_SUGAR_LEVEL = 55;
+		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
+		public static final int HIT_SUGAR_DECREASED_AMOUNT = 2;
+		public static final int HYPERGLYCEMIA_DELAY = 1000;
+		public static final int HYPERGLYCEMIA_DAMAGE = 3;
+		public static final double HYPOGLYCEMIA_X_SPEED_MULTIPLIER = 0.8;
+		public static final double HYPOGLYCEMIA_Y_SPEED_MULTIPLIER = 0.98;
+
+		public static class HealthState {
+			public static final int HYPOGLYCEMIA = 0;
+			public static final int HEALTHY = 1;
+			public static final int HYPERGLYCEMIA = 2;
+		}
 
 		public static class Animations {
 			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);
@@ -210,6 +250,16 @@ public class Constants {
 			public static final int ANIMATION_SPEED = 7;
 			public static final int FRAMES_COUNT = 3;
 		}
+	}
+
+	public static class SugarConstants {
+		public static final int SUGAR_AMOUNT = 10;
+		public static final int POWER_AMOUNT = 10;
+	}
+
+	public static class InsulinConstants {
+		public static final int SUGAR_AMOUNT = -15;
+		public static final int POWER_AMOUNT = -5;
 	}
 
 	public static class DroppedItemConstants {

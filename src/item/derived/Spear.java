@@ -7,27 +7,26 @@ import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_X;
 import static utils.Constants.PlayerConstants.Animations.WEAPON_OFFSET_Y;
-import static utils.Constants.Weapon.SpearConstants.ATTACK_BOX_HEIGHT;
-import static utils.Constants.Weapon.SpearConstants.ATTACK_DELAY;
-import static utils.Constants.Weapon.SpearConstants.ATTACK_RANGE;
-import static utils.Constants.Weapon.SpearConstants.ATTACK_SPEED;
-import static utils.Constants.Weapon.SpearConstants.DAMAGE;
-import static utils.Constants.Weapon.SpearConstants.SPEED_MULTIPLIER;
+import static utils.Constants.Weapon.SpearConstants.*;
 
 import java.awt.geom.Rectangle2D;
 
 import entity.base.Entity;
 import item.MeleeWeapon;
 import javafx.scene.canvas.GraphicsContext;
+import logic.GameLogic;
 import utils.Loader;
 
 public class Spear extends MeleeWeapon {
 
 	private int attackProgress;
+	private int attackSpeed;
 
 	public Spear() {
-		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, true);
-		this.attackRange = ATTACK_RANGE;
+		super("Spear", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), BASE_ATTACK_RANGE, BASE_DAMAGE,
+				BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER, true);
+		this.attackRange = BASE_ATTACK_RANGE;
+		this.attackSpeed = BASE_ATTACK_SPEED;
 	}
 
 	@Override
@@ -36,9 +35,17 @@ public class Spear extends MeleeWeapon {
 			width = -width;
 			x -= attackProgress;
 			x += WEAPON_OFFSET_X * 2;
+			if (isOnUltimate) {
+				x += ULTIMATE_ANIMATION_LEFT_X_OFFSET;
+				width -= ULTIMATE_ANIMATION_LEFT_X_OFFSET;
+			}
 		} else {
 			x += WEAPON_OFFSET_X;
 			x += attackProgress;
+			if (isOnUltimate) {
+				x -= ULTIMATE_ANIMATION_RIGHT_X_OFFSET;
+				width += ULTIMATE_ANIMATION_RIGHT_X_OFFSET;
+			}
 		}
 		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
@@ -73,16 +80,16 @@ public class Spear extends MeleeWeapon {
 	}
 
 	private void inProgressUpdate(Entity attacker) {
-		if (attackProgress < ATTACK_RANGE) {
+		if (attackProgress < attackRange) {
 			if (cooldown == null || !cooldown.isAlive()) // if it is not cooldown init cooldown thread
 				initCooldown(ATTACK_DELAY);
-			attackProgress += ATTACK_SPEED;
+			attackProgress += attackSpeed;
 		}
 		updateAttackBox(attacker);
 		if (isAttackingWall()) {
-			attackProgress -= ATTACK_SPEED;
+			attackProgress -= attackSpeed;
 			attackState = ON_COOLDOWN;
-		} else if (attackProgress >= ATTACK_RANGE) {// if it is out of range then stop the attack
+		} else if (attackProgress >= attackRange) {// if it is out of range then stop the attack
 			attackState = ON_COOLDOWN;
 		} else
 			cooldown.start();
@@ -92,7 +99,7 @@ public class Spear extends MeleeWeapon {
 		if (attackProgress > 0) {
 			if (cooldown == null || !cooldown.isAlive())
 				initCooldown(ATTACK_DELAY);
-			attackProgress -= ATTACK_SPEED;
+			attackProgress -= attackSpeed;
 			cooldown.start();
 		} else {
 			cooldown = null;
@@ -100,6 +107,34 @@ public class Spear extends MeleeWeapon {
 			attackState = READY;
 			attackBox = null;
 		}
+	}
+
+	@Override
+	public void useUlitmate() {
+		if (isOnUltimate)
+			return;
+		int currentPower = GameLogic.getPlayer().getCurrentPower();
+		if (currentPower >= ULTIMATE_COST) {
+			GameLogic.getPlayer().setCurrentPower(currentPower - ULTIMATE_COST);
+			isOnUltimate = true;
+			XSpeedMultiplier = ULTIMATE_X_SPEED_MULTIPLIER;
+			YSpeedMultiplier = ULTIMATE_Y_SPEED_MULTIPLIER;
+			damage = ULTIMATE_DAMAGE;
+			attackRange = ULTIMATE_ATTACK_RANGE;
+			attackSpeed = ULTIMATE_ATTACK_SPEED;
+			initOnUltimate(ULTIMATE_DURATION);
+			onUltimate.start();
+		}
+	}
+
+	@Override
+	public void resetStatus() {
+		isOnUltimate = false;
+		XSpeedMultiplier = BASE_X_SPEED_MULTIPLIER;
+		YSpeedMultiplier = BASE_Y_SPEED_MULTIPLIER;
+		damage = BASE_DAMAGE;
+		attackRange = BASE_ATTACK_RANGE;
+		attackSpeed = BASE_ATTACK_SPEED;
 	}
 
 }
