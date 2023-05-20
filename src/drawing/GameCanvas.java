@@ -6,7 +6,6 @@ import application.Main;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -20,7 +19,6 @@ import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Constants.UI;
-import utils.Loader;
 
 public class GameCanvas extends Canvas {
 
