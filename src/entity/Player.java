@@ -339,9 +339,9 @@ public class Player extends Entity implements Damageable {
 
 	public void setSugarLevel(int sugarLevel) {
 		if (sugarLevel < 0) {
-			currentPower = 0;
+			this.sugarLevel = 0;
 		} else {
-			currentPower = sugarLevel;
+			this.sugarLevel = sugarLevel;
 		}
 	}
 
