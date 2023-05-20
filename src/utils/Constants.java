@@ -25,6 +25,9 @@ public class Constants {
 			public static final int OFFSET_HP_Y = 80;
 			public static final int OFFSET_POWER_X = 30;
 			public static final int OFFSET_POWER_Y = 50;
+			public static final int OFFSET_SUGAR_X = 30;
+			public static final int OFFSET_SUGAR_Y = 20;
+			public static final int OFFSET_SUGAR_AMOUNT_X = 170;
 			public static final int OFFSET_INVENTORY_Y = 80;
 			public static final int ITEM_SIZE = (int) Math.min(36 * SCALE, 54);
 			public static final int INVENTORY_GAP = (int) Math.min(50 * SCALE, 75);
@@ -132,7 +135,10 @@ public class Constants {
 		public static final double WEIGHT = 0.12 * SCALE;
 		public static final int INVENTORY_SIZE = 10;
 		public static final int INITIAL_MAX_HEALTH = 200;
-		public static final int INITIAL_MAX_POWER = 100;
+		public static final int INITIAL_POWER = 0;
+		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 30;
+		public static final int INITIAL_SUGAR_LEVEL = 20;
+		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
 
 		public static class Animations {
 			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);

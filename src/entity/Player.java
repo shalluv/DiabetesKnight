@@ -1,24 +1,8 @@
 package entity;
 
 import static utils.Constants.AttackState.*;
-import static utils.Constants.PlayerConstants.BASE_X_SPEED;
-import static utils.Constants.PlayerConstants.HEIGHT;
-import static utils.Constants.PlayerConstants.INITIAL_MAX_HEALTH;
-import static utils.Constants.PlayerConstants.INITIAL_MAX_POWER;
-import static utils.Constants.PlayerConstants.INITIAL_X_SPEED;
-import static utils.Constants.PlayerConstants.INITIAL_Y_SPEED;
-import static utils.Constants.PlayerConstants.INVENTORY_SIZE;
-import static utils.Constants.PlayerConstants.MAX_Y_SPEED;
-import static utils.Constants.PlayerConstants.WEIGHT;
-import static utils.Constants.PlayerConstants.WIDTH;
-import static utils.Constants.PlayerConstants.Animations.ANIMATION_SPEED;
-import static utils.Constants.PlayerConstants.Animations.ANIMATION_STATE_COUNT;
-import static utils.Constants.PlayerConstants.Animations.IDLE;
-import static utils.Constants.PlayerConstants.Animations.IDLE_FRAMES_COUNT;
-import static utils.Constants.PlayerConstants.Animations.JUMPING;
-import static utils.Constants.PlayerConstants.Animations.RUNNING;
-import static utils.Constants.PlayerConstants.Animations.RUNNING_FRAMES_COUNT;
-import static utils.Constants.PlayerConstants.Animations.SPRITE_SIZE;
+import static utils.Constants.PlayerConstants.*;
+import static utils.Constants.PlayerConstants.Animations.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -46,8 +30,8 @@ public class Player extends Entity implements Damageable {
 
 	private int maxHealth;
 	private int currentHealth;
-	private int maxPower;
 	private int currentPower;
+	private int sugarLevel;
 	private double xspeed;
 	private double yspeed;
 	private int attackState;
@@ -70,9 +54,8 @@ public class Player extends Entity implements Damageable {
 		loadResources();
 		maxHealth = INITIAL_MAX_HEALTH;
 		currentHealth = INITIAL_MAX_HEALTH;
-
-		maxPower = INITIAL_MAX_POWER;
-		currentPower = 100;
+		currentPower = INITIAL_POWER;
+		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
 
 		inventory = new Item[INVENTORY_SIZE];
@@ -338,21 +321,27 @@ public class Player extends Entity implements Damageable {
 		return maxHealth;
 	}
 
-	public int getMaxPower() {
-		return maxPower;
-	}
-
 	public int getCurrentPower() {
 		return currentPower;
 	}
 
 	public void setCurrentPower(int power) {
-		if (power > maxPower) {
-			currentPower = maxPower;
-		} else if (power < 0) {
+		if (power < 0) {
 			currentPower = 0;
 		} else {
 			currentPower = power;
+		}
+	}
+
+	public int getSugarLevel() {
+		return sugarLevel;
+	}
+
+	public void setSugarLevel(int sugarLevel) {
+		if (sugarLevel < 0) {
+			currentPower = 0;
+		} else {
+			currentPower = sugarLevel;
 		}
 	}
 
