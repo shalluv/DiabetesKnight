@@ -14,7 +14,6 @@ public abstract class RangedEnemy extends Enemy {
 	protected double xspeed;
 	protected double yspeed;
 	protected int attackState;
-	protected RangedWeapon weapon;
 	protected int animationFrame;
 	protected int animationState;
 	protected int frameCount;
@@ -27,8 +26,9 @@ public abstract class RangedEnemy extends Enemy {
 	protected int animationAttackCooldown;
 	protected int animationIDLE;
 
-	public RangedEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth) {
-		super(x, y, width, height, sightSize, initialMaxHealth);
+	public RangedEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth,
+			RangedWeapon weapon) {
+		super(x, y, width, height, sightSize, initialMaxHealth, weapon);
 		attackState = READY;
 		initHitbox(x, y, width, height);
 	}
@@ -47,8 +47,9 @@ public abstract class RangedEnemy extends Enemy {
 				isFacingLeft = true;
 			}
 		}
-		xspeed *= weapon.getSpeedMultiplier();
+		xspeed *= weapon.getXSpeedMultiplier();
 		yspeed = Math.max(-maxYSpeed, Math.min(yspeed, maxYSpeed));
+		yspeed *= weapon.getYSpeedMultiplier();
 		move();
 		if (attackState != READY) {
 			animationState = animationAttackCooldown;
@@ -61,8 +62,7 @@ public abstract class RangedEnemy extends Enemy {
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
 		if (currentHealth <= 0) {
 			isDestroy = true;
-			if (attackState != READY)
-				weapon.cancelAttack();
+			weapon.cancelAttack();
 		}
 	}
 

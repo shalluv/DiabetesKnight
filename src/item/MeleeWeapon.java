@@ -27,9 +27,9 @@ public abstract class MeleeWeapon extends Weapon {
 	protected boolean canMultipleHit;
 	protected ArrayList<Entity> alreadyHit;
 
-	public MeleeWeapon(String name, Image image, int attackRange, int damage, double speedMultiplier,
-			boolean canMultipleHit) {
-		super(name, image, speedMultiplier);
+	public MeleeWeapon(String name, Image image, int attackRange, int damage, double XSpeedMultiplier,
+			double YSpeedMultiplier, boolean canMultipleHit) {
+		super(name, image, XSpeedMultiplier, YSpeedMultiplier);
 		this.attackRange = attackRange;
 		this.damage = damage;
 		this.canMultipleHit = canMultipleHit;

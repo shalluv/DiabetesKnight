@@ -10,19 +10,24 @@ import interfaces.Reloadable;
 import item.RangedWeapon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import logic.GameLogic;
 import utils.Loader;
 
 public class Gun extends RangedWeapon implements Reloadable {
 
 	private int currentAmmo;
 	private int maxAmmo;
+	private int attackDelay;
+	private int reloadDelay;
 	private Image image;
 
 	public Gun() {
-		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), SPEED_MULTIPLIER);
+		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER);
 		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
-		this.currentAmmo = MAX_AMMO;
-		this.maxAmmo = MAX_AMMO;
+		this.currentAmmo = BASE_MAX_AMMO;
+		this.maxAmmo = BASE_MAX_AMMO;
+		this.attackDelay = BASE_ATTACK_DELAY;
+		this.reloadDelay = BASE_RELOAD_DELAY;
 	}
 
 	@Override
@@ -41,13 +46,13 @@ public class Gun extends RangedWeapon implements Reloadable {
 		if (attackState == IN_PROGRESS) {
 			inProgressUpdate(attacker);
 			setAmmo(currentAmmo - 1);
-			initCooldown(ATTACK_DELAY);
+			initCooldown(attackDelay);
 			cooldown.start();
 			attackState = ON_COOLDOWN;
 		} else if (attackState == ON_COOLDOWN && !cooldown.isAlive()) {
 			onCooldownUpdate();
 			if (currentAmmo == 0) {
-				initCooldown(RELOAD_DELAY);
+				initCooldown(reloadDelay);
 				cooldown.start();
 				attackState = ON_RELOAD;
 			}
@@ -60,7 +65,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 	@Override
 	public int attack(double targetX, double targetY, Entity attacker) {
 		if (currentAmmo == 0) {
-			initCooldown(RELOAD_DELAY);
+			initCooldown(reloadDelay);
 			cooldown.start();
 			attackState = ON_RELOAD;
 			return ON_RELOAD;
@@ -84,7 +89,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 			attackState = READY;
 			return;
 		}
-		initCooldown(RELOAD_DELAY);
+		initCooldown(reloadDelay);
 		cooldown.start();
 	}
 
@@ -104,5 +109,32 @@ public class Gun extends RangedWeapon implements Reloadable {
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
+	}
+
+	@Override
+	public void useUlitmate() {
+		if (isOnUltimate || attackState == ON_RELOAD)
+			return;
+		int currentPower = GameLogic.getPlayer().getCurrentPower();
+		if (currentPower >= ULTIMATE_COST) {
+			GameLogic.getPlayer().setCurrentPower(currentPower - ULTIMATE_COST);
+			reloadDelay = ULTIMATE_RELOAD_DELAY;
+			attackDelay = ULTIMATE_ATTACK_DELAY;
+			currentAmmo = ULTIMATE_MAX_AMMO;
+			maxAmmo = ULTIMATE_MAX_AMMO;
+			isOnUltimate = true;
+			initOnUltimate(ULTIMATE_DURATION);
+			onUltimate.start();
+		}
+	}
+
+	@Override
+	public void resetStatus() {
+		isOnUltimate = false;
+		cancelReload();
+		currentAmmo = BASE_MAX_AMMO;
+		maxAmmo = BASE_MAX_AMMO;
+		reloadDelay = BASE_RELOAD_DELAY;
+		attackDelay = BASE_ATTACK_DELAY;
 	}
 }

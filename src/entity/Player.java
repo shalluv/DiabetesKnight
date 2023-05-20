@@ -30,6 +30,8 @@ import interfaces.Damageable;
 import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
+import item.derived.Gun;
+import item.derived.Spear;
 import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -70,11 +72,13 @@ public class Player extends Entity implements Damageable {
 		currentHealth = INITIAL_MAX_HEALTH;
 
 		maxPower = INITIAL_MAX_POWER;
-		currentPower = 0;
+		currentPower = 100;
 		attackState = READY;
 
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
+		addItem(new Spear());
+		addItem(new Gun());
 		currentInventoryFocus = 0;
 
 		isFacingLeft = false;
@@ -294,11 +298,16 @@ public class Player extends Entity implements Damageable {
 			attackState = ON_RELOAD;
 			((Reloadable) currentWeapon).reload();
 		}
+		if (InputUtility.getKeyPressed(KeyCode.F) && attackState == READY && currentWeapon instanceof Weapon) {
+			((Weapon) currentWeapon).useUlitmate();
+		}
 		pickUpItems();
 
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
-		if (currentItem instanceof Weapon)
-			xspeed *= ((Weapon) currentItem).getSpeedMultiplier();
+		if (currentItem instanceof Weapon) {
+			xspeed *= ((Weapon) currentItem).getXSpeedMultiplier();
+			yspeed *= ((Weapon) currentItem).getYSpeedMultiplier();
+		}
 
 		move();
 
@@ -308,8 +317,9 @@ public class Player extends Entity implements Damageable {
 
 		// if the player is dead
 		if (currentHealth <= 0) {
-			if (attackState != READY && currentWeapon != null) {
+			if (currentWeapon != null) {
 				((Weapon) currentWeapon).cancelAttack();
+				((Weapon) currentWeapon).cancelUltimate();
 			}
 			Platform.exit();
 		}
@@ -404,5 +414,9 @@ public class Player extends Entity implements Damageable {
 	@Override
 	public int getHealth() {
 		return currentHealth;
+	}
+
+	public Weapon getCurrentWeapon() {
+		return currentWeapon;
 	}
 }

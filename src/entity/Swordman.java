@@ -18,7 +18,7 @@ import utils.Loader;
 public class Swordman extends MeleeEnemy {
 
 	public Swordman(double x, double y) {
-		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH);
+		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Sword());
 		loadResources();
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
