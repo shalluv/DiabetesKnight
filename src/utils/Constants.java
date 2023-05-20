@@ -140,6 +140,16 @@ public class Constants {
 		public static final int INITIAL_SUGAR_LEVEL = 20;
 		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
 		public static final int HIT_SUGAR_DECREASED_AMOUNT = 2;
+		public static final int HYPERGLYCEMIA_DELAY = 1000;
+		public static final int HYPERGLYCEMIA_DAMAGE = 3;
+		public static final double HYPOGLYCEMIA_X_SPEED_MULTIPLIER = 0.8;
+		public static final double HYPOGLYCEMIA_Y_SPEED_MULTIPLIER = 0.98;
+
+		public static class HealthState {
+			public static final int HYPOGLYCEMIA = 0;
+			public static final int HEALTHY = 1;
+			public static final int HYPERGLYCEMIA = 2;
+		}
 
 		public static class Animations {
 			public static final int WEAPON_OFFSET_X = (int) (12 * SCALE);

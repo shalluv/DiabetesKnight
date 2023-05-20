@@ -124,6 +124,7 @@ public class Main extends Application {
 	public void stop() throws Exception {
 		if (GameLogic.getPlayer().getCurrentWeapon() != null)
 			GameLogic.getPlayer().getCurrentWeapon().clearThread();
+		GameLogic.getPlayer().clearHyperglycemiaThread();
 		for (Entity entity : GameLogic.getGameObjectContainer())
 			if (entity instanceof Enemy)
 				((Enemy) entity).getWeapon().clearThread();

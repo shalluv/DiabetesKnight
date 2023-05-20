@@ -3,6 +3,7 @@ package entity;
 import static utils.Constants.AttackState.*;
 import static utils.Constants.PlayerConstants.*;
 import static utils.Constants.PlayerConstants.Animations.*;
+import static utils.Constants.PlayerConstants.HealthState.*;
 
 import java.awt.geom.Rectangle2D;
 
@@ -45,6 +46,8 @@ public class Player extends Entity implements Damageable {
 	private Image[] animation;
 	private Image dustAnimation;
 	private boolean isFacingLeft;
+	private int healthState;
+	private Thread onHyperglycemia;
 
 	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -57,7 +60,8 @@ public class Player extends Entity implements Damageable {
 		currentPower = INITIAL_POWER;
 		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
-
+		healthState = HEALTHY;
+		initOnHyperglycemia();
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
 		addItem(new Spear());
@@ -293,6 +297,8 @@ public class Player extends Entity implements Damageable {
 			yspeed *= ((Weapon) currentItem).getYSpeedMultiplier();
 		}
 
+		updateHealth();
+
 		move();
 
 		if (hitbox.y + hitbox.height + 1 >= Main.mapManager.getMapHeight()) {
@@ -388,6 +394,53 @@ public class Player extends Entity implements Damageable {
 
 		if (inventory[currentInventoryFocus] instanceof Weapon) {
 			currentWeapon = (Weapon) inventory[currentInventoryFocus];
+		}
+	}
+
+	private void updateHealthState() {
+		if (sugarLevel > HYPERGLYCEMIA_SUGAR_LEVEL)
+			healthState = HYPERGLYCEMIA;
+		else if (sugarLevel < HYPOGLYCEMIA_SUGAR_LEVEL)
+			healthState = HYPOGLYCEMIA;
+		else
+			healthState = HEALTHY;
+	}
+
+	private void initOnHyperglycemia() {
+		if (onHyperglycemia != null && onHyperglycemia.isAlive())
+			return;
+		onHyperglycemia = new Thread(() -> {
+			try {
+				Thread.sleep(HYPERGLYCEMIA_DELAY);
+				setCurrentHealth(currentHealth - HYPERGLYCEMIA_DAMAGE);
+			} catch (InterruptedException e) {
+				System.out.println("hyperglycemia interrupted");
+			}
+		});
+		onHyperglycemia.start();
+	}
+
+	public void clearHyperglycemiaThread() {
+		if (onHyperglycemia != null)
+			onHyperglycemia.interrupt();
+	}
+
+	private void updateHealth() {
+		updateHealthState();
+		switch (healthState) {
+		case HYPERGLYCEMIA:
+			initOnHyperglycemia();
+			break;
+		case HYPOGLYCEMIA:
+			clearHyperglycemiaThread();
+			xspeed *= HYPOGLYCEMIA_X_SPEED_MULTIPLIER;
+			yspeed *= HYPOGLYCEMIA_Y_SPEED_MULTIPLIER;
+			break;
+		case HEALTHY:
+			clearHyperglycemiaThread();
+			break;
+		default:
+			break;
 		}
 	}
 
