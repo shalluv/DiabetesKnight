@@ -71,6 +71,17 @@ public class Constants {
 			public static final int ATTACK_BOX_HEIGHT = (int) (4 * SCALE);
 			public static final double SPEED_MULTIPLIER = 1;
 			public static final int AFTER_ATTACK_DELAY = 150;
+
+			public static class Animations {
+				public static final int ANIMATION_STATE_COUNT = 3;
+				public static final int SPRITE_SIZE = 32;
+				public static final int ANIMATION_SPEED = 2;
+				public static final int ANIMATION_OFFSET_Y = 10;
+				public static final int ANIMATION_HEIGHT_OFFSET = 20;
+				public static final int IDLE = 0;
+				public static final int SWING_ANIMATION = 1;
+				public static final int SWING_DONE = 2;
+			}
 		}
 
 		public static class GunConstants {

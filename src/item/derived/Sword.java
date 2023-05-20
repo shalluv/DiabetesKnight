@@ -1,6 +1,7 @@
 package item.derived;
 
 import static utils.Constants.Weapon.SwordConstants.*;
+import static utils.Constants.Weapon.SwordConstants.Animations.*;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -14,17 +15,33 @@ import static utils.Constants.SCALE;
 import entity.base.Entity;
 import item.MeleeWeapon;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import utils.Loader;
 
 public class Sword extends MeleeWeapon {
 
 	private boolean startedCooldown;
+	private Image image;
+	private int animationFrame;
 
 	public Sword() {
-		super("sword", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, false);
+		super("sword", getIdleImage(), ATTACK_RANGE, DAMAGE, SPEED_MULTIPLIER, false);
+		loadResources();
 		this.attackProgress = 0;
 		this.startedCooldown = false;
+	}
+
+	private void loadResources() {
+		animationFrame = 0;
+		image = Loader.GetSpriteAtlas(Loader.SWORD_ATLAS);
+	}
+
+	private static Image getIdleImage() {
+		PixelReader reader = Loader.GetSpriteAtlas(Loader.SWORD_ATLAS).getPixelReader();
+		Image idle = new WritableImage(reader, 0, 0, SPRITE_SIZE, SPRITE_SIZE);
+		return idle;
 	}
 
 	@Override
@@ -55,18 +72,20 @@ public class Sword extends MeleeWeapon {
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
 		if (attackState != IN_PROGRESS)
 			return;
-		double scaledWidth = width * SCALE;
-		double scaledHeight = height * SCALE;
-		double rotationCenterX = x + scaledWidth / 2;
-		double rotationCenterY = y + scaledHeight / 2;
-		gc.setFill(Color.RED);
-		gc.save();
-		gc.translate(rotationCenterX, rotationCenterY);
-		gc.rotate(attackProgress);
-		gc.translate(-rotationCenterX, -rotationCenterY);
-		gc.fillRect(rotationCenterX - ATTACK_BOX_HEIGHT / 2, rotationCenterY - ATTACK_RANGE - scaledHeight / 2,
-				ATTACK_BOX_HEIGHT, ATTACK_RANGE + scaledHeight / 2);
-		gc.restore();
+		double scaledWidth = width * SCALE / 2;
+		double scaledHeight = height * SCALE / 2;
+		double centerX = x + scaledWidth;
+		double centerY = y + scaledHeight;
+		if (isFacingLeft)
+			width = -width;
+		gc.drawImage(image, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, centerX - ATTACK_BOX_HEIGHT / 2,
+				centerY - ATTACK_RANGE - scaledHeight / 2 - ANIMATION_OFFSET_Y, width,
+				height + ANIMATION_HEIGHT_OFFSET);
+		if (Math.abs(attackProgress) >= MAXIMUM_SWING / 5 && Math.abs(attackProgress) <= 4 * MAXIMUM_SWING / 5
+				&& animationFrame != SWING_ANIMATION)
+			animationFrame += 1;
+		else if (Math.abs(attackProgress) > 4 * MAXIMUM_SWING && animationFrame != SWING_DONE)
+			animationFrame += 1;
 	}
 
 	private void inProgressUpdate(Entity attacker) {
@@ -96,6 +115,7 @@ public class Sword extends MeleeWeapon {
 			attackState = READY;
 			attackBox = null;
 			startedCooldown = false;
+			animationFrame = 0;
 		}
 	}
 
