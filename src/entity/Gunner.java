@@ -32,9 +32,8 @@ import utils.Helper;
 import utils.Loader;
 
 /**
- * Gunner
- * Represents a gunner in the game
- * A gunner is a ranged enemy
+ * Gunner Represents a gunner in the game A gunner is a ranged enemy
+ * 
  * @see entity.base.RangedEnemy
  * @see item.derived.Gun
  */
@@ -42,6 +41,7 @@ public class Gunner extends RangedEnemy {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param x x coordinate of the gunner
 	 * @param y y coordinate of the gunner
 	 */
@@ -60,6 +60,7 @@ public class Gunner extends RangedEnemy {
 
 	/**
 	 * Load the sprites of the gunner
+	 * 
 	 * @see utils.Loader
 	 */
 	@Override
@@ -75,7 +76,8 @@ public class Gunner extends RangedEnemy {
 
 	/**
 	 * Draw the gunner on the screen
-	 * @param gc GraphicsContext of the canvas
+	 * 
+	 * @param gc     GraphicsContext of the canvas
 	 * @param screen Rectangle2D.Double representing the screen
 	 * @see javafx.scene.canvas.GraphicsContext
 	 * @see java.awt.geom.Rectangle2D.Double
@@ -117,6 +119,7 @@ public class Gunner extends RangedEnemy {
 
 	/**
 	 * Check if the gunner can attack
+	 * 
 	 * @return true if the gunner can attack, false otherwise
 	 */
 	@Override

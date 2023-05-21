@@ -1,15 +1,16 @@
 package utils;
 
 /**
- * Constants
- * Contains all the constants of the game
+ * Constants Contains all the constants of the game
+ * 
  * @see application.Main
  */
 public class Constants {
 	/**
 	 * Private constructor to prevent instantiation
 	 */
-	private Constants() { }
+	private Constants() {
+	}
 
 	/**
 	 * Frames per second of the game
@@ -25,8 +26,8 @@ public class Constants {
 	public final static float SCALE = 1.5f;
 
 	/**
-	 * Resolution
-	 * Contains all the resolution constants
+	 * Resolution Contains all the resolution constants
+	 * 
 	 * @see application.Main
 	 * @see drawing.GameScreen
 	 * @see drawing.GameCanvas
@@ -35,7 +36,9 @@ public class Constants {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private Resolution() { }
+		private Resolution() {
+		}
+
 		/**
 		 * Width of the resolution
 		 */
@@ -47,15 +50,17 @@ public class Constants {
 	}
 
 	/**
-	 * GameState
-	 * Contains all the game state constants
+	 * GameState Contains all the game state constants
+	 * 
 	 * @see logic.GameLogic
 	 */
 	public static class GameState {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private GameState() { }
+		private GameState() {
+		}
+
 		/**
 		 * Menu state
 		 */
@@ -75,8 +80,8 @@ public class Constants {
 	}
 
 	/**
-	 * UI
-	 * Contains all the UI constants
+	 * UI Contains all the UI constants
+	 * 
 	 * @see ui.GameOverlay
 	 * @see ui.MenuOverlay
 	 * @see ui.PauseOverlay
@@ -85,22 +90,26 @@ public class Constants {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private UI() { }
+		private UI() {
+		}
+
 		/**
 		 * Font size of the UI
 		 */
 		public static final int FONT_SIZE = (int) Math.min(20 * SCALE, 30);
 
 		/**
-		 * GameOverlay
-		 * Contains all the game overlay constants
+		 * GameOverlay Contains all the game overlay constants
+		 * 
 		 * @see ui.GameOverlay
 		 */
 		public static class GameOverlay {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private GameOverlay() { }
+			private GameOverlay() {
+			}
+
 			/**
 			 * Offset of the HP label in x-axis in the game overlay
 			 */
@@ -153,15 +162,17 @@ public class Constants {
 	}
 
 	/**
-	 * BlockConstants
-	 * Contains all the block constants
+	 * BlockConstants Contains all the block constants
+	 * 
 	 * @see maps.Map
 	 */
 	public static class BlockConstants {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private BlockConstants() { }
+		private BlockConstants() {
+		}
+
 		/**
 		 * Default size of the block
 		 */
@@ -173,15 +184,17 @@ public class Constants {
 	}
 
 	/**
-	 * Directions
-	 * Contains all the direction constants
+	 * Directions Contains all the direction constants
+	 * 
 	 * @see entity.base.Entity
 	 */
 	public static class Directions {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private Directions() { }
+		private Directions() {
+		}
+
 		/**
 		 * Left direction
 		 */
@@ -201,8 +214,8 @@ public class Constants {
 	}
 
 	/**
-	 * AttackState
-	 * Contains all the attack state constants
+	 * AttackState Contains all the attack state constants
+	 * 
 	 * @see entity.base.Enemy
 	 * @see entity.Player
 	 */
@@ -210,7 +223,9 @@ public class Constants {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private AttackState() { }
+		private AttackState() {
+		}
+
 		/**
 		 * Ready state
 		 */
@@ -230,25 +245,28 @@ public class Constants {
 	}
 
 	/**
-	 * Weapon
-	 * Contains all the weapon constants
+	 * Weapon Contains all the weapon constants
+	 * 
 	 * @see item.Weapon
 	 */
 	public static class Weapon {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private Weapon() { }
+		private Weapon() {
+		}
+
 		/**
-		 * SpearConstants
-		 * Contains all the spear constants
+		 * SpearConstants Contains all the spear constants
+		 * 
 		 * @see item.derived.Spear
 		 */
 		public static class SpearConstants {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private SpearConstants() { }
+			private SpearConstants() {
+			}
 
 			/**
 			 * Spear's base attack range
@@ -317,15 +335,17 @@ public class Constants {
 		}
 
 		/**
-		 * SwordConstants
-		 * Contains all the sword constants
+		 * SwordConstants Contains all the sword constants
+		 * 
 		 * @see item.derived.Sword
 		 */
 		public static class SwordConstants {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private SwordConstants() { }
+			private SwordConstants() {
+			}
+
 			/**
 			 * Sword's base attack range
 			 */
@@ -388,14 +408,15 @@ public class Constants {
 			public static final int ULTIMATE_COST = 30;
 
 			/**
-			 * Animations
-			 * Contains all the sword animation constants
+			 * Animations Contains all the sword animation constants
 			 */
 			public static class Animations {
 				/**
 				 * Private constructor to prevent instantiation
 				 */
-				private Animations() { }
+				private Animations() {
+				}
+
 				/**
 				 * Sword's amount of animation states
 				 */
@@ -433,15 +454,17 @@ public class Constants {
 		}
 
 		/**
-		 * GunConstants
-		 * Contains all the gun constants
+		 * GunConstants Contains all the gun constants
+		 * 
 		 * @see item.derived.Gun
 		 */
 		public static class GunConstants {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private GunConstants() { }
+			private GunConstants() {
+			}
+
 			/**
 			 * Gun's base attack delay
 			 */
@@ -485,15 +508,17 @@ public class Constants {
 		}
 
 		/**
-		 * BulletConstants
-		 * Contains all the bullet constants
+		 * BulletConstants Contains all the bullet constants
+		 * 
 		 * @see entity.Bullet
 		 */
 		public static class BulletConstants {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private BulletConstants() { }
+			private BulletConstants() {
+			}
+
 			/**
 			 * Bullet's width
 			 */
@@ -514,15 +539,17 @@ public class Constants {
 	}
 
 	/**
-	 * PlayerConstants
-	 * Contains all the player constants
+	 * PlayerConstants Contains all the player constants
+	 * 
 	 * @see entity.Player
 	 */
 	public static class PlayerConstants {
 		/**
 		 * Private constructor to prevent instantiation
 		 */
-		private PlayerConstants() { }
+		private PlayerConstants() {
+		}
+
 		/**
 		 * Player's width
 		 */
@@ -597,15 +624,17 @@ public class Constants {
 		public static final double HYPOGLYCEMIA_Y_SPEED_MULTIPLIER = 0.98;
 
 		/**
-		 * HealthState
-		 * Contains all the health states of the player
+		 * HealthState Contains all the health states of the player
+		 * 
 		 * @see entity.Player
 		 */
 		public static class HealthState {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private HealthState() { }
+			private HealthState() {
+			}
+
 			/**
 			 * Hypoglycemia state
 			 */
@@ -621,15 +650,17 @@ public class Constants {
 		}
 
 		/**
-		 * Animations
-		 * Contains all the player animations constants
+		 * Animations Contains all the player animations constants
+		 * 
 		 * @see entity.Player
 		 */
 		public static class Animations {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private Animations() { }
+			private Animations() {
+			}
+
 			/**
 			 * Player's weapon offset x-axis
 			 */
@@ -681,8 +712,8 @@ public class Constants {
 	}
 
 	/**
-	 * EnemyConstants
-	 * Contains all the enemy constants
+	 * EnemyConstants Contains all the enemy constants
+	 * 
 	 * @see entity.base.Enemy
 	 * @see entity.base.MeleeEnemy
 	 * @see entity.base.RangedEnemy
@@ -691,17 +722,21 @@ public class Constants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private EnemyConstants() { }
+		private EnemyConstants() {
+		}
+
 		/**
-		 * SwordmenConstants
-		 * Contains all the swordmen constants
+		 * SwordmenConstants Contains all the swordmen constants
+		 * 
 		 * @see entity.Swordman
 		 */
 		public static class SwordmenConstants {
 			/**
 			 * private constructor to prevent instantiation
 			 */
-			private SwordmenConstants() { }
+			private SwordmenConstants() {
+			}
+
 			/**
 			 * Swordman's width
 			 */
@@ -740,15 +775,17 @@ public class Constants {
 			public static final int INITIAL_MAX_HEALTH = 25;
 
 			/**
-			 * Animations
-			 * Contains all the swordmen animations constants
+			 * Animations Contains all the swordmen animations constants
+			 * 
 			 * @see entity.Swordman
 			 */
 			public static class Animations {
 				/**
 				 * Private constructor to prevent instantiation
 				 */
-				private Animations() { }
+				private Animations() {
+				}
+
 				/**
 				 * Swordman's amount of animation states
 				 */
@@ -775,15 +812,17 @@ public class Constants {
 		}
 
 		/**
-		 * SpearmenConstants
-		 * Contains all the spearmen constants
+		 * SpearmenConstants Contains all the spearmen constants
+		 * 
 		 * @see entity.Spearman
 		 */
 		public static class SpearmenConstants {
 			/**
 			 * private constructor to prevent instantiation
 			 */
-			private SpearmenConstants() { }
+			private SpearmenConstants() {
+			}
+
 			/**
 			 * Spearmen's width
 			 */
@@ -822,15 +861,17 @@ public class Constants {
 			public static final int INITIAL_MAX_HEALTH = 50;
 
 			/**
-			 * Animations
-			 * Contains all the spearmen animations constants
+			 * Animations Contains all the spearmen animations constants
+			 * 
 			 * @see entity.Spearman
 			 */
 			public static class Animations {
 				/**
 				 * Private constructor to prevent instantiation
 				 */
-				private Animations() { }
+				private Animations() {
+				}
+
 				/**
 				 * Spearmen's amount of animation states
 				 */
@@ -857,15 +898,17 @@ public class Constants {
 		}
 
 		/**
-		 * GunnerConstants
-		 * Contains all the gunner constants
+		 * GunnerConstants Contains all the gunner constants
+		 * 
 		 * @see entity.Gunner
 		 */
 		public static class GunnerConstants {
 			/**
 			 * private constructor to prevent instantiation
 			 */
-			private GunnerConstants() { }
+			private GunnerConstants() {
+			}
+
 			/**
 			 * Gunner's width
 			 */
@@ -908,15 +951,17 @@ public class Constants {
 			public static final int ATTACK_RANGE = (int) (400 * SCALE);
 
 			/**
-			 * Animations
-			 * Contains all the gunner animations constants
+			 * Animations Contains all the gunner animations constants
+			 * 
 			 * @see entity.Gunner
 			 */
 			public static class Animations {
 				/**
 				 * Private constructor to prevent instantiation
 				 */
-				private Animations() { }
+				private Animations() {
+				}
+
 				/**
 				 * Gunner's amount of animation states
 				 */
@@ -952,15 +997,17 @@ public class Constants {
 	}
 
 	/**
-	 * DoorConstants
-	 * Contains all the door constants
+	 * DoorConstants Contains all the door constants
+	 * 
 	 * @see entity.Door
 	 */
 	public static class DoorConstants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private DoorConstants() { }
+		private DoorConstants() {
+		}
+
 		/**
 		 * Door's width
 		 */
@@ -971,15 +1018,17 @@ public class Constants {
 		public static final int HEIGHT = (int) (32 * SCALE);
 
 		/**
-		 * Animations
-		 * Contains all the door animations constants
+		 * Animations Contains all the door animations constants
+		 * 
 		 * @see entity.Door
 		 */
 		public static class Animations {
 			/**
 			 * Private constructor to prevent instantiation
 			 */
-			private Animations() { }
+			private Animations() {
+			}
+
 			/**
 			 * Door's amount of animation states
 			 */
@@ -1000,15 +1049,17 @@ public class Constants {
 	}
 
 	/**
-	 * SugarConstants
-	 * Contains all the sugar constants
+	 * SugarConstants Contains all the sugar constants
+	 * 
 	 * @see item.derived.Sugar
 	 */
 	public static class SugarConstants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private SugarConstants() { }
+		private SugarConstants() {
+		}
+
 		/**
 		 * Sugar's sugar level increase amount
 		 */
@@ -1020,15 +1071,17 @@ public class Constants {
 	}
 
 	/**
-	 * InsulinConstants
-	 * Contains all the insulin constants
+	 * InsulinConstants Contains all the insulin constants
+	 * 
 	 * @see item.derived.Insulin
 	 */
 	public static class InsulinConstants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private InsulinConstants() { }
+		private InsulinConstants() {
+		}
+
 		/**
 		 * Insulin's sugar level decrease amount
 		 */
@@ -1040,15 +1093,17 @@ public class Constants {
 	}
 
 	/**
-	 * DroppedItemConstants
-	 * Contains all the dropped item constants
+	 * DroppedItemConstants Contains all the dropped item constants
+	 * 
 	 * @see entity.DroppedItem
 	 */
 	public static class DroppedItemConstants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private DroppedItemConstants() { }
+		private DroppedItemConstants() {
+		}
+
 		/**
 		 * Dropped item's default size
 		 */
@@ -1060,15 +1115,17 @@ public class Constants {
 	}
 
 	/**
-	 * InputConstants
-	 * Contains all the input constants
+	 * InputConstants Contains all the input constants
+	 * 
 	 * @see input.InputUtility
 	 */
 	public static class InputConstants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private InputConstants() { }
+		private InputConstants() {
+		}
+
 		/**
 		 * Cursor's offset x-axis
 		 */
@@ -1080,8 +1137,8 @@ public class Constants {
 	}
 
 	/**
-	 * Maps
-	 * Contains all the maps constants
+	 * Maps Contains all the maps constants
+	 * 
 	 * @see maps.Map
 	 * @see maps.MapManager
 	 */
@@ -1089,7 +1146,9 @@ public class Constants {
 		/**
 		 * private constructor to prevent instantiation
 		 */
-		private Maps() { }
+		private Maps() {
+		}
+
 		/**
 		 * Map's amount of tiles variants
 		 */

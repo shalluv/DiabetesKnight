@@ -1,8 +1,7 @@
 package interfaces;
 
 /**
- * Reloadable
- * Represents an object that can be reloaded
+ * Reloadable Represents an object that can be reloaded
  */
 public interface Reloadable {
 	/**
@@ -12,6 +11,7 @@ public interface Reloadable {
 
 	/**
 	 * Get the ammo of the object
+	 * 
 	 * @return the ammo of the object
 	 */
 	public int getAmmo();
@@ -23,6 +23,7 @@ public interface Reloadable {
 
 	/**
 	 * Get the maximum ammo of the object
+	 * 
 	 * @return the maximum ammo of the object
 	 */
 	public int getMaxAmmo();

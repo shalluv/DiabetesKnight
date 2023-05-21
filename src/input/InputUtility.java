@@ -9,17 +9,18 @@ import javafx.scene.robot.Robot;
 import utils.Constants.InputConstants;
 
 /**
- * InputUtility
- * Handles input from the user
+ * InputUtility Handles input from the user
  */
 public class InputUtility {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private InputUtility() { }
+	private InputUtility() {
+	}
 
 	/**
 	 * The array list of keys pressed
+	 * 
 	 * @see javafx.scene.input.KeyCode
 	 */
 	private static ArrayList<KeyCode> keyPressed = new ArrayList<>();
@@ -46,6 +47,7 @@ public class InputUtility {
 
 	/**
 	 * Get whether a key is pressed
+	 * 
 	 * @param keycode the key to be checked
 	 * @return whether the key is pressed
 	 * @see javafx.scene.input.KeyCode
@@ -56,6 +58,7 @@ public class InputUtility {
 
 	/**
 	 * Set whether a key is pressed
+	 * 
 	 * @param keycode the key to be set
 	 * @param pressed whether the key is pressed
 	 * @see javafx.scene.input.KeyCode
@@ -100,6 +103,7 @@ public class InputUtility {
 
 	/**
 	 * Get whether the mouse left button is down
+	 * 
 	 * @return whether the mouse left button is down
 	 */
 	public static boolean isLeftDown() {
@@ -108,6 +112,7 @@ public class InputUtility {
 
 	/**
 	 * Get whether the mouse right button is down
+	 * 
 	 * @return whether the mouse right button is down
 	 */
 	public static boolean isRightDown() {
@@ -116,6 +121,7 @@ public class InputUtility {
 
 	/**
 	 * Set the x coordinate of the mouse
+	 * 
 	 * @param x x coordinate of the mouse
 	 */
 	public static void setMouseX(double x) {
@@ -124,6 +130,7 @@ public class InputUtility {
 
 	/**
 	 * Get the x coordinate of the mouse
+	 * 
 	 * @return x coordinate of the mouse
 	 */
 	public static double getMouseX() {
@@ -132,6 +139,7 @@ public class InputUtility {
 
 	/**
 	 * Set the y coordinate of the mouse
+	 * 
 	 * @param y y coordinate of the mouse
 	 */
 	public static void setMouseY(double y) {
@@ -140,6 +148,7 @@ public class InputUtility {
 
 	/**
 	 * Get the y coordinate of the mouse
+	 * 
 	 * @return y coordinate of the mouse
 	 */
 	public static double getMouseY() {
@@ -148,6 +157,7 @@ public class InputUtility {
 
 	/**
 	 * Set the scroll delta of the mouse
+	 * 
 	 * @param deltaY scroll delta of the mouse
 	 */
 	public static void setScrollDeltaY(double deltaY) {
@@ -156,6 +166,7 @@ public class InputUtility {
 
 	/**
 	 * Get the scroll delta of the mouse
+	 * 
 	 * @return scroll delta of the mouse
 	 */
 	public static double getScrollDeltaY() {

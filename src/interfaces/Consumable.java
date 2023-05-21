@@ -1,8 +1,7 @@
 package interfaces;
 
 /**
- * Consumable
- * Represents an item that can be consumed
+ * Consumable Represents an item that can be consumed
  */
 public interface Consumable {
 	/**

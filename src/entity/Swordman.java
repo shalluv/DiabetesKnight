@@ -28,9 +28,8 @@ import javafx.scene.text.TextAlignment;
 import utils.Loader;
 
 /**
- * Swordman
- * Represents a swordman in the game
- * A swordman is a melee enemy
+ * Swordman Represents a swordman in the game A swordman is a melee enemy
+ * 
  * @see entity.base.MeleeEnemy
  * @see item.derived.Sword
  */
@@ -38,6 +37,7 @@ public class Swordman extends MeleeEnemy {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param x x coordinate of the swordman
 	 * @param y y coordinate of the swordman
 	 */
@@ -70,7 +70,8 @@ public class Swordman extends MeleeEnemy {
 
 	/**
 	 * Draw the swordman
-	 * @param gc GraphicsContext to draw on
+	 * 
+	 * @param gc     GraphicsContext to draw on
 	 * @param screen Rectangle2D.Double representing the screen
 	 */
 	@Override

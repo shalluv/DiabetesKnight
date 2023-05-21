@@ -8,14 +8,15 @@ import javafx.scene.canvas.GraphicsContext;
 import utils.Helper;
 
 /**
- * DroppedItem
- * Represents a dropped item in the game
+ * DroppedItem Represents a dropped item in the game
+ * 
  * @see item.Item
  */
 public class DroppedItem extends Entity {
 
 	/**
 	 * The item data of the dropped item
+	 * 
 	 * @see item.Item
 	 */
 	private Item item;
@@ -26,11 +27,12 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Constructor
-	 * @param x x coordinate of the dropped item
-	 * @param y y coordinate of the dropped item
-	 * @param width width of the dropped item
+	 * 
+	 * @param x      x coordinate of the dropped item
+	 * @param y      y coordinate of the dropped item
+	 * @param width  width of the dropped item
 	 * @param height height of the dropped item
-	 * @param item the item
+	 * @param item   the item
 	 */
 	public DroppedItem(double x, double y, int width, int height, Item item) {
 		super(x, y, width, height);
@@ -40,8 +42,10 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Make the dropped item fall in case it is not on the ground
+	 * 
 	 * @see utils.Helper#CanMoveHere(double, double, double, double)
-	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double,
+	 *      double)
 	 */
 	private void fall() {
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + 1, hitbox.width, hitbox.height)) {
@@ -58,7 +62,8 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Draw the dropped item
-	 * @param gc GraphicsContext
+	 * 
+	 * @param gc     GraphicsContext
 	 * @param screen the screen
 	 */
 	@Override
@@ -70,6 +75,7 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Get the z coordinate of the dropped item
+	 * 
 	 * @return 1
 	 */
 	@Override
@@ -79,6 +85,7 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Update the dropped item
+	 * 
 	 * @see #fall()
 	 */
 	@Override
@@ -88,6 +95,7 @@ public class DroppedItem extends Entity {
 
 	/**
 	 * Get the item
+	 * 
 	 * @return the item
 	 */
 	public Item getItem() {

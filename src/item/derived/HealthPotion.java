@@ -6,9 +6,9 @@ import logic.GameLogic;
 import utils.Loader;
 
 /**
- * HealthPotion
- * Represents a health potion in the game
- * A health potion is a consumable item
+ * HealthPotion Represents a health potion in the game A health potion is a
+ * consumable item
+ * 
  * @see item.Item
  * @see interfaces.Consumable
  */

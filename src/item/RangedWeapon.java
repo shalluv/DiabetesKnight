@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 import utils.Constants.Weapon.BulletConstants;
 
 /**
- * RangedWeapon
- * Represents a ranged weapon in the game
+ * RangedWeapon Represents a ranged weapon in the game
+ * 
  * @see item.Weapon
  * @see item.derived.Gun
  */
@@ -23,19 +23,21 @@ public abstract class RangedWeapon extends Weapon {
 	 */
 	protected double targetX;
 	/**
-	 * The y-coordinate of the target 
+	 * The y-coordinate of the target
 	 */
 	protected double targetY;
 	/**
 	 * The image of the weapon
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	protected Image image;
 
 	/**
 	 * Constructor
-	 * @param name name of the weapon
-	 * @param image image of the weapon
+	 * 
+	 * @param name             name of the weapon
+	 * @param image            image of the weapon
 	 * @param XSpeedMultiplier X speed multiplier of the weapon
 	 * @param YSpeedMultiplier Y speed multiplier of the weapon
 	 */
@@ -44,7 +46,9 @@ public abstract class RangedWeapon extends Weapon {
 	}
 
 	/**
-	 * Update the attacking progress when the weapon's attacking state is in progress
+	 * Update the attacking progress when the weapon's attacking state is in
+	 * progress
+	 * 
 	 * @param attacker the entity that is attacking
 	 */
 	protected void inProgressUpdate(Entity attacker) {
@@ -61,7 +65,8 @@ public abstract class RangedWeapon extends Weapon {
 	}
 
 	/**
-	 * Update the attacking progress when the weapon's attacking state is on cooldown
+	 * Update the attacking progress when the weapon's attacking state is on
+	 * cooldown
 	 */
 	protected void onCooldownUpdate() {
 		cooldown = null;

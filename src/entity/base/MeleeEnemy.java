@@ -13,8 +13,8 @@ import logic.GameLogic;
 import utils.Helper;
 
 /**
- * MeleeEnemy
- * Represents a melee enemy in the game
+ * MeleeEnemy Represents a melee enemy in the game
+ * 
  * @see Enemy
  * @see MeleeWeapon
  */
@@ -46,6 +46,7 @@ public abstract class MeleeEnemy extends Enemy {
 	protected int frameCount;
 	/**
 	 * The animation of the enemy
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	protected Image[] animation;
@@ -72,13 +73,14 @@ public abstract class MeleeEnemy extends Enemy {
 
 	/**
 	 * Constructor
-	 * @param x x coordinate of the enemy
-	 * @param y y coordinate of the enemy
-	 * @param width width of the enemy
-	 * @param height height of the enemy
-	 * @param sightSize sight size of the enemy
+	 * 
+	 * @param x                x coordinate of the enemy
+	 * @param y                y coordinate of the enemy
+	 * @param width            width of the enemy
+	 * @param height           height of the enemy
+	 * @param sightSize        sight size of the enemy
 	 * @param initialMaxHealth initial max health of the enemy
-	 * @param weapon the weapon of the enemy
+	 * @param weapon           the weapon of the enemy
 	 */
 	public MeleeEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth,
 			MeleeWeapon weapon) {
@@ -101,9 +103,11 @@ public abstract class MeleeEnemy extends Enemy {
 
 	/**
 	 * Moves the enemy
+	 * 
 	 * @see utils.Helper#CanMoveHere(double, double, double, double)
 	 * @see utils.Helper#GetEntityXPosNextToWall(Rectangle2D.Double, double)
-	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double,
+	 *      double)
 	 * @see jump()
 	 */
 	private void move() {
@@ -129,6 +133,7 @@ public abstract class MeleeEnemy extends Enemy {
 
 	/**
 	 * Checks if the enemy can attack
+	 * 
 	 * @return true if the enemy can attack
 	 */
 	private boolean canAttack() {

@@ -12,14 +12,14 @@ import utils.Constants.Resolution;
 import utils.Constants.UI;
 
 /**
- * PauseOverlay
- * Handles the pause overlay
+ * PauseOverlay Handles the pause overlay
  */
 public class PauseOverlay {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private PauseOverlay() { }
+	private PauseOverlay() {
+	}
 
 	/**
 	 * Update the pause overlay
@@ -32,7 +32,8 @@ public class PauseOverlay {
 
 	/**
 	 * Draw the pause overlay
-	 * @param gc the graphics context
+	 * 
+	 * @param gc      the graphics context
 	 * @param layoutX the layout x
 	 * @param layoutY the layout y
 	 */

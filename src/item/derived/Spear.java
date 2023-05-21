@@ -33,9 +33,8 @@ import logic.GameLogic;
 import utils.Loader;
 
 /**
- * Spear
- * Represents a spear in the game
- * A spear is a melee weapon
+ * Spear Represents a spear in the game A spear is a melee weapon
+ * 
  * @see item.MeleeWeapon
  */
 public class Spear extends MeleeWeapon {
@@ -61,12 +60,14 @@ public class Spear extends MeleeWeapon {
 
 	/**
 	 * Draw the spear
-	 * @param gc The graphics context
-	 * @param x The x position
-	 * @param y The y position
-	 * @param width The width
-	 * @param height The height
-	 * @param isFacingLeft Whether the entity who is holding the spear is facing left
+	 * 
+	 * @param gc           The graphics context
+	 * @param x            The x position
+	 * @param y            The y position
+	 * @param width        The width
+	 * @param height       The height
+	 * @param isFacingLeft Whether the entity who is holding the spear is facing
+	 *                     left
 	 */
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
@@ -91,6 +92,7 @@ public class Spear extends MeleeWeapon {
 
 	/**
 	 * Updates the attack box of the spear
+	 * 
 	 * @param attacker The entity who is holding the spear
 	 */
 	@Override
@@ -112,6 +114,7 @@ public class Spear extends MeleeWeapon {
 
 	/**
 	 * Updates the attack progress of the spear
+	 * 
 	 * @param attacker The entity who is holding the spear
 	 * @return The attack state
 	 */
@@ -129,6 +132,7 @@ public class Spear extends MeleeWeapon {
 
 	/**
 	 * Updates the attack progress when the spear attacking state is in progress
+	 * 
 	 * @param attacker The entity who is holding the spear
 	 */
 	private void inProgressUpdate(Entity attacker) {

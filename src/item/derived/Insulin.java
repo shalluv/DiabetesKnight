@@ -9,11 +9,9 @@ import item.Item;
 import logic.GameLogic;
 import utils.Loader;
 
-
 /**
- * Insulin
- * Represents an insulin in the game
- * An insulin is a consumable item
+ * Insulin Represents an insulin in the game An insulin is a consumable item
+ * 
  * @see item.Item
  * @see interfaces.Consumable
  */

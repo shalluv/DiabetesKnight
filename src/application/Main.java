@@ -18,8 +18,7 @@ import utils.Constants.Resolution;
 
 /**
  * 
- * Main
- * The main class of the game
+ * Main The main class of the game
  * 
  * @author Poonpipob Kunlayanathee
  * @author Surin Jintapla
@@ -29,21 +28,25 @@ import utils.Constants.Resolution;
 public class Main extends Application {
 	/**
 	 * static instance of the game screen
+	 * 
 	 * @see drawing.GameScreen
 	 */
 	public static GameScreen gameScreen;
 	/**
 	 * static instance of the game logic
+	 * 
 	 * @see logic.GameLogic
 	 */
 	public static GameLogic gameLogic;
 	/**
 	 * static instance of the map manager
+	 * 
 	 * @see maps.MapManager
 	 */
 	public static MapManager mapManager;
 	/**
 	 * game state
+	 * 
 	 * @see utils.Constants.GameState
 	 */
 	public static int gameState;
@@ -52,14 +55,15 @@ public class Main extends Application {
 	 */
 	public static Stage gameStage;
 	/**
-	 *  game thread
+	 * game thread
+	 * 
 	 * @see java.lang.Thread
 	 */
 	private Thread gameThread;
 
 	/**
-	 * Main
-	 * The main method of the application
+	 * Main The main method of the application
+	 * 
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
@@ -68,6 +72,7 @@ public class Main extends Application {
 
 	/**
 	 * Start the game
+	 * 
 	 * @param stage the stage
 	 * @see javafx.application.Application
 	 * @see javafx.stage.Stage
@@ -162,6 +167,7 @@ public class Main extends Application {
 
 	/**
 	 * Stop the game
+	 * 
 	 * @throws Exception the exception
 	 */
 	@Override

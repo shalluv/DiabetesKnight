@@ -12,21 +12,22 @@ import utils.Constants.BlockConstants;
 import utils.Constants.Resolution;
 import utils.Loader;
 
-
 /**
- * MapManager
- * Manages the map in the game
+ * MapManager Manages the map in the game
+ * 
  * @see maps.Map
  */
 public class MapManager {
 
 	/**
 	 * The sprite of the map
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image[] mapSprite;
 	/**
 	 * The current map
+	 * 
 	 * @see maps.Map
 	 */
 	private Map map;
@@ -56,7 +57,8 @@ public class MapManager {
 
 	/**
 	 * Draw the map
-	 * @param gc The graphics context
+	 * 
+	 * @param gc      The graphics context
 	 * @param screenX The x position of the screen
 	 * @param screenY The y position of the screen
 	 */
@@ -82,6 +84,7 @@ public class MapManager {
 
 	/**
 	 * Get the current map
+	 * 
 	 * @return The current map
 	 */
 	public Map getCurrentMap() {
@@ -90,6 +93,7 @@ public class MapManager {
 
 	/**
 	 * Get the current map width
+	 * 
 	 * @return The current map width
 	 */
 	public int getMapWidth() {
@@ -98,6 +102,7 @@ public class MapManager {
 
 	/**
 	 * Get the current map height
+	 * 
 	 * @return The current map height
 	 */
 	public int getMapHeight() {

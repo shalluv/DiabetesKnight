@@ -7,14 +7,15 @@ import utils.Constants.Resolution;
 import utils.Loader;
 
 /**
- * GameScreen
- * The screen of the game
+ * GameScreen The screen of the game
+ * 
  * @see javafx.scene.layout.Pane
  */
 public class GameScreen extends Pane {
 
 	/**
 	 * The game canvas
+	 * 
 	 * @see drawing.GameCanvas
 	 */
 	private GameCanvas gameCanvas;
@@ -32,6 +33,7 @@ public class GameScreen extends Pane {
 	private int backgroundRepeatTimes;
 	/**
 	 * The image views of the background
+	 * 
 	 * @see javafx.scene.image.ImageView
 	 */
 	ImageView[][] imageViews;
@@ -51,7 +53,6 @@ public class GameScreen extends Pane {
 
 		// Initialize the game canvas
 		gameCanvas = new GameCanvas(mapWidth, mapHeight);
-
 
 		// initialize the background
 		backgroundRepeatTimes = (int) Math.floor(mapWidth / Resolution.WIDTH) + 1;
@@ -104,6 +105,7 @@ public class GameScreen extends Pane {
 
 	/**
 	 * Get the game canvas
+	 * 
 	 * @return the game canvas
 	 */
 	public GameCanvas getCanvas() {
@@ -112,6 +114,7 @@ public class GameScreen extends Pane {
 
 	/**
 	 * Set the x position of the game screen
+	 * 
 	 * @param x the x position
 	 */
 	public void setX(double x) {
@@ -120,6 +123,7 @@ public class GameScreen extends Pane {
 
 	/**
 	 * Set the y position of the game screen
+	 * 
 	 * @param y the y position
 	 */
 	public void setY(double y) {

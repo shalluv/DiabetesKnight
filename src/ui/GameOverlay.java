@@ -14,18 +14,20 @@ import utils.Constants.Resolution;
 import utils.Constants.UI;
 
 /**
- * GameOverlay
- * Represents the game overlay
- * The game overlay is the UI that is displayed on top of the game when playing
+ * GameOverlay Represents the game overlay The game overlay is the UI that is
+ * displayed on top of the game when playing
  */
 public class GameOverlay {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private GameOverlay() { }
+	private GameOverlay() {
+	}
+
 	/**
 	 * Draw the player's inventory
-	 * @param gc The graphics context
+	 * 
+	 * @param gc      The graphics context
 	 * @param layoutX The x position of the screen
 	 * @param layoutY The y position of the screen
 	 * @see javafx.scene.canvas.GraphicsContext
@@ -97,7 +99,8 @@ public class GameOverlay {
 
 	/**
 	 * Draw the player's status
-	 * @param gc The graphics context
+	 * 
+	 * @param gc      The graphics context
 	 * @param layoutX The x position of the screen
 	 * @param layoutY The y position of the screen
 	 * @see javafx.scene.canvas.GraphicsContext
@@ -130,7 +133,8 @@ public class GameOverlay {
 
 	/**
 	 * Draw the game overlay
-	 * @param gc The graphics context
+	 * 
+	 * @param gc      The graphics context
 	 * @param layoutX The x position of the screen
 	 * @param layoutY The y position of the screen
 	 * @see javafx.scene.canvas.GraphicsContext

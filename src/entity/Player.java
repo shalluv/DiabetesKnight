@@ -55,8 +55,7 @@ import utils.Helper;
 import utils.Loader;
 
 /**
- * Player class
- * Represents the player
+ * Player class Represents the player
  * 
  * @see Entity
  * @see Damageable
@@ -93,16 +92,19 @@ public class Player extends Entity implements Damageable {
 	private int attackState;
 	/**
 	 * The inventory of the player
+	 * 
 	 * @see item.Item
 	 */
 	private Item[] inventory;
 	/**
 	 * The current item hold by the player
+	 * 
 	 * @see item.Item
 	 */
 	private Item currentItem;
 	/**
 	 * The current weapon hold by the player
+	 * 
 	 * @see item.Weapon
 	 */
 	private Weapon currentWeapon;
@@ -124,11 +126,13 @@ public class Player extends Entity implements Damageable {
 	private int frameCount;
 	/**
 	 * The animation of the player
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image[] animation;
 	/**
 	 * The dust animation of the player when running
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image dustAnimation;
@@ -142,12 +146,14 @@ public class Player extends Entity implements Damageable {
 	private int healthState;
 	/**
 	 * The thread for the hyperglycemia effect
+	 * 
 	 * @see java.lang.Thread
 	 */
 	private Thread onHyperglycemia;
 
 	/**
 	 * Constructor
+	 * 
 	 * @param x x-coordinate of the player
 	 * @param y y-coordinate of the player
 	 */
@@ -169,7 +175,7 @@ public class Player extends Entity implements Damageable {
 		isFacingLeft = false;
 
 		initOnHyperglycemia();
-		
+
 		// Initialize inventory
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
@@ -194,7 +200,8 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Draw the player
-	 * @param gc GraphicsContext
+	 * 
+	 * @param gc     GraphicsContext
 	 * @param screen Rectangle2D.Double
 	 * @see Entity#draw(GraphicsContext, Rectangle2D.Double)
 	 */
@@ -259,6 +266,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Set the player's current health
+	 * 
 	 * @param value the value to set, must be between 0 and maxHealth
 	 */
 	private void setCurrentHealth(int value) {
@@ -273,6 +281,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Heal the player
+	 * 
 	 * @param value the value to heal, must be positive
 	 */
 	public void heal(int value) {
@@ -283,6 +292,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Player receives damage
+	 * 
 	 * @param damage the amount of damage to receive, must be positive
 	 */
 	@Override
@@ -307,9 +317,11 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Move the player
+	 * 
 	 * @see utils.Helper#CanMoveHere(double, double, double, double)
 	 * @see utils.Helper#GetEntityXPosNextToWall(Rectangle2D.Double, double)
-	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double,
+	 *      double)
 	 */
 	private void move() {
 		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
@@ -332,6 +344,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Add an item to the inventory
+	 * 
 	 * @param item the item to add
 	 * @return true if the item was added, false otherwise
 	 * @see item.Item
@@ -348,6 +361,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Pick up items on the ground
+	 * 
 	 * @see entity.DroppedItem
 	 * @see item.Item
 	 */
@@ -367,6 +381,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Use the current item
+	 * 
 	 * @see interfaces.Consumable
 	 */
 	private void useItem() {
@@ -382,6 +397,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Attack with the current weapon
+	 * 
 	 * @see item.Weapon
 	 * @see interfaces.Reloadable
 	 */
@@ -402,6 +418,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Update the player
+	 * 
 	 * @see input.InputUtility
 	 * @see #jump()
 	 * @see #updateCurrentInventoryFocus()
@@ -442,14 +459,14 @@ public class Player extends Entity implements Damageable {
 
 		if (attackState == READY && currentItem == null)
 			currentWeapon = null;
-		
+
 		// update facing direction according to xspeed
 		if (xspeed > 0) {
 			isFacingLeft = false;
 		} else if (xspeed < 0) {
 			isFacingLeft = true;
 		}
-		
+
 		if (InputUtility.isLeftDown()) {
 			if (attackState == READY || attackState == ON_RELOAD) {
 				attack();
@@ -510,6 +527,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the z coordinate of the player
+	 * 
 	 * @return 69
 	 */
 	@Override
@@ -519,6 +537,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the current health of the player
+	 * 
 	 * @return currentHealth
 	 */
 	public int getCurrentHealth() {
@@ -527,6 +546,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the max health of the player
+	 * 
 	 * @return maxHealth
 	 */
 	public int getMaxHealth() {
@@ -535,6 +555,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the current power of the player
+	 * 
 	 * @return currentPower
 	 */
 	public int getCurrentPower() {
@@ -543,6 +564,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Set the current power of the player, must be non-negative
+	 * 
 	 * @param power the power to set
 	 */
 	public void setCurrentPower(int power) {
@@ -555,6 +577,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the sugar level of the player
+	 * 
 	 * @return sugarLevel
 	 */
 	public int getSugarLevel() {
@@ -563,6 +586,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Set the sugar level of the player, must be non-negative
+	 * 
 	 * @param sugarLevel the sugar level to set
 	 */
 	public void setSugarLevel(int sugarLevel) {
@@ -575,6 +599,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get player's inventory
+	 * 
 	 * @return inventory
 	 * @see item.Item
 	 */
@@ -584,6 +609,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the current index of the inventory
+	 * 
 	 * @return currentInventoryFocus
 	 */
 	public int getCurrentInventoryFocus() {
@@ -591,8 +617,9 @@ public class Player extends Entity implements Damageable {
 	}
 
 	/**
-	 * Update the current index of the inventory
-	 * according to the mouse scroll and number keys
+	 * Update the current index of the inventory according to the mouse scroll and
+	 * number keys
+	 * 
 	 * @see input.InputUtility
 	 */
 	public void updateCurrentInventoryFocus() {
@@ -637,8 +664,8 @@ public class Player extends Entity implements Damageable {
 	}
 
 	/**
-	 * Update the health state of the player
-	 * whether the player is healthy, hyperglycemia or hypoglycemia
+	 * Update the health state of the player whether the player is healthy,
+	 * hyperglycemia or hypoglycemia
 	 */
 	private void updateHealthState() {
 		if (sugarLevel > HYPERGLYCEMIA_SUGAR_LEVEL)
@@ -679,8 +706,7 @@ public class Player extends Entity implements Damageable {
 	}
 
 	/**
-	 * Update the health of the player
-	 * according to the health state
+	 * Update the health of the player according to the health state
 	 */
 	private void updateHealth() {
 		updateHealthState();
@@ -703,6 +729,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Check if the player is on the door
+	 * 
 	 * @return true if the player is on the door, false otherwise
 	 * @see entity.Door
 	 */
@@ -718,7 +745,8 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get the player's current health
-	 * @return currentHealth 
+	 * 
+	 * @return currentHealth
 	 */
 	@Override
 	public int getHealth() {
@@ -727,6 +755,7 @@ public class Player extends Entity implements Damageable {
 
 	/**
 	 * Get current weapon of the player
+	 * 
 	 * @return currentWeapon
 	 */
 	public Weapon getCurrentWeapon() {

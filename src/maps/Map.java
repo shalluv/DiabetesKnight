@@ -13,8 +13,7 @@ import utils.Constants.BlockConstants;
 import utils.Constants.DroppedItemConstants;
 
 /**
- * Map
- * Represents a map in the game
+ * Map Represents a map in the game
  */
 public class Map {
 
@@ -58,6 +57,7 @@ public class Map {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param mapData the map data
 	 */
 	public Map(int[][] mapData) {
@@ -113,6 +113,7 @@ public class Map {
 
 	/**
 	 * Get the sprite index of the block at (x, y)
+	 * 
 	 * @param x the x coordinate of the block
 	 * @param y the y coordinate of the block
 	 * @return the sprite index of the block at (x, y)
@@ -123,6 +124,7 @@ public class Map {
 
 	/**
 	 * Get the map data
+	 * 
 	 * @return the map data
 	 */
 	public int[][] getMapData() {

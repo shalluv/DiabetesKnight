@@ -14,8 +14,7 @@ import utils.Helper;
 import utils.Loader;
 
 /**
- * Bullet
- * Represents a bullet in the game
+ * Bullet Represents a bullet in the game
  */
 public class Bullet extends Entity {
 	/**
@@ -28,22 +27,25 @@ public class Bullet extends Entity {
 	private double yspeed;
 	/**
 	 * The shooter of the bullet
+	 * 
 	 * @see entity.base.Entity
 	 */
 	private Entity owner;
 	/**
 	 * The image of the bullet
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image image;
 
 	/**
 	 * Constructor
-	 * @param x x coordinate of the bullet
-	 * @param y y coordinate of the bullet
+	 * 
+	 * @param x       x coordinate of the bullet
+	 * @param y       y coordinate of the bullet
 	 * @param targetX x coordinate of the target
 	 * @param targetY y coordinate of the target
-	 * @param owner the owner of the bullet
+	 * @param owner   the owner of the bullet
 	 */
 	public Bullet(double x, double y, double targetX, double targetY, Entity owner) {
 		super(x, y, BulletConstants.WIDTH, BulletConstants.HEIGHT);
@@ -55,8 +57,8 @@ public class Bullet extends Entity {
 	}
 
 	/**
-	 * Load resources
-	 * Load the image of the bullet
+	 * Load resources Load the image of the bullet
+	 * 
 	 * @see utils.Loader
 	 */
 	private void loadResources() {
@@ -65,7 +67,8 @@ public class Bullet extends Entity {
 
 	/**
 	 * Draw the bullet
-	 * @param gc GraphicsContext
+	 * 
+	 * @param gc     GraphicsContext
 	 * @param screen the screen
 	 */
 	@Override
@@ -89,6 +92,7 @@ public class Bullet extends Entity {
 
 	/**
 	 * Get the z coordinate of the bullet
+	 * 
 	 * @return 0
 	 * @see sharedObject.Renderable
 	 */
@@ -98,8 +102,8 @@ public class Bullet extends Entity {
 	}
 
 	/**
-	 * Update the bullet
-	 * Move the bullet and check if it hits anything
+	 * Update the bullet Move the bullet and check if it hits anything
+	 * 
 	 * @see entity.base.Entity
 	 */
 	@Override
@@ -109,8 +113,8 @@ public class Bullet extends Entity {
 	}
 
 	/**
-	 * Move the bullet
-	 * If the bullet can't move, destroy it
+	 * Move the bullet If the bullet can't move, destroy it
+	 * 
 	 * @see utils.Helper#CanMoveHere(double, double, double, double)
 	 */
 	private void move() {
@@ -123,8 +127,9 @@ public class Bullet extends Entity {
 	}
 
 	/**
-	 * Check if the bullet hits anything
-	 * If it hits something, deal damage to the target
+	 * Check if the bullet hits anything If it hits something, deal damage to the
+	 * target
+	 * 
 	 * @see interfaces.Damageable
 	 */
 	private void checkHit() {
@@ -142,8 +147,9 @@ public class Bullet extends Entity {
 
 	/**
 	 * Calculate the speed of the bullet
-	 * @param x x coordinate of the bullet
-	 * @param y y coordinate of the bullet
+	 * 
+	 * @param x       x coordinate of the bullet
+	 * @param y       y coordinate of the bullet
 	 * @param targetX x coordinate of the target
 	 * @param targetY y coordinate of the target
 	 */
@@ -157,9 +163,10 @@ public class Bullet extends Entity {
 
 	/**
 	 * Check if the bullet can hit the target
+	 * 
 	 * @param targetHitbox the hitbox of the target
 	 * @param sourceHitbox the hitbox of the source
-	 * @param attackBox the attack box of the source
+	 * @param attackBox    the attack box of the source
 	 * @return true if the bullet can hit the target, false otherwise
 	 */
 	public static boolean canBulletHit(Rectangle2D.Double targetHitbox, Rectangle2D.Double sourceHitbox,

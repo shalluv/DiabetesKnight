@@ -4,14 +4,15 @@ import static utils.Constants.AttackState.READY;
 import static utils.Constants.Directions.LEFT;
 import static utils.Constants.Directions.RIGHT;
 
+import entity.Player;
 import item.RangedWeapon;
 import javafx.scene.image.Image;
 import logic.GameLogic;
 import utils.Helper;
 
 /**
- * RangedEnemy
- * Represents a ranged enemy in the game
+ * RangedEnemy Represents a ranged enemy in the game
+ * 
  * @see Enemy
  * @see RangedWeapon
  */
@@ -43,6 +44,7 @@ public abstract class RangedEnemy extends Enemy {
 	protected int frameCount;
 	/**
 	 * The animation of the enemy
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	protected Image[] animation;
@@ -77,13 +79,14 @@ public abstract class RangedEnemy extends Enemy {
 
 	/**
 	 * Constructor
-	 * @param x the x position
-	 * @param y the y position
-	 * @param width the width
-	 * @param height the height
-	 * @param sightSize the sight size
+	 * 
+	 * @param x                the x position
+	 * @param y                the y position
+	 * @param width            the width
+	 * @param height           the height
+	 * @param sightSize        the sight size
 	 * @param initialMaxHealth the initial max health
-	 * @param weapon the weapon
+	 * @param weapon           the weapon
 	 */
 	public RangedEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth,
 			RangedWeapon weapon) {
@@ -99,6 +102,7 @@ public abstract class RangedEnemy extends Enemy {
 
 	/**
 	 * Checks if the enemy can attack
+	 * 
 	 * @return true if the enemy can attack, false otherwise
 	 */
 	protected abstract boolean canAttack();
@@ -120,16 +124,16 @@ public abstract class RangedEnemy extends Enemy {
 		xspeed *= weapon.getXSpeedMultiplier();
 		yspeed = Math.max(-maxYSpeed, Math.min(yspeed, maxYSpeed));
 		yspeed *= weapon.getYSpeedMultiplier();
-		
+
 		move();
-		
+
 		if (attackState != READY) {
 			animationState = animationAttackCooldown;
 			attackState = weapon.updateAttack(this);
 		} else {
 			animationState = animationIDLE;
 		}
-		
+
 		if (GameLogic.getPlayer() != null && canAttack() && attackState == READY)
 			attackState = weapon.attack(GameLogic.getPlayer().getHitbox().getCenterX(),
 					GameLogic.getPlayer().getHitbox().getCenterY(), this);
@@ -141,6 +145,7 @@ public abstract class RangedEnemy extends Enemy {
 
 	/**
 	 * Moves the enemy
+	 * 
 	 * @see Helper#CanMoveHere(double, double, double, double)
 	 * @see Helper#GetEntityXPosNextToWall(Hitbox, double)
 	 * @see Helper#GetEntityYPosUnderRoofOrAboveFloor(Hitbox, double)
@@ -176,6 +181,7 @@ public abstract class RangedEnemy extends Enemy {
 
 	/**
 	 * Updates the x speed of the enemy
+	 * 
 	 * @see #canAttack()
 	 * @see entity.base.Enemy#isInSight(Player)
 	 * @see #moveToFalling(int)

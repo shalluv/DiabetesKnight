@@ -15,20 +15,20 @@ import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
 /**
- * GameLogic
- * Handles the game logic
+ * GameLogic Handles the game logic
  */
 public class GameLogic {
 
 	/**
-	 * The game object container
-	 * entities in the game are stored in this array list
+	 * The game object container entities in the game are stored in this array list
+	 * 
 	 * @see entity.base.Entity
 	 * @see java.util.ArrayList
 	 */
 	private static ArrayList<Entity> gameObjectContainer = new ArrayList<Entity>();
 	/**
 	 * The player
+	 * 
 	 * @see entity.Player
 	 */
 	private static Player player;
@@ -46,6 +46,7 @@ public class GameLogic {
 
 	/**
 	 * Add all objects in the array list to the game
+	 * 
 	 * @param entities the array list of entities to be added
 	 * @see entity.base.Entity
 	 */
@@ -57,6 +58,7 @@ public class GameLogic {
 
 	/**
 	 * Add a new object to the game
+	 * 
 	 * @param entity the entity to be added
 	 * @see entity.base.Entity
 	 */
@@ -67,6 +69,7 @@ public class GameLogic {
 
 	/**
 	 * Get the game object container
+	 * 
 	 * @return the game object container
 	 */
 	public static ArrayList<Entity> getGameObjectContainer() {
@@ -116,6 +119,7 @@ public class GameLogic {
 
 	/**
 	 * Update the screen position to follow the player
+	 * 
 	 * @see utils.Constants.Resolution
 	 * @see entity.Player
 	 */
@@ -146,6 +150,7 @@ public class GameLogic {
 
 	/**
 	 * Spawn the player at the given position
+	 * 
 	 * @param x the x position
 	 * @param y the y position
 	 * @see entity.Player
@@ -157,6 +162,7 @@ public class GameLogic {
 
 	/**
 	 * Teleport the player to the given position
+	 * 
 	 * @param x the x position
 	 * @param y the y position
 	 * @see entity.Player
@@ -168,6 +174,7 @@ public class GameLogic {
 
 	/**
 	 * Get the player
+	 * 
 	 * @return the player
 	 * @see entity.Player
 	 */

@@ -18,13 +18,13 @@ import utils.Helper;
 import utils.Loader;
 
 /**
- * Door
- * Represents a door in the game
+ * Door Represents a door in the game
  */
 public class Door extends Entity implements Interactable {
 
 	/**
 	 * The image of the door
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image image;
@@ -43,6 +43,7 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param x x coordinate of the door
 	 * @param y y coordinate of the door
 	 */
@@ -53,8 +54,8 @@ public class Door extends Entity implements Interactable {
 	}
 
 	/**
-	 * Load resources
-	 * Load the image of the door
+	 * Load resources Load the image of the door
+	 * 
 	 * @see utils.Loader
 	 */
 	private void loadResources() {
@@ -65,7 +66,8 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Draw the door
-	 * @param gc GraphicsContext
+	 * 
+	 * @param gc     GraphicsContext
 	 * @param screen the screen
 	 */
 	@Override
@@ -84,6 +86,7 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Get the z coordinate of the door
+	 * 
 	 * @return the z coordinate of the door
 	 * @see sharedObject.Renderable
 	 */
@@ -94,6 +97,7 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Update the door
+	 * 
 	 * @see #fall()
 	 */
 	@Override
@@ -103,8 +107,10 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Make the door fall in case it is not on the ground
+	 * 
 	 * @see utils.Helper#CanMoveHere(double, double, double, double)
-	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(java.awt.geom.Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(java.awt.geom.Rectangle2D.Double,
+	 *      double)
 	 */
 	private void fall() {
 		if (Helper.CanMoveHere(hitbox.x, hitbox.y + 1, hitbox.width, hitbox.height)) {
@@ -121,6 +127,7 @@ public class Door extends Entity implements Interactable {
 
 	/**
 	 * Interact with the door
+	 * 
 	 * @see interfaces.Interactable
 	 */
 	@Override

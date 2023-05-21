@@ -10,14 +10,13 @@ import logic.GameLogic;
 import utils.Loader;
 
 /**
- * Sugar
- * Represents a sugar in the game
- * A sugar is a consumable item
+ * Sugar Represents a sugar in the game A sugar is a consumable item
+ * 
  * @see item.Item
  * @see interfaces.Consumable
  */
 public class Sugar extends Item implements Consumable {
-	
+
 	/**
 	 * Constructor
 	 */

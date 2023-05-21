@@ -28,9 +28,8 @@ import javafx.scene.text.TextAlignment;
 import utils.Loader;
 
 /**
- * Spearman
- * Represents a spearman in the game
- * A spearman is a melee enemy
+ * Spearman Represents a spearman in the game A spearman is a melee enemy
+ * 
  * @see entity.base.MeleeEnemy
  * @see item.derived.Spear
  */
@@ -38,6 +37,7 @@ public class Spearman extends MeleeEnemy {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param x x coordinate of the spearman
 	 * @param y y coordinate of the spearman
 	 */
@@ -57,7 +57,8 @@ public class Spearman extends MeleeEnemy {
 
 	/**
 	 * Draw the spearman
-	 * @param gc GraphicsContext of the canvas
+	 * 
+	 * @param gc     GraphicsContext of the canvas
 	 * @param screen screen coordinate of the canvas
 	 */
 	@Override

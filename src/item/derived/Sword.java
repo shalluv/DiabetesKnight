@@ -39,9 +39,8 @@ import logic.GameLogic;
 import utils.Loader;
 
 /**
- * Sword
- * Represents a sword weapon in the game
- * sword is a melee weapon
+ * Sword Represents a sword weapon in the game sword is a melee weapon
+ * 
  * @see item.MeleeWeapon
  */
 public class Sword extends MeleeWeapon {
@@ -52,6 +51,7 @@ public class Sword extends MeleeWeapon {
 	private boolean startedCooldown;
 	/**
 	 * Image of the sword
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image image;
@@ -81,6 +81,7 @@ public class Sword extends MeleeWeapon {
 
 	/**
 	 * Get the image of the sword when it is idle
+	 * 
 	 * @return the image of the sword when it is idle
 	 */
 	private static Image getIdleImage() {
@@ -91,6 +92,7 @@ public class Sword extends MeleeWeapon {
 
 	/**
 	 * Update the attacking progress of the sword
+	 * 
 	 * @param attacker the entity who is holding the sword
 	 * @return the attack state of the sword
 	 */
@@ -108,6 +110,7 @@ public class Sword extends MeleeWeapon {
 
 	/**
 	 * Update the attack box of the sword
+	 * 
 	 * @param attacker the entity who is holding the sword
 	 */
 	@Override
@@ -124,12 +127,14 @@ public class Sword extends MeleeWeapon {
 
 	/**
 	 * Draw the sword
-	 * @param gc the graphics context
-	 * @param x the x position of the sword
-	 * @param y the y position of the sword
-	 * @param width the width of the sword
-	 * @param height the height of the sword
-	 * @param isFacingLeft whether the entity who is holding the sword is facing left
+	 * 
+	 * @param gc           the graphics context
+	 * @param x            the x position of the sword
+	 * @param y            the y position of the sword
+	 * @param width        the width of the sword
+	 * @param height       the height of the sword
+	 * @param isFacingLeft whether the entity who is holding the sword is facing
+	 *                     left
 	 */
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
@@ -157,6 +162,7 @@ public class Sword extends MeleeWeapon {
 
 	/**
 	 * Update the attack progress when the sword's attacking state is in progress
+	 * 
 	 * @param attacker the entity who is holding the sword
 	 */
 	private void inProgressUpdate(Entity attacker) {
@@ -174,7 +180,6 @@ public class Sword extends MeleeWeapon {
 				cooldown.start();
 		}
 	}
-
 
 	/**
 	 * Update the attack progress when the sword's attacking state is on cooldown

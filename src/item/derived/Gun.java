@@ -26,9 +26,8 @@ import logic.GameLogic;
 import utils.Loader;
 
 /**
- * Gun
- * Represents a gun in the game
- * A gun is a ranged weapon
+ * Gun Represents a gun in the game A gun is a ranged weapon
+ * 
  * @see item.RangedWeapon
  * @see interfaces.Reloadable
  * @see entity.Bullet
@@ -53,6 +52,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 	private int reloadDelay;
 	/**
 	 * The image of the gun
+	 * 
 	 * @see javafx.scene.image.Image
 	 */
 	private Image image;
@@ -72,11 +72,12 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Draws the gun
-	 * @param gc The graphics context to draw on
-	 * @param x The x coordinate of the gun
-	 * @param y The y coordinate of the gun
-	 * @param width The width of the gun
-	 * @param height The height of the gun
+	 * 
+	 * @param gc           The graphics context to draw on
+	 * @param x            The x coordinate of the gun
+	 * @param y            The y coordinate of the gun
+	 * @param width        The width of the gun
+	 * @param height       The height of the gun
 	 * @param isFacingLeft Whether the gun is facing left
 	 */
 	@Override
@@ -92,6 +93,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Updates the gun state
+	 * 
 	 * @param attacker The entity that is attacking
 	 * @return The attack state
 	 */
@@ -119,8 +121,9 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Attacks
-	 * @param targetX The x coordinate of the target
-	 * @param targetY The y coordinate of the target
+	 * 
+	 * @param targetX  The x coordinate of the target
+	 * @param targetY  The y coordinate of the target
 	 * @param attacker The entity that is attacking
 	 * @return The attack state
 	 */
@@ -140,6 +143,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Sets the ammo
+	 * 
 	 * @param value The value to set the ammo to, must be between 0 and maxAmmo
 	 */
 	private void setAmmo(int value) {
@@ -164,6 +168,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Gets the ammo
+	 * 
 	 * @return currentAmmo
 	 */
 	@Override
@@ -184,6 +189,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 
 	/**
 	 * Gets the max ammo
+	 * 
 	 * @return maxAmmo
 	 */
 	@Override

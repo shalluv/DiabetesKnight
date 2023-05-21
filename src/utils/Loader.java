@@ -10,8 +10,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
- * Loader
- * a class that utilizes the loading of resources
+ * Loader a class that utilizes the loading of resources
  */
 public class Loader {
 
@@ -158,10 +157,12 @@ public class Loader {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private Loader() { }
+	private Loader() {
+	}
 
 	/**
 	 * Get the image of the sprite atlas
+	 * 
 	 * @param filename the filename of the sprite atlas
 	 * @return the image of the sprite atlas
 	 */
@@ -185,6 +186,7 @@ public class Loader {
 
 	/**
 	 * Play the sound
+	 * 
 	 * @param filename the filename of the sound
 	 */
 	public static void playSound(String filename) {

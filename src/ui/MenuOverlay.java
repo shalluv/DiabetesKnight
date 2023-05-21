@@ -12,14 +12,14 @@ import utils.Constants.Resolution;
 import utils.Constants.UI;
 
 /**
- * MenuOverlay
- * Handles the menu overlay
+ * MenuOverlay Handles the menu overlay
  */
 public class MenuOverlay {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private MenuOverlay() { }
+	private MenuOverlay() {
+	}
 
 	/**
 	 * Update the menu overlay
@@ -32,7 +32,8 @@ public class MenuOverlay {
 
 	/**
 	 * Draw the menu overlay
-	 * @param gc the graphics context
+	 * 
+	 * @param gc      the graphics context
 	 * @param layoutX the layout x
 	 * @param layoutY the layout y
 	 */

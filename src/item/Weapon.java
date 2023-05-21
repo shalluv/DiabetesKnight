@@ -7,9 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * Weapon
- * Represents a weapon in the game
- * A weapon is an item that can be used to attack
+ * Weapon Represents a weapon in the game A weapon is an item that can be used
+ * to attack
+ * 
  * @see item.Item
  */
 public abstract class Weapon extends Item {
@@ -20,11 +20,13 @@ public abstract class Weapon extends Item {
 	protected int attackState;
 	/**
 	 * The cooldown thread of the weapon
+	 * 
 	 * @see java.lang.Thread
 	 */
 	protected Thread cooldown;
 	/**
 	 * The ultimate thread of the weapon
+	 * 
 	 * @see java.lang.Thread
 	 */
 	protected Thread onUltimate;
@@ -43,8 +45,9 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Constructor
-	 * @param name name of the weapon
-	 * @param image image of the weapon
+	 * 
+	 * @param name             name of the weapon
+	 * @param image            image of the weapon
 	 * @param XSpeedMultiplier X speed multiplier of the weapon
 	 * @param YSpeedMultiplier Y speed multiplier of the weapon
 	 */
@@ -58,6 +61,7 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Get the X speed multiplier of the weapon
+	 * 
 	 * @return X speed multiplier of the weapon
 	 */
 	public double getXSpeedMultiplier() {
@@ -66,6 +70,7 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Get the Y speed multiplier of the weapon
+	 * 
 	 * @return Y speed multiplier of the weapon
 	 */
 	public double getYSpeedMultiplier() {
@@ -74,6 +79,7 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Initialize the cooldown thread
+	 * 
 	 * @param delay the delay of the cooldown
 	 */
 	protected void initCooldown(int delay) {
@@ -88,6 +94,7 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Initialize the ultimate thread
+	 * 
 	 * @param delay the delay of the ultimate
 	 */
 	protected void initOnUltimate(int delay) {
@@ -103,18 +110,21 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Draw the weapon
-	 * @param gc the graphics context of the canvas
-	 * @param x the x coordinate of the weapon
-	 * @param y the y coordinate of the weapon
-	 * @param width the width of the weapon
-	 * @param height the height of the weapon
-	 * @param isFacingLeft whether the entity who is holding the weapon is facing left
+	 * 
+	 * @param gc           the graphics context of the canvas
+	 * @param x            the x coordinate of the weapon
+	 * @param y            the y coordinate of the weapon
+	 * @param width        the width of the weapon
+	 * @param height       the height of the weapon
+	 * @param isFacingLeft whether the entity who is holding the weapon is facing
+	 *                     left
 	 */
 	public abstract void draw(GraphicsContext gc, double x, double y, double width, double height,
 			boolean isFacingLeft);
 
 	/**
 	 * Update the attacking progress
+	 * 
 	 * @param attacker the entity that is attacking
 	 * @return the attacking state
 	 */
@@ -122,8 +132,9 @@ public abstract class Weapon extends Item {
 
 	/**
 	 * Attack the target
-	 * @param targetX the x coordinate of the target
-	 * @param targetY the y coordinate of the target
+	 * 
+	 * @param targetX  the x coordinate of the target
+	 * @param targetY  the y coordinate of the target
 	 * @param attacker the entity that is attacking
 	 * @return the attacking state
 	 */

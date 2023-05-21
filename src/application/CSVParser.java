@@ -12,7 +12,8 @@ public class CSVParser {
 	/**
 	 * private constructor to prevent instantiation
 	 */
-	private CSVParser() { }
+	private CSVParser() {
+	}
 
 	/**
 	 * Read CSV file

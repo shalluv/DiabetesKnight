@@ -18,8 +18,8 @@ import logic.GameLogic;
 import utils.Helper;
 
 /**
- * MeleeWeapon
- * Represents a melee weapon in the game
+ * MeleeWeapon Represents a melee weapon in the game
+ * 
  * @see item.Weapon
  * @see item.derived.Sword
  * @see item.derived.Spear
@@ -43,6 +43,7 @@ public abstract class MeleeWeapon extends Weapon {
 	protected int damage;
 	/**
 	 * The attack box of the weapon
+	 * 
 	 * @see java.awt.Shape
 	 */
 	protected Shape attackBox;
@@ -61,13 +62,14 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Constructor
-	 * @param name name of the weapon
-	 * @param image image of the weapon
-	 * @param attackRange attack range of the weapon
-	 * @param damage damage of the weapon
+	 * 
+	 * @param name             name of the weapon
+	 * @param image            image of the weapon
+	 * @param attackRange      attack range of the weapon
+	 * @param damage           damage of the weapon
 	 * @param XSpeedMultiplier X speed multiplier of the weapon
 	 * @param YSpeedMultiplier Y speed multiplier of the weapon
-	 * @param canMultipleHit can multiple hit or not
+	 * @param canMultipleHit   can multiple hit or not
 	 */
 
 	public MeleeWeapon(String name, Image image, int attackRange, int damage, double XSpeedMultiplier,
@@ -80,6 +82,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Update the attacking progress
+	 * 
 	 * @param attacker the entity that is attacking
 	 * @return the attacking progress
 	 */
@@ -87,6 +90,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Update the attack box of the weapon
+	 * 
 	 * @param attacker the entity that is attacking
 	 */
 
@@ -99,6 +103,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Get the attack range of the weapon
+	 * 
 	 * @return the attack range of the weapon
 	 */
 	public int getAttackRange() {
@@ -107,6 +112,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Update the attacking state of the weapon
+	 * 
 	 * @param attacker the entity that is attacking
 	 * @return the attacking state of the weapon
 	 */
@@ -121,8 +127,9 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Attack the target
-	 * @param targetX the x coordinate of the target
-	 * @param targetY the y coordinate of the target
+	 * 
+	 * @param targetX  the x coordinate of the target
+	 * @param targetY  the y coordinate of the target
 	 * @param attacker the entity that is attacking
 	 * @return the attacking state of the weapon
 	 */
@@ -139,9 +146,11 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Check if the attacker and the entity are enemies
-	 * @param entity the entity that is being attacked
+	 * 
+	 * @param entity   the entity that is being attacked
 	 * @param attacker the entity that is attacking
-	 * @return true if the player is attacking an enemy or the enemy is attacking the player, false otherwise
+	 * @return true if the player is attacking an enemy or the enemy is attacking
+	 *         the player, false otherwise
 	 */
 	protected boolean isEnemy(Entity entity, Entity attacker) {
 		if ((entity instanceof Enemy && attacker instanceof Player)
@@ -152,6 +161,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Check if the attacker is attacking a wall
+	 * 
 	 * @return true if the attacker is attacking a wall, false otherwise
 	 */
 	protected boolean isAttackingWall() {
@@ -167,6 +177,7 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Check if the attacker hit an entity
+	 * 
 	 * @param attacker the entity that is attacking
 	 */
 	protected void checkAttackHit(Entity attacker) {
@@ -190,7 +201,8 @@ public abstract class MeleeWeapon extends Weapon {
 
 	/**
 	 * Update the attack direction of the weapon
-	 * @param targetX the x coordinate of the target
+	 * 
+	 * @param targetX  the x coordinate of the target
 	 * @param attacker the entity that is attacking
 	 */
 	protected void updateAttackDirection(double targetX, Entity attacker) {

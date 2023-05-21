@@ -5,26 +5,29 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * RenderableHolder
- * Holds all renderable objects
+ * RenderableHolder Holds all renderable objects
+ * 
  * @see sharedObject.Renderable
  */
 public class RenderableHolder {
 
 	/**
-	 * The instance of RenderableHolder
-	 * Things need to be rendered are stored in this class
+	 * The instance of RenderableHolder Things need to be rendered are stored in
+	 * this class
+	 * 
 	 * @see sharedObject.Renderable
 	 */
 	private static final RenderableHolder instance = new RenderableHolder();
 	/**
 	 * The comparator for sorting the renderable objects
+	 * 
 	 * @see java.util.Comparator
 	 * @see sharedObject.Renderable
 	 */
 	private Comparator<Renderable> comparator;
 	/**
 	 * The list of renderable objects
+	 * 
 	 * @see sharedObject.Renderable
 	 * @see java.util.ArrayList
 	 */
@@ -32,6 +35,7 @@ public class RenderableHolder {
 
 	/**
 	 * Get the instance of RenderableHolder
+	 * 
 	 * @return the instance of RenderableHolder
 	 */
 	public static RenderableHolder getInstance() {
@@ -52,6 +56,7 @@ public class RenderableHolder {
 
 	/**
 	 * Add a renderable object to the list
+	 * 
 	 * @param entity the renderable object to be added
 	 */
 	public void add(Renderable entity) {
@@ -61,6 +66,7 @@ public class RenderableHolder {
 
 	/**
 	 * Get the list of renderable objects
+	 * 
 	 * @return the list of renderable objects
 	 */
 	public ArrayList<Renderable> getEntities() {

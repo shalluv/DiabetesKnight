@@ -15,8 +15,7 @@ import utils.Helper;
 import utils.Loader;
 
 /**
- * Enemy
- * Represents an enemy in the game
+ * Enemy Represents an enemy in the game
  */
 public abstract class Enemy extends Entity implements Damageable {
 
@@ -34,24 +33,27 @@ public abstract class Enemy extends Entity implements Damageable {
 	protected int sightSize;
 	/**
 	 * The item that the enemy will drop when killed
+	 * 
 	 * @see item.Item
 	 */
 	protected Item lootItem;
 	/**
 	 * The weapon of the enemy
+	 * 
 	 * @see item.Weapon
 	 */
 	protected Weapon weapon;
 
 	/**
 	 * Constructor
-	 * @param x x coordinate of the enemy
-	 * @param y y coordinate of the enemy
-	 * @param width width of the enemy
-	 * @param height height of the enemy
+	 * 
+	 * @param x         x coordinate of the enemy
+	 * @param y         y coordinate of the enemy
+	 * @param width     width of the enemy
+	 * @param height    height of the enemy
 	 * @param sightSize size of the sight of the enemy
 	 * @param maxHealth maximum health of the enemy
-	 * @param weapon weapon of the enemy
+	 * @param weapon    weapon of the enemy
 	 */
 	public Enemy(double x, double y, int width, int height, int sightSize, int maxHealth, Weapon weapon) {
 		super(x, y, width, height);
@@ -64,6 +66,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Get the z coordinate of the enemy
+	 * 
 	 * @return 2
 	 */
 	@Override
@@ -73,7 +76,9 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Set the current health of the enemy
-	 * @param value the value to be set, cannot be less than 0 or more than maxHealth
+	 * 
+	 * @param value the value to be set, cannot be less than 0 or more than
+	 *              maxHealth
 	 */
 	protected void setCurrentHealth(int value) {
 		if (value < 0) {
@@ -87,6 +92,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Check if the enemy is in sight of the player
+	 * 
 	 * @param player the player
 	 * @return true if the enemy is in sight of the player, false otherwise
 	 * @see Player
@@ -99,6 +105,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Receive damage
+	 * 
 	 * @param damage the damage to be received
 	 */
 	@Override
@@ -112,6 +119,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Get the loot item of the enemy
+	 * 
 	 * @return the loot item of the enemy
 	 * @see Item
 	 */
@@ -121,6 +129,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Get the current health of the enemy
+	 * 
 	 * @return the current health of the enemy
 	 */
 	public int getHealth() {
@@ -129,6 +138,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Get the weapon of the enemy
+	 * 
 	 * @return the weapon of the enemy
 	 * @see Weapon
 	 */
@@ -138,6 +148,7 @@ public abstract class Enemy extends Entity implements Damageable {
 
 	/**
 	 * Check if the enemy will fall if it moves in the given direction
+	 * 
 	 * @param direction the direction to be checked
 	 * @return true if the enemy will fall, false otherwise
 	 */

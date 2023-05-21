@@ -5,8 +5,8 @@ import java.awt.geom.Rectangle2D;
 import sharedObject.Renderable;
 
 /**
- * Entity
- * Represents an entity in the game
+ * Entity Represents an entity in the game
+ * 
  * @see sharedObject.Renderable
  */
 public abstract class Entity implements Renderable {
@@ -33,15 +33,17 @@ public abstract class Entity implements Renderable {
 	protected boolean isDestroy;
 	/**
 	 * The hitbox of the entity
+	 * 
 	 * @see java.awt.geom.Rectangle2D.Double
 	 */
 	protected Rectangle2D.Double hitbox;
 
 	/**
 	 * Constructor
-	 * @param x x coordinate of the entity
-	 * @param y y coordinate of the entity
-	 * @param width width of the entity
+	 * 
+	 * @param x      x coordinate of the entity
+	 * @param y      y coordinate of the entity
+	 * @param width  width of the entity
 	 * @param height height of the entity
 	 */
 	public Entity(double x, double y, int width, int height) {
@@ -59,6 +61,7 @@ public abstract class Entity implements Renderable {
 
 	/**
 	 * Check if the entity is destroyed
+	 * 
 	 * @return true if the entity is destroyed, false otherwise
 	 */
 	@Override
@@ -68,6 +71,7 @@ public abstract class Entity implements Renderable {
 
 	/**
 	 * Get the hitbox of the entity
+	 * 
 	 * @return the hitbox of the entity
 	 * @see java.awt.geom.Rectangle2D.Double
 	 */
@@ -77,6 +81,7 @@ public abstract class Entity implements Renderable {
 
 	/**
 	 * Set the hitbox of the entity
+	 * 
 	 * @param hitbox the hitbox to be set
 	 * @see java.awt.geom.Rectangle2D.Double
 	 */
@@ -86,9 +91,10 @@ public abstract class Entity implements Renderable {
 
 	/**
 	 * Initialize the hitbox of the entity
-	 * @param x x coordinate of the hitbox
-	 * @param y y coordinate of the hitbox
-	 * @param width width of the hitbox
+	 * 
+	 * @param x      x coordinate of the hitbox
+	 * @param y      y coordinate of the hitbox
+	 * @param width  width of the hitbox
 	 * @param height height of the hitbox
 	 * @see java.awt.geom.Rectangle2D.Double
 	 */
@@ -98,6 +104,7 @@ public abstract class Entity implements Renderable {
 
 	/**
 	 * Set the entity to be destroyed
+	 * 
 	 * @param isDestroy true if the entity is to be destroyed, false otherwise
 	 */
 	public void setDestroy(boolean isDestroy) {
