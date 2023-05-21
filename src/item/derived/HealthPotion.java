@@ -33,6 +33,7 @@ public class HealthPotion extends Item implements Consumable {
 	@Override
 	public void consume() {
 		GameLogic.getPlayer().heal(healthRegen);
+		Loader.playSound(Loader.CONSUME_HEALTH_POTION_SOUND_ATLAS);
 	}
 
 }

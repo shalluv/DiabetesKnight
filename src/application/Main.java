@@ -17,15 +17,16 @@ import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
 /**
+ * 
  * Main
  * The main class of the game
+ * 
+ * @author Poonpipob Kunlayanathee
+ * @author Surin Jintapla
+ * @version 1.0
+ * @since 2023-05-21
  */
 public class Main extends Application {
-	/**
-	 * private constructor to prevent instantiation
-	 */
-	private Main() { }
-
 	/**
 	 * static instance of the game screen
 	 * @see drawing.GameScreen

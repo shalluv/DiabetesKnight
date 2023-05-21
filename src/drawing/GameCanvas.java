@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 
 import application.Main;
 import input.InputUtility;
@@ -10,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
@@ -19,6 +22,7 @@ import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Constants.UI;
+import utils.Loader;
 
 /**
  * GameCanvas
@@ -26,6 +30,12 @@ import utils.Constants.UI;
  * @see javafx.scene.canvas.Canvas
  */
 public class GameCanvas extends Canvas {
+
+	/**
+	 * The background music player
+	 * @see javafx.scene.media.MediaPlayer
+	 */
+	private MediaPlayer backgroundMusicPlayer;
 
 	/**
 	 * Constructor
@@ -36,6 +46,10 @@ public class GameCanvas extends Canvas {
 		super(width, height);
 		setVisible(true);
 		addListener();
+		File file = new File(Loader.BACKGROUND_MUSIC_ATLAS);
+		Media backgroundMusic = new Media(file.toURI().toString());
+		backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
+		backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 
 	/**
@@ -86,6 +100,8 @@ public class GameCanvas extends Canvas {
 			break;
 
 		case GameState.PLAYING:
+			if (backgroundMusicPlayer.getStatus() != MediaPlayer.Status.PLAYING)
+				backgroundMusicPlayer.play();
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
 
@@ -100,6 +116,7 @@ public class GameCanvas extends Canvas {
 			break;
 
 		case GameState.PAUSE:
+			backgroundMusicPlayer.pause();
 			PauseOverlay.draw(gc, layoutX, layoutY);
 			break;
 			

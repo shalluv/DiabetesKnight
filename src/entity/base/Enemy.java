@@ -12,6 +12,7 @@ import item.Weapon;
 import item.derived.Insulin;
 import item.derived.Sugar;
 import utils.Helper;
+import utils.Loader;
 
 /**
  * Enemy
@@ -103,6 +104,10 @@ public abstract class Enemy extends Entity implements Damageable {
 	@Override
 	public void receiveDamage(int damage) {
 		setCurrentHealth(currentHealth - damage);
+		if (currentHealth > 0)
+			Loader.playSound(Loader.HURT_SOUND_ATLAS);
+		else
+			Loader.playSound(Loader.DIE_SOUND_ATLAS);
 	}
 
 	/**
