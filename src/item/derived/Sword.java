@@ -45,8 +45,8 @@ public class Sword extends MeleeWeapon {
 	private int animationFrame;
 
 	public Sword() {
-		super("sword", getIdleImage(), BASE_ATTACK_RANGE, BASE_DAMAGE, BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER,
-				false);
+		super("Yelly sword", getIdleImage(), BASE_ATTACK_RANGE, BASE_DAMAGE, BASE_X_SPEED_MULTIPLIER,
+				BASE_Y_SPEED_MULTIPLIER, false);
 		loadResources();
 		this.attackProgress = 0;
 		this.startedCooldown = false;
@@ -89,6 +89,9 @@ public class Sword extends MeleeWeapon {
 
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
+		if (attackState == READY) {
+			gc.drawImage(image, 0, 0, SPRITE_SIZE, SPRITE_SIZE, x + (isFacingLeft ? 1 : 8), y + 2, width, height);
+		}
 		if (attackState != IN_PROGRESS)
 			return;
 		double scaledWidth = width * SCALE / 2;

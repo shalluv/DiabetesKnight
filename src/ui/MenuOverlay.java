@@ -22,8 +22,7 @@ public class MenuOverlay {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFill(Color.WHITE);
-		gc.fillText("Welcome...", Resolution.WIDTH / 2 - layoutX,
-				Resolution.HEIGHT / 2 - layoutY - UI.FONT_SIZE * 1.5);
+		gc.fillText("Welcome...", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY - UI.FONT_SIZE * 1.5);
 		gc.fillText("Press SPACE to start!", Resolution.WIDTH / 2 - layoutX, Resolution.HEIGHT / 2 - layoutY);
 
 	}

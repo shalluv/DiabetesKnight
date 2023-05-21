@@ -54,8 +54,6 @@ public class Main extends Application {
 
 					long previousTime = System.nanoTime();
 
-					int frames = 0;
-					int updates = 0;
 					long lastCheck = System.currentTimeMillis();
 
 					double deltaU = 0;
@@ -72,21 +70,16 @@ public class Main extends Application {
 
 						if (deltaU >= 1) {
 							update();
-							updates++;
 							deltaU--;
 						}
 
 						if (deltaF >= 1) {
 							gameScreen.drawComponent();
-							frames++;
 							deltaF--;
 						}
 
 						if (System.currentTimeMillis() - lastCheck >= 1000) {
 							lastCheck = System.currentTimeMillis();
-							System.out.println("FPS: " + frames + " | UPS: " + updates);
-							frames = 0;
-							updates = 0;
 						}
 					}
 				}
