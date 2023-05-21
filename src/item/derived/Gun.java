@@ -34,7 +34,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 	private Image image;
 
 	public Gun() {
-		super("Gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER);
+		super("Ice cream gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER);
 		image = Loader.GetSpriteAtlas(Loader.GUN_ATLAS);
 		this.currentAmmo = BASE_MAX_AMMO;
 		this.maxAmmo = BASE_MAX_AMMO;

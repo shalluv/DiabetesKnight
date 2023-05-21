@@ -41,6 +41,9 @@ public class GameOverlay {
 				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
 		gc.setFill(Color.WHITE);
 
+
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setTextBaseline(VPos.BOTTOM);
 		Item[] inventory = GameLogic.getPlayer().getInventory();
 		int currentInventoryFocus = GameLogic.getPlayer().getCurrentInventoryFocus();
 		Item currentItem = inventory[currentInventoryFocus];
@@ -91,12 +94,12 @@ public class GameOverlay {
 			// Numbering
 			gc.setFill(Color.WHITE);
 			gc.setTextAlign(TextAlignment.RIGHT);
-			gc.setTextBaseline(VPos.BOTTOM);
+			gc.setTextBaseline(VPos.CENTER);
 			gc.fillText(Integer.toString(i + 1),
 					(Resolution.WIDTH / 2)
 							+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
 							- layoutX + BlockConstants.SIZE,
-					Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
+					Resolution.HEIGHT - layoutY - UI.GameOverlay.ITEM_SIZE * 2);
 
 		}
 	}

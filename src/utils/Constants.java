@@ -22,11 +22,11 @@ public class Constants {
 
 		public static class GameOverlay {
 			public static final int OFFSET_HP_X = 30;
-			public static final int OFFSET_HP_Y = 80;
+			public static final int OFFSET_HP_Y = 110;
 			public static final int OFFSET_POWER_X = 30;
-			public static final int OFFSET_POWER_Y = 50;
+			public static final int OFFSET_POWER_Y = 75;
 			public static final int OFFSET_SUGAR_X = 30;
-			public static final int OFFSET_SUGAR_Y = 20;
+			public static final int OFFSET_SUGAR_Y = 40;
 			public static final int OFFSET_SUGAR_AMOUNT_X = 170;
 			public static final int OFFSET_INVENTORY_Y = 80;
 			public static final int ITEM_SIZE = (int) Math.min(36 * SCALE, 54);
