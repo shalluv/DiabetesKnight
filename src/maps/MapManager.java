@@ -1,5 +1,7 @@
 package maps;
 
+import static utils.Constants.Maps.TILES_AMOUNT;
+
 import java.awt.geom.Rectangle2D;
 
 import application.CSVParser;
@@ -9,8 +11,6 @@ import logic.GameLogic;
 import utils.Constants.BlockConstants;
 import utils.Constants.Resolution;
 import utils.Loader;
-
-import static utils.Constants.Maps.TILES_AMOUNT;
 
 public class MapManager {
 

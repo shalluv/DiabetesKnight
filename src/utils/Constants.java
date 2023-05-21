@@ -271,7 +271,7 @@ public class Constants {
 		public static final int CURSOR_OFFSET_X = 8;
 		public static final int CURSOR_OFFSET_Y = 30;
 	}
-	
+
 	public static class Maps {
 		public static final int TILES_AMOUNT = 21;
 	}
