@@ -10,7 +10,6 @@ import logic.GameLogic;
 import utils.Loader;
 
 public class Sugar extends Item implements Consumable {
-
 	public Sugar() {
 		super("Sugar", Loader.GetSpriteAtlas(Loader.SUGAR_ATLAS));
 	}
@@ -20,5 +19,6 @@ public class Sugar extends Item implements Consumable {
 		Player player = GameLogic.getPlayer();
 		player.setCurrentPower(player.getCurrentPower() + POWER_AMOUNT);
 		player.setSugarLevel(player.getSugarLevel() + SUGAR_AMOUNT);
+		Loader.playSound(Loader.CONSUME_SUGAR_SOUND_ATLAS);
 	}
 }

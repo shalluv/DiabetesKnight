@@ -39,6 +39,8 @@ public abstract class MeleeWeapon extends Weapon {
 
 	protected abstract void updateAttackBox(Entity attacker);
 
+	protected abstract void playAttackSound();
+
 	public int getAttackRange() {
 		return attackRange;
 	}
@@ -57,6 +59,7 @@ public abstract class MeleeWeapon extends Weapon {
 		this.hit = false;
 		this.alreadyHit = new ArrayList<Entity>();
 		this.attackState = IN_PROGRESS;
+		playAttackSound();
 		updateAttackDirection(targetX, attacker);
 		updateAttackBox(attacker);
 		return attackState;

@@ -191,6 +191,10 @@ public class Player extends Entity implements Damageable {
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
 		setSugarLevel(sugarLevel - HIT_SUGAR_DECREASED_AMOUNT);
+		if (currentHealth > 0)
+			Loader.playSound(Loader.HURT_SOUND_ATLAS);
+		else
+			Loader.playSound(Loader.DIE_SOUND_ATLAS);
 		// System.out.println("player is now " + currentHealth + " hp");
 	}
 
@@ -233,6 +237,7 @@ public class Player extends Entity implements Damageable {
 				DroppedItem item = (DroppedItem) entity;
 				if (hitbox.intersects(item.getHitbox())) {
 					if (addItem(item.getItem())) {
+						Loader.playSound(Loader.PICKUP_ITEM_SOUND_ATLAS);
 						item.setDestroy(true);
 					}
 				}
@@ -391,6 +396,7 @@ public class Player extends Entity implements Damageable {
 	public void updateCurrentInventoryFocus() {
 		if (attackState == IN_PROGRESS)
 			return;
+		int previousInventoryFocus = currentInventoryFocus;
 		if (InputUtility.getScrollDeltaY() != 0) {
 			if (InputUtility.getScrollDeltaY() > 0)
 				currentInventoryFocus = (currentInventoryFocus + 9) % 10;
@@ -420,6 +426,9 @@ public class Player extends Entity implements Damageable {
 			currentInventoryFocus = 8;
 		}
 
+		if (currentInventoryFocus != previousInventoryFocus)
+			Loader.playSound(Loader.SELECT_ITEM_SOUND_ATLAS);
+
 		if (inventory[currentInventoryFocus] instanceof Weapon) {
 			currentWeapon = (Weapon) inventory[currentInventoryFocus];
 		}
@@ -441,6 +450,10 @@ public class Player extends Entity implements Damageable {
 			try {
 				Thread.sleep(HYPERGLYCEMIA_DELAY);
 				setCurrentHealth(currentHealth - HYPERGLYCEMIA_DAMAGE);
+				if (currentHealth > 0)
+					Loader.playSound(Loader.HURT_SOUND_ATLAS);
+				else
+					Loader.playSound(Loader.DIE_SOUND_ATLAS);
 			} catch (InterruptedException e) {
 				System.out.println("hyperglycemia interrupted");
 			}

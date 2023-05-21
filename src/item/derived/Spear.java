@@ -152,4 +152,9 @@ public class Spear extends MeleeWeapon {
 		attackSpeed = BASE_ATTACK_SPEED;
 	}
 
+	@Override
+	protected void playAttackSound() {
+		Loader.playSound(Loader.SPEAR_ATTACK_SOUND_ATLAS);
+	}
+
 }
