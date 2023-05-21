@@ -165,7 +165,7 @@ public class Player extends Entity implements Damageable {
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxHealth = INITIAL_MAX_HEALTH;
-		currentHealth = INITIAL_MAX_HEALTH * 2;
+		currentHealth = INITIAL_MAX_HEALTH;
 		currentPower = INITIAL_POWER;
 		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
