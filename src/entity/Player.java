@@ -43,8 +43,6 @@ import interfaces.Damageable;
 import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
-import item.derived.Gun;
-import item.derived.Spear;
 import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -167,7 +165,7 @@ public class Player extends Entity implements Damageable {
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxHealth = INITIAL_MAX_HEALTH;
-		currentHealth = INITIAL_MAX_HEALTH;
+		currentHealth = INITIAL_MAX_HEALTH * 2;
 		currentPower = INITIAL_POWER;
 		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
@@ -179,8 +177,6 @@ public class Player extends Entity implements Damageable {
 		// Initialize inventory
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
-		addItem(new Spear());
-		addItem(new Gun());
 		currentInventoryFocus = 0;
 	}
 

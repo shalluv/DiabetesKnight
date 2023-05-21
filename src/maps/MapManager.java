@@ -4,11 +4,11 @@ import static utils.Constants.Maps.TILES_AMOUNT;
 
 import java.awt.geom.Rectangle2D;
 
-import application.CSVParser;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.GameLogic;
+import utils.CSVParser;
 import utils.Constants.BlockConstants;
 import utils.Constants.Resolution;
 import utils.Loader;

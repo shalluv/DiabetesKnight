@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.geom.Rectangle2D;
+
 import application.Main;
 import input.InputUtility;
 import javafx.scene.canvas.Canvas;

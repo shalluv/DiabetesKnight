@@ -1,16 +1,8 @@
 package maps;
 
 import entity.Door;
-import entity.DroppedItem;
-import entity.Gunner;
-import entity.Spearman;
-import entity.Swordman;
-import item.derived.Gun;
-import item.derived.HealthPotion;
-import item.derived.Spear;
 import logic.GameLogic;
 import utils.Constants.BlockConstants;
-import utils.Constants.DroppedItemConstants;
 
 /**
  * Map Represents a map in the game
@@ -73,20 +65,20 @@ public class Map {
 					break;
 				case SWORDMEN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new Swordman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+//					GameLogic.addNewObject(new Swordman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case SPEARMEN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new Spearman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+//					GameLogic.addNewObject(new Spearman(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case GUNNER_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new Gunner(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
+//					GameLogic.addNewObject(new Gunner(j * BlockConstants.SIZE, i * BlockConstants.SIZE));
 					break;
 				case HEALTH_POTION_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
-							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new HealthPotion()));
+//					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
+//							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new HealthPotion()));
 					break;
 				case DOOR_SPAWN_CODE:
 					mapData[i][j] = 0;
@@ -94,13 +86,13 @@ public class Map {
 					break;
 				case SPEAR_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
-							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new Spear()));
+//					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
+//							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new Spear()));
 					break;
 				case GUN_SPAWN_CODE:
 					mapData[i][j] = 0;
-					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
-							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new Gun()));
+//					GameLogic.addNewObject(new DroppedItem(j * BlockConstants.SIZE, i * BlockConstants.SIZE,
+//							DroppedItemConstants.SIZE, DroppedItemConstants.SIZE, new Gun()));
 					break;
 				default:
 					break;
