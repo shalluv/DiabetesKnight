@@ -45,7 +45,6 @@ public class CSVParser {
 			}
 			return result3;
 		} catch (IOException e) {
-			e.printStackTrace();
 			return null;
 		}
 

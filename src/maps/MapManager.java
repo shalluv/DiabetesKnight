@@ -5,6 +5,7 @@ import static utils.Constants.Maps.TILES_AMOUNT;
 import java.awt.geom.Rectangle2D;
 
 import application.CSVParser;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.GameLogic;
@@ -114,6 +115,11 @@ public class MapManager {
 	 */
 	public void nextLevel() {
 		level += 1;
+		if (CSVParser.readCSV("res/csv/Level_" + level + ".csv") == null) {
+			System.out.println("YOU WIN");
+			Platform.exit();
+			return;
+		}
 		map = new Map(CSVParser.readCSV("res/csv/Level_" + level + ".csv"));
 		GameLogic.addNewObject(GameLogic.getPlayer());
 	}
