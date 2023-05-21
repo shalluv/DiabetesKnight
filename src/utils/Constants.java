@@ -373,7 +373,7 @@ public class Constants {
 			/**
 			 * Sword's base x-axis speed multiplier
 			 */
-			public static final double BASE_X_SPEED_MULTIPLIER = 1;
+			public static final double BASE_X_SPEED_MULTIPLIER = 2;
 			/**
 			 * Sword's base y-axis speed multiplier
 			 */
@@ -585,7 +585,7 @@ public class Constants {
 		/**
 		 * Player's initial health
 		 */
-		public static final int INITIAL_MAX_HEALTH = 200;
+		public static final int INITIAL_MAX_HEALTH = 10000;
 		/**
 		 * Player's initial power
 		 */
@@ -597,11 +597,11 @@ public class Constants {
 		/**
 		 * Player's initial sugar level
 		 */
-		public static final int INITIAL_SUGAR_LEVEL = 55;
+		public static final int INITIAL_SUGAR_LEVEL = 9999;
 		/**
 		 * Player's hyperglycemia sugar level threshold
 		 */
-		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 80;
+		public static final int HYPERGLYCEMIA_SUGAR_LEVEL = 100000;
 		/**
 		 * Player's sugar level decrease rate when being hit
 		 */
