@@ -76,6 +76,7 @@ public class Door extends Entity implements Interactable {
 	@Override
 	public void interact() {
 		Main.gameState = GameState.CHANGING_LEVEL;
+		Loader.playSound(Loader.WARP_SOUND_ATLAS);
 	}
 
 }

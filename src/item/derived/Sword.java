@@ -170,4 +170,9 @@ public class Sword extends MeleeWeapon {
 		damage = BASE_DAMAGE;
 	}
 
+	@Override
+	protected void playAttackSound() {
+		Loader.playSound(Loader.SWORD_ATTACK_SOUND_ATLAS);
+	}
+
 }

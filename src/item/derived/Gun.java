@@ -59,6 +59,7 @@ public class Gun extends RangedWeapon implements Reloadable {
 		if (attackState == IN_PROGRESS) {
 			inProgressUpdate(attacker);
 			setAmmo(currentAmmo - 1);
+			Loader.playSound(Loader.SHOOT_SOUND_ATLAS);
 			initCooldown(attackDelay);
 			cooldown.start();
 			attackState = ON_COOLDOWN;

@@ -1,6 +1,7 @@
 package drawing;
 
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 
 import application.Main;
 import input.InputUtility;
@@ -10,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import sharedObject.Renderable;
 import sharedObject.RenderableHolder;
@@ -19,13 +22,20 @@ import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 import utils.Constants.UI;
+import utils.Loader;
 
 public class GameCanvas extends Canvas {
+
+	private MediaPlayer backgroundMusicPlayer;
 
 	public GameCanvas(double width, double height) {
 		super(width, height);
 		setVisible(true);
 		addListener();
+		File file = new File(Loader.BACKGROUND_MUSIC_ATLAS);
+		Media backgroundMusic = new Media(file.toURI().toString());
+		backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
+		backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 
 	public void addListener() {
@@ -63,6 +73,8 @@ public class GameCanvas extends Canvas {
 			MenuOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PLAYING:
+			if (backgroundMusicPlayer.getStatus() != MediaPlayer.Status.PLAYING)
+				backgroundMusicPlayer.play();
 			gameScreen.setLayoutX(layoutX);
 			gameScreen.setLayoutY(layoutY);
 
@@ -76,6 +88,7 @@ public class GameCanvas extends Canvas {
 			GameOverlay.draw(gc, layoutX, layoutY);
 			break;
 		case GameState.PAUSE:
+			backgroundMusicPlayer.pause();
 			PauseOverlay.draw(gc, layoutX, layoutY);
 			break;
 		default:
