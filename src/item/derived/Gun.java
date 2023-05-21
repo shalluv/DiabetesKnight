@@ -25,14 +25,41 @@ import javafx.scene.image.Image;
 import logic.GameLogic;
 import utils.Loader;
 
+/**
+ * Gun Represents a gun in the game A gun is a ranged weapon
+ * 
+ * @see item.RangedWeapon
+ * @see interfaces.Reloadable
+ * @see entity.Bullet
+ */
 public class Gun extends RangedWeapon implements Reloadable {
 
+	/**
+	 * The current ammo of the gun
+	 */
 	private int currentAmmo;
+	/**
+	 * The maximum ammo of the gun
+	 */
 	private int maxAmmo;
+	/**
+	 * The attack delay of the gun
+	 */
 	private int attackDelay;
+	/**
+	 * The reload delay of the gun
+	 */
 	private int reloadDelay;
+	/**
+	 * The image of the gun
+	 * 
+	 * @see javafx.scene.image.Image
+	 */
 	private Image image;
 
+	/**
+	 * Constructor
+	 */
 	public Gun() {
 		super("Ice cream gun", Loader.GetSpriteAtlas(Loader.GUN_ATLAS), BASE_X_SPEED_MULTIPLIER,
 				BASE_Y_SPEED_MULTIPLIER);
@@ -43,6 +70,16 @@ public class Gun extends RangedWeapon implements Reloadable {
 		this.reloadDelay = BASE_RELOAD_DELAY;
 	}
 
+	/**
+	 * Draws the gun
+	 * 
+	 * @param gc           The graphics context to draw on
+	 * @param x            The x coordinate of the gun
+	 * @param y            The y coordinate of the gun
+	 * @param width        The width of the gun
+	 * @param height       The height of the gun
+	 * @param isFacingLeft Whether the gun is facing left
+	 */
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
 		if (isFacingLeft) {
@@ -54,6 +91,12 @@ public class Gun extends RangedWeapon implements Reloadable {
 		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
 
+	/**
+	 * Updates the gun state
+	 * 
+	 * @param attacker The entity that is attacking
+	 * @return The attack state
+	 */
 	@Override
 	public int updateAttack(Entity attacker) {
 		if (attackState == IN_PROGRESS) {
@@ -76,6 +119,14 @@ public class Gun extends RangedWeapon implements Reloadable {
 		return attackState;
 	}
 
+	/**
+	 * Attacks
+	 * 
+	 * @param targetX  The x coordinate of the target
+	 * @param targetY  The y coordinate of the target
+	 * @param attacker The entity that is attacking
+	 * @return The attack state
+	 */
 	@Override
 	public int attack(double targetX, double targetY, Entity attacker) {
 		if (currentAmmo == 0) {
@@ -90,11 +141,19 @@ public class Gun extends RangedWeapon implements Reloadable {
 		return attackState;
 	}
 
+	/**
+	 * Sets the ammo
+	 * 
+	 * @param value The value to set the ammo to, must be between 0 and maxAmmo
+	 */
 	private void setAmmo(int value) {
 		value = Math.max(0, Math.min(value, maxAmmo));
 		currentAmmo = value;
 	}
 
+	/**
+	 * Reloads the gun
+	 */
 	@Override
 	public void reload() {
 		setAmmo(currentAmmo + 1);
@@ -107,11 +166,19 @@ public class Gun extends RangedWeapon implements Reloadable {
 		cooldown.start();
 	}
 
+	/**
+	 * Gets the ammo
+	 * 
+	 * @return currentAmmo
+	 */
 	@Override
 	public int getAmmo() {
 		return currentAmmo;
 	}
 
+	/**
+	 * Cancels the reload
+	 */
 	@Override
 	public void cancelReload() {
 		if (cooldown != null)
@@ -120,11 +187,19 @@ public class Gun extends RangedWeapon implements Reloadable {
 			attackState = READY;
 	}
 
+	/**
+	 * Gets the max ammo
+	 * 
+	 * @return maxAmmo
+	 */
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
 	}
 
+	/**
+	 * Uses the ultimate
+	 */
 	@Override
 	public void useUlitmate() {
 		if (isOnUltimate || attackState == ON_RELOAD)
@@ -142,6 +217,9 @@ public class Gun extends RangedWeapon implements Reloadable {
 		}
 	}
 
+	/**
+	 * Resets the status
+	 */
 	@Override
 	public void resetStatus() {
 		isOnUltimate = false;

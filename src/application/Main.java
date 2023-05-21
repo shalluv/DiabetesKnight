@@ -16,22 +16,71 @@ import ui.PauseOverlay;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
+/**
+ * 
+ * Main The main class of the game
+ * 
+ * @author Poonpipob Kunlayanathee
+ * @author Surin Jintapla
+ * @version 1.0
+ * @since 2023-05-21
+ */
 public class Main extends Application {
-
+	/**
+	 * static instance of the game screen
+	 * 
+	 * @see drawing.GameScreen
+	 */
 	public static GameScreen gameScreen;
+	/**
+	 * static instance of the game logic
+	 * 
+	 * @see logic.GameLogic
+	 */
 	public static GameLogic gameLogic;
+	/**
+	 * static instance of the map manager
+	 * 
+	 * @see maps.MapManager
+	 */
 	public static MapManager mapManager;
+	/**
+	 * game state
+	 * 
+	 * @see utils.Constants.GameState
+	 */
 	public static int gameState;
+	/**
+	 * static instance of the game stage
+	 */
 	public static Stage gameStage;
+	/**
+	 * game thread
+	 * 
+	 * @see java.lang.Thread
+	 */
 	private Thread gameThread;
 
+	/**
+	 * Main The main method of the application
+	 * 
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Start the game
+	 * 
+	 * @param stage the stage
+	 * @see javafx.application.Application
+	 * @see javafx.stage.Stage
+	 */
 	@Override
 	public void start(Stage stage) {
 		try {
+			// Initialize the game
 			gameState = GameState.MENU;
 			mapManager = new MapManager();
 			gameLogic = new GameLogic();
@@ -47,6 +96,7 @@ public class Main extends Application {
 
 			stage.show();
 
+			// Start the game thread
 			gameThread = new Thread(new Runnable() {
 				public void run() {
 					double timePerFrame = 1_000_000_000 / FPS;
@@ -68,11 +118,13 @@ public class Main extends Application {
 						deltaF += (currentTime - previousTime) / timePerFrame;
 						previousTime = currentTime;
 
+						// Update the game
 						if (deltaU >= 1) {
 							update();
 							deltaU--;
 						}
 
+						// Draw the game
 						if (deltaF >= 1) {
 							gameScreen.drawComponent();
 							deltaF--;
@@ -92,6 +144,9 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Update the game
+	 */
 	public void update() {
 		switch (gameState) {
 		case GameState.MENU:
@@ -110,6 +165,11 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Stop the game
+	 * 
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void stop() throws Exception {
 		if (GameLogic.getPlayer().getCurrentWeapon() != null)

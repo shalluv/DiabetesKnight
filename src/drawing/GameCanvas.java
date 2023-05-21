@@ -24,10 +24,26 @@ import utils.Constants.Resolution;
 import utils.Constants.UI;
 import utils.Loader;
 
+/**
+ * GameCanvas The canvas of the game
+ * 
+ * @see javafx.scene.canvas.Canvas
+ */
 public class GameCanvas extends Canvas {
 
+	/**
+	 * The background music player
+	 * 
+	 * @see javafx.scene.media.MediaPlayer
+	 */
 	private MediaPlayer backgroundMusicPlayer;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param width  the width of the canvas
+	 * @param height the height of the canvas
+	 */
 	public GameCanvas(double width, double height) {
 		super(width, height);
 		setVisible(true);
@@ -38,6 +54,9 @@ public class GameCanvas extends Canvas {
 		backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
 
+	/**
+	 * Add listener to the canvas
+	 */
 	public void addListener() {
 		setOnKeyPressed((KeyEvent event) -> {
 			InputUtility.setKeyPressed(event.getCode(), true);
@@ -63,15 +82,26 @@ public class GameCanvas extends Canvas {
 		});
 	}
 
+	/**
+	 * Draw the canvas
+	 * 
+	 * @param layoutX    the layout x
+	 * @param layoutY    the layout y
+	 * @param gameScreen the game screen
+	 */
 	public void drawComponent(double layoutX, double layoutY, GameScreen gameScreen) {
 		GraphicsContext gc = getGraphicsContext2D();
+		// clear the canvas
 		gc.clearRect(-layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
-		Rectangle2D.Double screen = new Rectangle2D.Double(-layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+
 		gc.setFont(new Font(UI.FONT_SIZE));
+		Rectangle2D.Double screen = new Rectangle2D.Double(-layoutX, -layoutY, Resolution.WIDTH, Resolution.HEIGHT);
+
 		switch (Main.gameState) {
 		case GameState.MENU:
 			MenuOverlay.draw(gc, layoutX, layoutY);
 			break;
+
 		case GameState.PLAYING:
 			if (backgroundMusicPlayer.getStatus() != MediaPlayer.Status.PLAYING)
 				backgroundMusicPlayer.play();
@@ -87,10 +117,12 @@ public class GameCanvas extends Canvas {
 			}
 			GameOverlay.draw(gc, layoutX, layoutY);
 			break;
+
 		case GameState.PAUSE:
 			backgroundMusicPlayer.pause();
 			PauseOverlay.draw(gc, layoutX, layoutY);
 			break;
+
 		default:
 			break;
 		}

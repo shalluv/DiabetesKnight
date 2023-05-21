@@ -9,11 +9,24 @@ import item.Item;
 import logic.GameLogic;
 import utils.Loader;
 
+/**
+ * Sugar Represents a sugar in the game A sugar is a consumable item
+ * 
+ * @see item.Item
+ * @see interfaces.Consumable
+ */
 public class Sugar extends Item implements Consumable {
+
+	/**
+	 * Constructor
+	 */
 	public Sugar() {
 		super("Sugar", Loader.GetSpriteAtlas(Loader.SUGAR_ATLAS));
 	}
 
+	/**
+	 * Player consumes the sugar and gains power and increases sugar level
+	 */
 	@Override
 	public void consume() {
 		Player player = GameLogic.getPlayer();

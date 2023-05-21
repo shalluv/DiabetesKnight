@@ -27,11 +27,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import utils.Loader;
 
+/**
+ * Spearman Represents a spearman in the game A spearman is a melee enemy
+ * 
+ * @see entity.base.MeleeEnemy
+ * @see item.derived.Spear
+ */
 public class Spearman extends MeleeEnemy {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param x x coordinate of the spearman
+	 * @param y y coordinate of the spearman
+	 */
 	public Spearman(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Spear());
 		loadResources();
+
+		// Initialize stats
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxYSpeed = MAX_Y_SPEED;
@@ -41,6 +55,12 @@ public class Spearman extends MeleeEnemy {
 		weapon = new Spear();
 	}
 
+	/**
+	 * Draw the spearman
+	 * 
+	 * @param gc     GraphicsContext of the canvas
+	 * @param screen screen coordinate of the canvas
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Double screen) {
 		if (!hitbox.intersects(screen))
@@ -59,6 +79,7 @@ public class Spearman extends MeleeEnemy {
 			}
 		}
 
+		// Get the position of the spearman to be drawn on the screen
 		double drawX = hitbox.x + (isFacingLeft ? 0 : width);
 		double drawY = hitbox.y;
 		double drawW = width * (isFacingLeft ? 1 : -1);
@@ -75,6 +96,9 @@ public class Spearman extends MeleeEnemy {
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
 	}
 
+	/**
+	 * Load the resources of the spearman
+	 */
 	@Override
 	protected void loadResources() {
 		isFacingLeft = false;

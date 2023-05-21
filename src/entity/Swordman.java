@@ -27,11 +27,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import utils.Loader;
 
+/**
+ * Swordman Represents a swordman in the game A swordman is a melee enemy
+ * 
+ * @see entity.base.MeleeEnemy
+ * @see item.derived.Sword
+ */
 public class Swordman extends MeleeEnemy {
 
+	/**
+	 * Constructor
+	 * 
+	 * @param x x coordinate of the swordman
+	 * @param y y coordinate of the swordman
+	 */
 	public Swordman(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Sword());
 		loadResources();
+
+		// Initialize stats
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
 		maxYSpeed = MAX_Y_SPEED;
@@ -41,6 +55,9 @@ public class Swordman extends MeleeEnemy {
 		weapon = new Sword();
 	}
 
+	/**
+	 * Load resources
+	 */
 	@Override
 	protected void loadResources() {
 		isFacingLeft = false;
@@ -51,6 +68,12 @@ public class Swordman extends MeleeEnemy {
 		animation[0] = Loader.GetSpriteAtlas(Loader.MELEE_IDLE_ATLAS);
 	}
 
+	/**
+	 * Draw the swordman
+	 * 
+	 * @param gc     GraphicsContext to draw on
+	 * @param screen Rectangle2D.Double representing the screen
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
@@ -69,6 +92,7 @@ public class Swordman extends MeleeEnemy {
 			}
 		}
 
+		// Get the position to draw the sprite
 		double drawX = hitbox.x + (isFacingLeft ? 0 : width);
 		double drawY = hitbox.y;
 		double drawW = width * (isFacingLeft ? 1 : -1);

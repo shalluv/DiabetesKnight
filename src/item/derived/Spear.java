@@ -32,11 +32,25 @@ import javafx.scene.canvas.GraphicsContext;
 import logic.GameLogic;
 import utils.Loader;
 
+/**
+ * Spear Represents a spear in the game A spear is a melee weapon
+ * 
+ * @see item.MeleeWeapon
+ */
 public class Spear extends MeleeWeapon {
 
+	/**
+	 * The attack progress of the spear
+	 */
 	private int attackProgress;
+	/**
+	 * The attack speed of the spear
+	 */
 	private int attackSpeed;
 
+	/**
+	 * Constructor
+	 */
 	public Spear() {
 		super("Fork", Loader.GetSpriteAtlas(Loader.SPEAR_ATLAS), BASE_ATTACK_RANGE, BASE_DAMAGE,
 				BASE_X_SPEED_MULTIPLIER, BASE_Y_SPEED_MULTIPLIER, true);
@@ -44,6 +58,17 @@ public class Spear extends MeleeWeapon {
 		this.attackSpeed = BASE_ATTACK_SPEED;
 	}
 
+	/**
+	 * Draw the spear
+	 * 
+	 * @param gc           The graphics context
+	 * @param x            The x position
+	 * @param y            The y position
+	 * @param width        The width
+	 * @param height       The height
+	 * @param isFacingLeft Whether the entity who is holding the spear is facing
+	 *                     left
+	 */
 	@Override
 	public void draw(GraphicsContext gc, double x, double y, double width, double height, boolean isFacingLeft) {
 		if (isFacingLeft) {
@@ -65,6 +90,11 @@ public class Spear extends MeleeWeapon {
 		gc.drawImage(image, x, y + WEAPON_OFFSET_Y, width, height);
 	}
 
+	/**
+	 * Updates the attack box of the spear
+	 * 
+	 * @param attacker The entity who is holding the spear
+	 */
 	@Override
 	protected void updateAttackBox(Entity attacker) {
 		Rectangle2D.Double hitbox = attacker.getHitbox();
@@ -82,6 +112,12 @@ public class Spear extends MeleeWeapon {
 		}
 	}
 
+	/**
+	 * Updates the attack progress of the spear
+	 * 
+	 * @param attacker The entity who is holding the spear
+	 * @return The attack state
+	 */
 	@Override
 	protected int updateProgress(Entity attacker) {
 		if (cooldown != null && cooldown.isAlive()) // cooldown then don't update progress
@@ -94,6 +130,11 @@ public class Spear extends MeleeWeapon {
 		return attackState;
 	}
 
+	/**
+	 * Updates the attack progress when the spear attacking state is in progress
+	 * 
+	 * @param attacker The entity who is holding the spear
+	 */
 	private void inProgressUpdate(Entity attacker) {
 		if (attackProgress < attackRange) {
 			if (cooldown == null || !cooldown.isAlive()) // if it is not cooldown init cooldown thread
@@ -110,6 +151,9 @@ public class Spear extends MeleeWeapon {
 			cooldown.start();
 	}
 
+	/**
+	 * Updates the attack progress when the spear attacking state is on cooldown
+	 */
 	private void onCooldownUpdate() {
 		if (attackProgress > 0) {
 			if (cooldown == null || !cooldown.isAlive())
@@ -124,6 +168,9 @@ public class Spear extends MeleeWeapon {
 		}
 	}
 
+	/**
+	 * Use the ultimate of the spear
+	 */
 	@Override
 	public void useUlitmate() {
 		if (isOnUltimate)
@@ -142,6 +189,9 @@ public class Spear extends MeleeWeapon {
 		}
 	}
 
+	/**
+	 * Resets the status of the spear
+	 */
 	@Override
 	public void resetStatus() {
 		isOnUltimate = false;

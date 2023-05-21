@@ -5,7 +5,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * CSVParser Parse CSV file
+ */
 public class CSVParser {
+	/**
+	 * private constructor to prevent instantiation
+	 */
+	private CSVParser() {
+	}
+
+	/**
+	 * Read CSV file
+	 * 
+	 * @param filename the name of the file
+	 * @return a 2D array of integers
+	 */
 	public static int[][] readCSV(String filename) {
 		try (BufferedReader fileReader = new BufferedReader(new FileReader(filename))) {
 			ArrayList<String[]> result = new ArrayList<String[]>();
