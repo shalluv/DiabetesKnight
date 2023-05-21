@@ -43,8 +43,6 @@ import interfaces.Damageable;
 import interfaces.Reloadable;
 import item.Item;
 import item.Weapon;
-import item.derived.Gun;
-import item.derived.Spear;
 import item.derived.Sword;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -174,13 +172,9 @@ public class Player extends Entity implements Damageable {
 		healthState = HEALTHY;
 		isFacingLeft = false;
 
-		initOnHyperglycemia();
-
 		// Initialize inventory
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
-		addItem(new Spear());
-		addItem(new Gun());
 		currentInventoryFocus = 0;
 	}
 
@@ -712,6 +706,20 @@ public class Player extends Entity implements Damageable {
 		updateHealthState();
 		switch (healthState) {
 		case HYPERGLYCEMIA:
+			if (onHyperglycemia == null) {
+				onHyperglycemia = new Thread(() -> {
+					try {
+						Thread.sleep(HYPERGLYCEMIA_DELAY);
+						setCurrentHealth(currentHealth - HYPERGLYCEMIA_DAMAGE);
+						if (currentHealth > 0)
+							Loader.playSound(Loader.HURT_SOUND_ATLAS);
+						else
+							Loader.playSound(Loader.DIE_SOUND_ATLAS);
+					} catch (InterruptedException e) {
+						System.out.println("hyperglycemia interrupted");
+					}
+				});
+			}
 			initOnHyperglycemia();
 			break;
 		case HYPOGLYCEMIA:

@@ -92,7 +92,7 @@ public class Spearman extends MeleeEnemy {
 		// draw HP
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
-		gc.setFill(Color.RED);
+		gc.setFill(Color.WHITE);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
 	}
 

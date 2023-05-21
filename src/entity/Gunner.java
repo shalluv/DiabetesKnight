@@ -113,7 +113,7 @@ public class Gunner extends RangedEnemy {
 		// Draw health
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
-		gc.setFill(Color.RED);
+		gc.setFill(Color.WHITE);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
 	}
 

@@ -1,7 +1,6 @@
 package drawing;
 
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 
 import application.Main;
 import input.InputUtility;
@@ -48,8 +47,7 @@ public class GameCanvas extends Canvas {
 		super(width, height);
 		setVisible(true);
 		addListener();
-		File file = new File(Loader.BACKGROUND_MUSIC_ATLAS);
-		Media backgroundMusic = new Media(file.toURI().toString());
+		Media backgroundMusic = new Media(Main.class.getResource(Loader.BACKGROUND_MUSIC_ATLAS).toString());
 		backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
 		backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 	}
