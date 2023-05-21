@@ -43,7 +43,8 @@ public class MapManager {
 	public MapManager() {
 		importImages();
 		level = 1;
-		map = new Map(CSVParser.readCSV("res/csv/Level_1.csv"));
+		String mapName = "/csv/Level_1.csv";
+		map = new Map(CSVParser.readCSV(mapName));
 	}
 
 	/**
@@ -115,12 +116,13 @@ public class MapManager {
 	 */
 	public void nextLevel() {
 		level += 1;
-		if (CSVParser.readCSV("res/csv/Level_" + level + ".csv") == null) {
+		String mapName = "/csv/Level_" + level + ".csv";
+		if (CSVParser.readCSV(mapName) == null) {
 			System.out.println("YOU WIN");
 			Platform.exit();
 			return;
 		}
-		map = new Map(CSVParser.readCSV("res/csv/Level_" + level + ".csv"));
+		map = new Map(CSVParser.readCSV(mapName));
 		GameLogic.addNewObject(GameLogic.getPlayer());
 	}
 }

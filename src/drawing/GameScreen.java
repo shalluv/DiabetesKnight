@@ -76,7 +76,7 @@ public class GameScreen extends Pane {
 	public void drawComponent() {
 		// Draw the background
 		for (int i = 0; i < 5; ++i) {
-			for (int j = 0; j < 3; ++j) {
+			for (int j = 0; j < backgroundRepeatTimes; ++j) {
 				if (imageViews[i][j] == null)
 					continue;
 				imageViews[i][j].setLayoutY(-y);

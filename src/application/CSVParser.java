@@ -1,8 +1,8 @@
 package application;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +22,7 @@ public class CSVParser {
 	 * @return a 2D array of integers
 	 */
 	public static int[][] readCSV(String filename) {
-		try (BufferedReader fileReader = new BufferedReader(new FileReader(filename))) {
+		try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(filename)))) {
 			ArrayList<String[]> result = new ArrayList<String[]>();
 			String line = "";
 
@@ -45,6 +45,7 @@ public class CSVParser {
 			}
 			return result3;
 		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 
