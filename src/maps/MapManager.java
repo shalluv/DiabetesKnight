@@ -4,10 +4,11 @@ import static utils.Constants.Maps.TILES_AMOUNT;
 
 import java.awt.geom.Rectangle2D;
 
-import application.CSVParser;
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.GameLogic;
+import utils.CSVParser;
 import utils.Constants.BlockConstants;
 import utils.Constants.Resolution;
 import utils.Loader;
@@ -42,7 +43,8 @@ public class MapManager {
 	public MapManager() {
 		importImages();
 		level = 1;
-		map = new Map(CSVParser.readCSV("res/csv/Level_1.csv"));
+		String mapName = "/csv/Level_1.csv";
+		map = new Map(CSVParser.readCSV(mapName));
 	}
 
 	/**
@@ -114,7 +116,13 @@ public class MapManager {
 	 */
 	public void nextLevel() {
 		level += 1;
-		map = new Map(CSVParser.readCSV("res/csv/Level_" + level + ".csv"));
+		String mapName = "/csv/Level_" + level + ".csv";
+		if (CSVParser.readCSV(mapName) == null) {
+			System.out.println("YOU WIN");
+			Platform.exit();
+			return;
+		}
+		map = new Map(CSVParser.readCSV(mapName));
 		GameLogic.addNewObject(GameLogic.getPlayer());
 	}
 }
