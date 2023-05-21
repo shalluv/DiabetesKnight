@@ -273,6 +273,6 @@ public class Constants {
 	}
 	
 	public static class Maps {
-		public static final int TILES_AMOUNT = 11;
+		public static final int TILES_AMOUNT = 21;
 	}
 }
