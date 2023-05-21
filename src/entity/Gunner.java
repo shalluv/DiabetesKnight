@@ -31,8 +31,20 @@ import logic.GameLogic;
 import utils.Helper;
 import utils.Loader;
 
+/**
+ * Gunner
+ * Represents a gunner in the game
+ * A gunner is a ranged enemy
+ * @see entity.base.RangedEnemy
+ * @see item.derived.Gun
+ */
 public class Gunner extends RangedEnemy {
 
+	/**
+	 * Constructor
+	 * @param x x coordinate of the gunner
+	 * @param y y coordinate of the gunner
+	 */
 	public Gunner(double x, double y) {
 		super(x, y, WIDTH, HEIGHT, SIGHT_SIZE, INITIAL_MAX_HEALTH, new Gun());
 		loadResources();
@@ -46,6 +58,10 @@ public class Gunner extends RangedEnemy {
 		animationIDLE = IDLE;
 	}
 
+	/**
+	 * Load the sprites of the gunner
+	 * @see utils.Loader
+	 */
 	@Override
 	protected void loadResources() {
 		isFacingLeft = false;
@@ -57,6 +73,13 @@ public class Gunner extends RangedEnemy {
 		animation[1] = Loader.GetSpriteAtlas(Loader.RANGE_ATTACK_COOLDOWN_ATLAS);
 	}
 
+	/**
+	 * Draw the gunner on the screen
+	 * @param gc GraphicsContext of the canvas
+	 * @param screen Rectangle2D.Double representing the screen
+	 * @see javafx.scene.canvas.GraphicsContext
+	 * @see java.awt.geom.Rectangle2D.Double
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
 		if (!hitbox.intersects(screen))
@@ -85,12 +108,17 @@ public class Gunner extends RangedEnemy {
 		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
 				drawW, drawH);
 
+		// Draw health
 		gc.setTextAlign(TextAlignment.LEFT);
 		gc.setTextBaseline(VPos.BOTTOM);
 		gc.setFill(Color.RED);
 		gc.fillText(Integer.toString(currentHealth), hitbox.x, hitbox.y);
 	}
 
+	/**
+	 * Check if the gunner can attack
+	 * @return true if the gunner can attack, false otherwise
+	 */
 	@Override
 	protected boolean canAttack() {
 		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.getCenterX() - ATTACK_RANGE,

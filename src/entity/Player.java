@@ -50,55 +50,137 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import logic.GameLogic;
 import utils.Helper;
 import utils.Loader;
 
+/**
+ * Player class
+ * Represents the player
+ * 
+ * @see Entity
+ * @see Damageable
+ */
 public class Player extends Entity implements Damageable {
 
+	/**
+	 * The maximum health of the player
+	 */
 	private int maxHealth;
+	/**
+	 * The current health of the player
+	 */
 	private int currentHealth;
+	/**
+	 * The current power of the player
+	 */
 	private int currentPower;
+	/**
+	 * The current sugar level of the player
+	 */
 	private int sugarLevel;
+	/**
+	 * The x-axis speed of the player
+	 */
 	private double xspeed;
+	/**
+	 * The y-axis speed of the player
+	 */
 	private double yspeed;
+	/**
+	 * The current attack state of the player
+	 */
 	private int attackState;
+	/**
+	 * The inventory of the player
+	 * @see item.Item
+	 */
 	private Item[] inventory;
+	/**
+	 * The current item hold by the player
+	 * @see item.Item
+	 */
 	private Item currentItem;
+	/**
+	 * The current weapon hold by the player
+	 * @see item.Weapon
+	 */
 	private Weapon currentWeapon;
+	/**
+	 * The current inventory focus of the player
+	 */
 	private int currentInventoryFocus;
+	/**
+	 * The frame of the animation of the player
+	 */
 	private int animationFrame;
+	/**
+	 * The state of the animation of the player
+	 */
 	private int animationState;
+	/**
+	 * The frame counter for the animation of the player
+	 */
 	private int frameCount;
+	/**
+	 * The animation of the player
+	 * @see javafx.scene.image.Image
+	 */
 	private Image[] animation;
+	/**
+	 * The dust animation of the player when running
+	 * @see javafx.scene.image.Image
+	 */
 	private Image dustAnimation;
+	/**
+	 * Whether the player is facing left
+	 */
 	private boolean isFacingLeft;
+	/**
+	 * The health state of the player
+	 */
 	private int healthState;
+	/**
+	 * The thread for the hyperglycemia effect
+	 * @see java.lang.Thread
+	 */
 	private Thread onHyperglycemia;
 
+	/**
+	 * Constructor
+	 * @param x x-coordinate of the player
+	 * @param y y-coordinate of the player
+	 */
 	public Player(double x, double y) {
 		super(x, y, WIDTH, HEIGHT);
+		initHitbox(x, y, width, height);
+
+		loadResources();
+
+		// Initialize player stats
 		xspeed = INITIAL_X_SPEED;
 		yspeed = INITIAL_Y_SPEED;
-		initHitbox(x, y, width, height);
-		loadResources();
 		maxHealth = INITIAL_MAX_HEALTH;
 		currentHealth = INITIAL_MAX_HEALTH;
 		currentPower = INITIAL_POWER;
 		sugarLevel = INITIAL_SUGAR_LEVEL;
 		attackState = READY;
 		healthState = HEALTHY;
+		isFacingLeft = false;
+
 		initOnHyperglycemia();
+		
+		// Initialize inventory
 		inventory = new Item[INVENTORY_SIZE];
 		addItem(new Sword());
 		addItem(new Spear());
 		addItem(new Gun());
 		currentInventoryFocus = 0;
-
-		isFacingLeft = false;
 	}
 
+	/**
+	 * Load sprites of the player
+	 */
 	private void loadResources() {
 		animation = new Image[ANIMATION_STATE_COUNT + 1];
 		animationFrame = 0;
@@ -110,8 +192,15 @@ public class Player extends Entity implements Damageable {
 		dustAnimation = Loader.GetSpriteAtlas(Loader.DUST_ATLAS);
 	}
 
+	/**
+	 * Draw the player
+	 * @param gc GraphicsContext
+	 * @param screen Rectangle2D.Double
+	 * @see Entity#draw(GraphicsContext, Rectangle2D.Double)
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Rectangle2D.Double screen) {
+		// Draw only if the player is on screen
 		if (!hitbox.intersects(screen))
 			return;
 
@@ -140,16 +229,12 @@ public class Player extends Entity implements Damageable {
 			case JUMPING:
 				animationFrame %= RUNNING_FRAMES_COUNT;
 				break;
-//				if (yspeed > 0) {
-//					animationFrame = Math.min(6, animationFrame);
-//				} else {
-//					animationFrame = Math.min(3, animationFrame);
-//				}
 			default:
 				break;
 			}
 		}
 
+		// Get the position to draw
 		double drawX = hitbox.x + (isFacingLeft ? width : 0);
 		double drawY = hitbox.y;
 		double drawW = width * (isFacingLeft ? -1 : 1);
@@ -158,10 +243,13 @@ public class Player extends Entity implements Damageable {
 
 		gc.drawImage(animation[animationState], animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX, drawY,
 				drawW, drawH);
-		gc.setFill(Color.BLACK);
+
+		// Draw the weapon
 		if (currentWeapon != null) {
 			currentWeapon.draw(gc, hitbox.x, hitbox.y, 32, 32, isFacingLeft);
 		}
+
+		// Draw dust when running
 		if (animationState == RUNNING) {
 			gc.drawImage(dustAnimation, animationFrame * SPRITE_SIZE, 0, SPRITE_SIZE, SPRITE_SIZE, drawX + offsetDust,
 					drawY, drawW, drawH);
@@ -169,6 +257,10 @@ public class Player extends Entity implements Damageable {
 
 	}
 
+	/**
+	 * Set the player's current health
+	 * @param value the value to set, must be between 0 and maxHealth
+	 */
 	private void setCurrentHealth(int value) {
 		if (value < 0) {
 			currentHealth = 0;
@@ -179,25 +271,41 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Heal the player
+	 * @param value the value to heal, must be positive
+	 */
 	public void heal(int value) {
 		if (value < 0)
 			value = 0;
 		setCurrentHealth(value + currentHealth);
 	}
 
+	/**
+	 * Player receives damage
+	 * @param damage the amount of damage to receive, must be positive
+	 */
 	@Override
 	public void receiveDamage(int damage) {
 		if (damage < 0)
 			damage = 0;
 		setCurrentHealth(currentHealth - damage);
 		setSugarLevel(sugarLevel - HIT_SUGAR_DECREASED_AMOUNT);
-		// System.out.println("player is now " + currentHealth + " hp");
 	}
 
+	/**
+	 * Jump
+	 */
 	private void jump() {
 		yspeed = -MAX_Y_SPEED;
 	}
 
+	/**
+	 * Move the player
+	 * @see utils.Helper#CanMoveHere(double, double, double, double)
+	 * @see utils.Helper#GetEntityXPosNextToWall(Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double, double)
+	 */
 	private void move() {
 		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
 			hitbox.x += xspeed;
@@ -217,6 +325,12 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Add an item to the inventory
+	 * @param item the item to add
+	 * @return true if the item was added, false otherwise
+	 * @see item.Item
+	 */
 	private boolean addItem(Item item) {
 		for (int i = 0; i < INVENTORY_SIZE; ++i) {
 			if (inventory[i] == null) {
@@ -227,6 +341,11 @@ public class Player extends Entity implements Damageable {
 		return false;
 	}
 
+	/**
+	 * Pick up items on the ground
+	 * @see entity.DroppedItem
+	 * @see item.Item
+	 */
 	private void pickUpItems() {
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (!entity.isDestroyed() && entity instanceof DroppedItem) {
@@ -240,6 +359,10 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Use the current item
+	 * @see interfaces.Consumable
+	 */
 	private void useItem() {
 		if (currentItem == null)
 			return;
@@ -251,6 +374,11 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Attack with the current weapon
+	 * @see item.Weapon
+	 * @see interfaces.Reloadable
+	 */
 	private void attack() {
 		if (currentItem == null)
 			return;
@@ -266,11 +394,25 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Update the player
+	 * @see input.InputUtility
+	 * @see #jump()
+	 * @see #updateCurrentInventoryFocus()
+	 * @see #attack()
+	 * @see #useItem()
+	 * @see #move()
+	 * @see #pickUpItems()
+	 * 
+	 */
 	@Override
 	public void update() {
+		// if player presses space and is on floor, jump
 		if (InputUtility.getKeyPressed(KeyCode.SPACE) && Helper.IsEntityOnFloor(hitbox)) {
 			jump();
 		}
+
+		// set xspeed according to key pressed
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			xspeed = -BASE_X_SPEED;
 		} else if (InputUtility.getKeyPressed(KeyCode.D)) {
@@ -280,6 +422,8 @@ public class Player extends Entity implements Damageable {
 		}
 
 		updateCurrentInventoryFocus();
+
+		// update current item
 		currentItem = inventory[currentInventoryFocus];
 		if (attackState != READY && currentWeapon != null) {
 			if (attackState == ON_RELOAD && !(currentItem instanceof Reloadable)
@@ -289,36 +433,50 @@ public class Player extends Entity implements Damageable {
 			} else
 				attackState = currentWeapon.updateAttack(this);
 		}
+
 		if (attackState == READY && currentItem == null)
 			currentWeapon = null;
+		
+		// update facing direction according to xspeed
 		if (xspeed > 0) {
 			isFacingLeft = false;
 		} else if (xspeed < 0) {
 			isFacingLeft = true;
 		}
+		
 		if (InputUtility.isLeftDown()) {
 			if (attackState == READY || attackState == ON_RELOAD) {
 				attack();
 			}
+
+			// update facing direction according to mouse position when attacking
 			if (InputUtility.getMouseX() > hitbox.x + width) {
 				isFacingLeft = false;
 			} else if (InputUtility.getMouseX() < hitbox.x) {
 				isFacingLeft = true;
 			}
 		}
+
+		// use item
 		if (InputUtility.getKeyPressed(KeyCode.E)) {
 			if (!isPlayerOnDoor())
 				useItem();
 		}
+
+		// reload
 		if (InputUtility.getKeyPressed(KeyCode.R) && attackState == READY && currentWeapon instanceof Reloadable) {
 			attackState = ON_RELOAD;
 			((Reloadable) currentWeapon).reload();
 		}
+
+		// use ultimate
 		if (InputUtility.getKeyPressed(KeyCode.F) && attackState == READY && currentWeapon instanceof Weapon) {
 			((Weapon) currentWeapon).useUlitmate();
 		}
+
 		pickUpItems();
 
+		// update yspeed
 		yspeed = Math.max(-MAX_Y_SPEED, Math.min(yspeed, MAX_Y_SPEED));
 		if (currentItem instanceof Weapon) {
 			xspeed *= ((Weapon) currentItem).getXSpeedMultiplier();
@@ -329,6 +487,7 @@ public class Player extends Entity implements Damageable {
 
 		move();
 
+		// if the player is out of the map
 		if (hitbox.y + hitbox.height + 1 >= Main.mapManager.getMapHeight()) {
 			currentHealth = 0;
 		}
@@ -343,23 +502,43 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Get the z coordinate of the player
+	 * @return 69
+	 */
 	@Override
 	public int getZ() {
 		return 69;
 	}
 
+	/**
+	 * Get the current health of the player
+	 * @return currentHealth
+	 */
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
 
+	/**
+	 * Get the max health of the player
+	 * @return maxHealth
+	 */
 	public int getMaxHealth() {
 		return maxHealth;
 	}
 
+	/**
+	 * Get the current power of the player
+	 * @return currentPower
+	 */
 	public int getCurrentPower() {
 		return currentPower;
 	}
 
+	/**
+	 * Set the current power of the player, must be non-negative
+	 * @param power the power to set
+	 */
 	public void setCurrentPower(int power) {
 		if (power < 0) {
 			currentPower = 0;
@@ -368,10 +547,18 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Get the sugar level of the player
+	 * @return sugarLevel
+	 */
 	public int getSugarLevel() {
 		return sugarLevel;
 	}
 
+	/**
+	 * Set the sugar level of the player, must be non-negative
+	 * @param sugarLevel the sugar level to set
+	 */
 	public void setSugarLevel(int sugarLevel) {
 		if (sugarLevel < 0) {
 			this.sugarLevel = 0;
@@ -380,14 +567,28 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Get player's inventory
+	 * @return inventory
+	 * @see item.Item
+	 */
 	public Item[] getInventory() {
 		return inventory;
 	}
 
+	/**
+	 * Get the current index of the inventory
+	 * @return currentInventoryFocus
+	 */
 	public int getCurrentInventoryFocus() {
 		return currentInventoryFocus;
 	}
 
+	/**
+	 * Update the current index of the inventory
+	 * according to the mouse scroll and number keys
+	 * @see input.InputUtility
+	 */
 	public void updateCurrentInventoryFocus() {
 		if (attackState == IN_PROGRESS)
 			return;
@@ -425,6 +626,10 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Update the health state of the player
+	 * whether the player is healthy, hyperglycemia or hypoglycemia
+	 */
 	private void updateHealthState() {
 		if (sugarLevel > HYPERGLYCEMIA_SUGAR_LEVEL)
 			healthState = HYPERGLYCEMIA;
@@ -434,6 +639,9 @@ public class Player extends Entity implements Damageable {
 			healthState = HEALTHY;
 	}
 
+	/**
+	 * When the player is hyperglycemia, the player will lose health
+	 */
 	private void initOnHyperglycemia() {
 		if (onHyperglycemia != null && onHyperglycemia.isAlive())
 			return;
@@ -448,11 +656,18 @@ public class Player extends Entity implements Damageable {
 		onHyperglycemia.start();
 	}
 
+	/**
+	 * Clear the hyperglycemia thread
+	 */
 	public void clearHyperglycemiaThread() {
 		if (onHyperglycemia != null)
 			onHyperglycemia.interrupt();
 	}
 
+	/**
+	 * Update the health of the player
+	 * according to the health state
+	 */
 	private void updateHealth() {
 		updateHealthState();
 		switch (healthState) {
@@ -472,6 +687,11 @@ public class Player extends Entity implements Damageable {
 		}
 	}
 
+	/**
+	 * Check if the player is on the door
+	 * @return true if the player is on the door, false otherwise
+	 * @see entity.Door
+	 */
 	private boolean isPlayerOnDoor() {
 		for (Entity entity : GameLogic.getGameObjectContainer()) {
 			if (entity instanceof Door && entity.getHitbox().intersects(hitbox)) {
@@ -482,11 +702,19 @@ public class Player extends Entity implements Damageable {
 		return false;
 	}
 
+	/**
+	 * Get the player's current health
+	 * @return currentHealth 
+	 */
 	@Override
 	public int getHealth() {
 		return currentHealth;
 	}
 
+	/**
+	 * Get current weapon of the player
+	 * @return currentWeapon
+	 */
 	public Weapon getCurrentWeapon() {
 		return currentWeapon;
 	}

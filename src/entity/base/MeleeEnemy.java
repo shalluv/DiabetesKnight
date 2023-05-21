@@ -12,21 +12,74 @@ import javafx.scene.image.Image;
 import logic.GameLogic;
 import utils.Helper;
 
+/**
+ * MeleeEnemy
+ * Represents a melee enemy in the game
+ * @see Enemy
+ * @see MeleeWeapon
+ */
 public abstract class MeleeEnemy extends Enemy {
 
+	/**
+	 * The x-axis speed of the enemy
+	 */
 	protected double xspeed;
+	/**
+	 * The y-axis speed of the enemy
+	 */
 	protected double yspeed;
+	/**
+	 * The state of the attack of the enemy
+	 */
 	protected int attackState;
+	/**
+	 * The frame of the animation of the enemy
+	 */
 	protected int animationFrame;
+	/**
+	 * The state of the animation of the enemy
+	 */
 	protected int animationState;
+	/**
+	 * The counter of the enemy's animation frame
+	 */
 	protected int frameCount;
+	/**
+	 * The animation of the enemy
+	 * @see javafx.scene.image.Image
+	 */
 	protected Image[] animation;
+	/**
+	 * Whether the enemy is facing left
+	 */
 	protected boolean isFacingLeft;
+	/**
+	 * The maximum y-axis speed of the enemy
+	 */
 	protected double maxYSpeed;
+	/**
+	 * The weight of the enemy
+	 */
 	protected double weight;
+	/**
+	 * The initial x-axis speed of the enemy
+	 */
 	protected double initialXSpeed;
+	/**
+	 * The base x-axis speed of the enemy
+	 */
 	protected double baseXSpeed;
 
+	/**
+	 * Constructor
+	 * @param x x coordinate of the enemy
+	 * @param y y coordinate of the enemy
+	 * @param width width of the enemy
+	 * @param height height of the enemy
+	 * @param sightSize sight size of the enemy
+	 * @param initialMaxHealth initial max health of the enemy
+	 * @param weapon the weapon of the enemy
+	 */
 	public MeleeEnemy(double x, double y, int width, int height, int sightSize, int initialMaxHealth,
 			MeleeWeapon weapon) {
 		super(x, y, width, height, sightSize, initialMaxHealth, weapon);
@@ -34,12 +87,25 @@ public abstract class MeleeEnemy extends Enemy {
 		initHitbox(x, y, this.width, this.height);
 	}
 
+	/**
+	 * Loads the resources of the enemy
+	 */
 	protected abstract void loadResources();
 
+	/**
+	 * Jumps
+	 */
 	private void jump() {
 		yspeed = -maxYSpeed;
 	}
 
+	/**
+	 * Moves the enemy
+	 * @see utils.Helper#CanMoveHere(double, double, double, double)
+	 * @see utils.Helper#GetEntityXPosNextToWall(Rectangle2D.Double, double)
+	 * @see utils.Helper#GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Double, double)
+	 * @see jump()
+	 */
 	private void move() {
 		if (Helper.CanMoveHere(hitbox.x + xspeed, hitbox.y, hitbox.width, hitbox.height)) {
 			hitbox.x += xspeed;
@@ -61,12 +127,19 @@ public abstract class MeleeEnemy extends Enemy {
 		}
 	}
 
+	/**
+	 * Checks if the enemy can attack
+	 * @return true if the enemy can attack
+	 */
 	private boolean canAttack() {
 		Rectangle2D.Double canAttackBox = new Rectangle2D.Double(hitbox.x - ((MeleeWeapon) weapon).getAttackRange(),
 				hitbox.y, width + 2 * ((MeleeWeapon) weapon).getAttackRange(), height);
 		return canAttackBox.intersects(GameLogic.getPlayer().getHitbox()) && Helper.IsEntityOnFloor(hitbox);
 	}
 
+	/**
+	 * Updates the x speed of the enemy
+	 */
 	private void updateXSpeed() {
 		if (isInSight(GameLogic.getPlayer())) {
 			if (GameLogic.getPlayer().getHitbox().getMaxX() < hitbox.getCenterX() && !moveToFalling(LEFT)) {
@@ -81,6 +154,9 @@ public abstract class MeleeEnemy extends Enemy {
 		}
 	}
 
+	/**
+	 * Updates the enemy
+	 */
 	@Override
 	public void update() {
 		if (GameLogic.getPlayer() != null) {
@@ -110,6 +186,7 @@ public abstract class MeleeEnemy extends Enemy {
 			}
 		}
 
+		// if current health is 0 or below, destroy the enemy
 		if (currentHealth <= 0) {
 			isDestroy = true;
 			weapon.cancelAttack();

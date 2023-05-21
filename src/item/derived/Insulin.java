@@ -9,12 +9,26 @@ import item.Item;
 import logic.GameLogic;
 import utils.Loader;
 
+
+/**
+ * Insulin
+ * Represents an insulin in the game
+ * An insulin is a consumable item
+ * @see item.Item
+ * @see interfaces.Consumable
+ */
 public class Insulin extends Item implements Consumable {
 
+	/**
+	 * Constructor
+	 */
 	public Insulin() {
 		super("Insulin", Loader.GetSpriteAtlas(Loader.INSULIN_ATLAS));
 	}
 
+	/**
+	 * Player consumes the insulin and gains power and reduces sugar level
+	 */
 	@Override
 	public void consume() {
 		Player player = GameLogic.getPlayer();

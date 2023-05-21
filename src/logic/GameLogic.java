@@ -14,31 +14,68 @@ import utils.Constants.DroppedItemConstants;
 import utils.Constants.GameState;
 import utils.Constants.Resolution;
 
+/**
+ * GameLogic
+ * Handles the game logic
+ */
 public class GameLogic {
 
+	/**
+	 * The game object container
+	 * entities in the game are stored in this array list
+	 * @see entity.base.Entity
+	 * @see java.util.ArrayList
+	 */
 	private static ArrayList<Entity> gameObjectContainer = new ArrayList<Entity>();
+	/**
+	 * The player
+	 * @see entity.Player
+	 */
 	private static Player player;
+	/**
+	 * Whether the game is changing level
+	 */
 	private boolean isChangingLevel;
 
+	/**
+	 * Constructor
+	 */
 	public GameLogic() {
 		isChangingLevel = false;
 	}
 
+	/**
+	 * Add all objects in the array list to the game
+	 * @param entities the array list of entities to be added
+	 * @see entity.base.Entity
+	 */
 	public static void addAllObject(ArrayList<Entity> entities) {
 		for (Entity entity : entities) {
 			addNewObject(entity);
 		}
 	}
 
+	/**
+	 * Add a new object to the game
+	 * @param entity the entity to be added
+	 * @see entity.base.Entity
+	 */
 	public static void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
 
+	/**
+	 * Get the game object container
+	 * @return the game object container
+	 */
 	public static ArrayList<Entity> getGameObjectContainer() {
 		return gameObjectContainer;
 	}
 
+	/**
+	 * Update the game logic
+	 */
 	public void update() {
 		if (Main.gameState == GameState.CHANGING_LEVEL) {
 			if (isChangingLevel)
@@ -55,9 +92,11 @@ public class GameLogic {
 			Main.gameState = GameState.PAUSE;
 			return;
 		}
-		RenderableHolder.getInstance().update();
+		// Update the input
 		InputUtility.update();
 
+		// Update the entities
+		RenderableHolder.getInstance().update();
 		for (int i = gameObjectContainer.size() - 1; i >= 0; --i) {
 			Entity entity = gameObjectContainer.get(i);
 			if (!entity.isDestroyed())
@@ -70,9 +109,16 @@ public class GameLogic {
 				gameObjectContainer.remove(i);
 			}
 		}
+
+		// Update the screen position
 		updateScreen();
 	}
 
+	/**
+	 * Update the screen position to follow the player
+	 * @see utils.Constants.Resolution
+	 * @see entity.Player
+	 */
 	private void updateScreen() {
 		int mapWidth = Main.mapManager.getMapWidth();
 		int mapHeight = Main.mapManager.getMapHeight();
@@ -98,16 +144,33 @@ public class GameLogic {
 		}
 	}
 
+	/**
+	 * Spawn the player at the given position
+	 * @param x the x position
+	 * @param y the y position
+	 * @see entity.Player
+	 */
 	public static void spawnPlayer(int x, int y) {
 		player = new Player(x, y);
 		addNewObject(player);
 	}
 
+	/**
+	 * Teleport the player to the given position
+	 * @param x the x position
+	 * @param y the y position
+	 * @see entity.Player
+	 */
 	public static void tpPlayer(double x, double y) {
 		player.getHitbox().x = x;
 		player.getHitbox().y = y;
 	}
 
+	/**
+	 * Get the player
+	 * @return the player
+	 * @see entity.Player
+	 */
 	public static Player getPlayer() {
 		return player;
 	}

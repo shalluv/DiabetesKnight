@@ -13,7 +13,24 @@ import utils.Constants.PlayerConstants;
 import utils.Constants.Resolution;
 import utils.Constants.UI;
 
+/**
+ * GameOverlay
+ * Represents the game overlay
+ * The game overlay is the UI that is displayed on top of the game when playing
+ */
 public class GameOverlay {
+	/**
+	 * private constructor to prevent instantiation
+	 */
+	private GameOverlay() { }
+	/**
+	 * Draw the player's inventory
+	 * @param gc The graphics context
+	 * @param layoutX The x position of the screen
+	 * @param layoutY The y position of the screen
+	 * @see javafx.scene.canvas.GraphicsContext
+	 * @see javafx.scene.layout.Pane
+	 */
 	private static void drawInventory(GraphicsContext gc, double layoutX, double layoutY) {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.BOTTOM);
@@ -78,6 +95,14 @@ public class GameOverlay {
 		}
 	}
 
+	/**
+	 * Draw the player's status
+	 * @param gc The graphics context
+	 * @param layoutX The x position of the screen
+	 * @param layoutY The y position of the screen
+	 * @see javafx.scene.canvas.GraphicsContext
+	 * @see javafx.scene.layout.Pane
+	 */
 	private static void drawStatus(GraphicsContext gc, double layoutX, double layoutY) {
 		int currentHealth = GameLogic.getPlayer().getCurrentHealth();
 		int maxHealth = GameLogic.getPlayer().getMaxHealth();
@@ -103,6 +128,14 @@ public class GameOverlay {
 		gc.setFill(Color.WHITE);
 	}
 
+	/**
+	 * Draw the game overlay
+	 * @param gc The graphics context
+	 * @param layoutX The x position of the screen
+	 * @param layoutY The y position of the screen
+	 * @see javafx.scene.canvas.GraphicsContext
+	 * @see javafx.scene.layout.Pane
+	 */
 	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
 		drawStatus(gc, layoutX, layoutY);
 
