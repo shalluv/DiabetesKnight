@@ -2,6 +2,7 @@ package ui;
 
 import interfaces.Reloadable;
 import item.Item;
+import item.derived.Sword;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -13,35 +14,7 @@ import utils.Constants.Resolution;
 import utils.Constants.UI;
 
 public class GameOverlay {
-
-	public void update() {
-	}
-
-	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
-		int currentHealth = GameLogic.getPlayer().getCurrentHealth();
-		int maxHealth = GameLogic.getPlayer().getMaxHealth();
-		int currentPower = GameLogic.getPlayer().getCurrentPower();
-		int sugarLevel = GameLogic.getPlayer().getSugarLevel();
-
-		gc.setTextAlign(TextAlignment.LEFT);
-		gc.setTextBaseline(VPos.CENTER);
-		gc.setFill(Color.WHITE);
-		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth),
-				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
-		gc.fillText("Power : " + Integer.toString(currentPower), UI.GameOverlay.OFFSET_POWER_X - layoutX,
-				Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
-		gc.fillText("Sugar Level : ", UI.GameOverlay.OFFSET_SUGAR_X - layoutX,
-				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
-		if (sugarLevel > PlayerConstants.HYPERGLYCEMIA_SUGAR_LEVEL)
-			gc.setFill(Color.RED);
-		else if (sugarLevel < PlayerConstants.HYPOGLYCEMIA_SUGAR_LEVEL)
-			gc.setFill(Color.YELLOW);
-		gc.fillText(Integer.toString(sugarLevel),
-				UI.GameOverlay.OFFSET_SUGAR_X - layoutX + UI.GameOverlay.OFFSET_SUGAR_AMOUNT_X,
-				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
-		gc.setFill(Color.WHITE);
-
-
+	private static void drawInventory(GraphicsContext gc, double layoutX, double layoutY) {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.BOTTOM);
 		Item[] inventory = GameLogic.getPlayer().getInventory();
@@ -68,7 +41,8 @@ public class GameOverlay {
 			if (inventory[i] != null) {
 				gc.drawImage(inventory[i].getImage(),
 						(Resolution.WIDTH / 2)
-								+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP)
+								+ ((i - Math.floor(PlayerConstants.INVENTORY_SIZE / 2)) * UI.GameOverlay.INVENTORY_GAP
+										+ (inventory[i] instanceof Sword ? UI.GameOverlay.ITEM_SIZE / 4 : 0))
 								- layoutX + UI.GameOverlay.INVENTORY_PADDING,
 						Resolution.HEIGHT - UI.GameOverlay.OFFSET_INVENTORY_Y - layoutY
 								+ UI.GameOverlay.INVENTORY_PADDING,
@@ -102,5 +76,36 @@ public class GameOverlay {
 					Resolution.HEIGHT - layoutY - UI.GameOverlay.ITEM_SIZE * 2);
 
 		}
+	}
+
+	private static void drawStatus(GraphicsContext gc, double layoutX, double layoutY) {
+		int currentHealth = GameLogic.getPlayer().getCurrentHealth();
+		int maxHealth = GameLogic.getPlayer().getMaxHealth();
+		int currentPower = GameLogic.getPlayer().getCurrentPower();
+		int sugarLevel = GameLogic.getPlayer().getSugarLevel();
+
+		gc.setTextAlign(TextAlignment.LEFT);
+		gc.setTextBaseline(VPos.CENTER);
+		gc.setFill(Color.WHITE);
+		gc.fillText("HP : " + Integer.toString(currentHealth) + " / " + Integer.toString(maxHealth),
+				UI.GameOverlay.OFFSET_HP_X - layoutX, Resolution.HEIGHT - UI.GameOverlay.OFFSET_HP_Y - layoutY);
+		gc.fillText("Power : " + Integer.toString(currentPower), UI.GameOverlay.OFFSET_POWER_X - layoutX,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_POWER_Y - layoutY);
+		gc.fillText("Sugar Level : ", UI.GameOverlay.OFFSET_SUGAR_X - layoutX,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
+		if (sugarLevel > PlayerConstants.HYPERGLYCEMIA_SUGAR_LEVEL)
+			gc.setFill(Color.RED);
+		else if (sugarLevel < PlayerConstants.HYPOGLYCEMIA_SUGAR_LEVEL)
+			gc.setFill(Color.YELLOW);
+		gc.fillText(Integer.toString(sugarLevel),
+				UI.GameOverlay.OFFSET_SUGAR_X - layoutX + UI.GameOverlay.OFFSET_SUGAR_AMOUNT_X,
+				Resolution.HEIGHT - UI.GameOverlay.OFFSET_SUGAR_Y - layoutY);
+		gc.setFill(Color.WHITE);
+	}
+
+	public static void draw(GraphicsContext gc, double layoutX, double layoutY) {
+		drawStatus(gc, layoutX, layoutY);
+
+		drawInventory(gc, layoutX, layoutY);
 	}
 }
