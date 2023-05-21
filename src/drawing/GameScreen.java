@@ -50,14 +50,20 @@ public class GameScreen extends Pane {
 		}
 		imageViews[0][0].setLayoutX(-x);
 		imageViews[0][0].setLayoutY(-y);
-		for (int j = 0; j < backgroundRepeatTimes; ++j)
+		for (int j = 0; j < backgroundRepeatTimes; ++j) {
 			imageViews[1][j].setLayoutX(0.85 * -x + Resolution.WIDTH * j);
-		for (int j = 0; j < backgroundRepeatTimes; ++j)
+			imageViews[1][j].setLayoutY(1.05 * -y - 100);
+		}
+		for (int j = 0; j < backgroundRepeatTimes; ++j) {
 			imageViews[2][j].setLayoutX(1.05 * -x - Resolution.WIDTH * j);
+			imageViews[2][j].setLayoutY(1.15 * -y);
+		}
 		imageViews[3][0].setLayoutX(-x);
-		imageViews[3][0].setLayoutY(-y);
-		for (int j = 0; j < backgroundRepeatTimes; ++j)
-			imageViews[4][j].setLayoutX(1.18 * -x - Resolution.WIDTH * j);
+		imageViews[3][0].setLayoutY(1.1 * -y);
+		for (int j = 0; j < backgroundRepeatTimes; ++j) {
+			imageViews[4][j].setLayoutX(1.12 * -x - Resolution.WIDTH * j);
+			imageViews[4][j].setLayoutY(0.85 * -y + 60);
+		}
 
 		gameCanvas.drawComponent(x, y, this);
 	}
