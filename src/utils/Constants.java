@@ -585,7 +585,7 @@ public class Constants {
 		/**
 		 * Player's initial health
 		 */
-		public static final int INITIAL_MAX_HEALTH = 200;
+		public static final int INITIAL_MAX_HEALTH = 999;
 		/**
 		 * Player's initial power
 		 */
@@ -593,7 +593,7 @@ public class Constants {
 		/**
 		 * Player's hypoglycemia sugar level threshold
 		 */
-		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 30;
+		public static final int HYPOGLYCEMIA_SUGAR_LEVEL = 0;
 		/**
 		 * Player's initial sugar level
 		 */

@@ -6,6 +6,7 @@ import static utils.Constants.UPS;
 import drawing.GameScreen;
 import entity.base.Enemy;
 import entity.base.Entity;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -54,12 +55,6 @@ public class Main extends Application {
 	 * static instance of the game stage
 	 */
 	public static Stage gameStage;
-	/**
-	 * game thread
-	 * 
-	 * @see java.lang.Thread
-	 */
-	private Thread gameThread;
 
 	/**
 	 * Main The main method of the application
@@ -95,49 +90,29 @@ public class Main extends Application {
 			gameScreen.getCanvas().requestFocus();
 
 			stage.show();
+			double timePerFrame = 1_000_000_000 / FPS;
+			double timePerUpdate = 1_000_000_000 / UPS;
+			AnimationTimer animationLoop = new AnimationTimer() {
+				private long previousTime = System.nanoTime();
+				private double deltaU = 0;
+				private double deltaF = 0;
 
-			// Start the game thread
-			gameThread = new Thread(new Runnable() {
-				public void run() {
-					double timePerFrame = 1_000_000_000 / FPS;
-					double timePerUpdate = 1_000_000_000 / UPS;
-
-					long previousTime = System.nanoTime();
-
-					long lastCheck = System.currentTimeMillis();
-
-					double deltaU = 0;
-					double deltaF = 0;
-
-					while (true) {
-						if (Thread.interrupted())
-							break;
-						long currentTime = System.nanoTime();
-
-						deltaU += (currentTime - previousTime) / timePerUpdate;
-						deltaF += (currentTime - previousTime) / timePerFrame;
-						previousTime = currentTime;
-
-						// Update the game
-						if (deltaU >= 1) {
-							update();
-							deltaU--;
-						}
-
-						// Draw the game
-						if (deltaF >= 1) {
-							gameScreen.drawComponent();
-							deltaF--;
-						}
-
-						if (System.currentTimeMillis() - lastCheck >= 1000) {
-							lastCheck = System.currentTimeMillis();
-						}
+				@Override
+				public void handle(long currentNanoTime) {
+					deltaU += (currentNanoTime - previousTime) / timePerUpdate;
+					deltaF += (currentNanoTime - previousTime) / timePerFrame;
+					previousTime = currentNanoTime;
+					while (deltaU >= 1) {
+						update();
+						deltaU -= 1;
+					}
+					while (deltaF >= 1) {
+						gameScreen.drawComponent();
+						deltaF -= 1;
 					}
 				}
-			});
-
-			gameThread.start();
+			};
+			animationLoop.start();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,6 +153,5 @@ public class Main extends Application {
 		for (Entity entity : GameLogic.getGameObjectContainer())
 			if (entity instanceof Enemy)
 				((Enemy) entity).getWeapon().clearThread();
-		gameThread.interrupt();
 	}
 }
